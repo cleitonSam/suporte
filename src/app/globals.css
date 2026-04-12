@@ -1,0 +1,233 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Mobile sidebar slide-in ─── */
+#admin-layout.mobile-sidebar-open > aside {
+  transform: translateX(0) !important;
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 47.4% 11.2%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 47.4% 11.2%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+
+    /* Primary = Fluxo #0066FF */
+    --primary: 217 100% 50%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --ring: 217 100% 50%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --ring: 224.3 76.3% 48%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-sans;
+    font-feature-settings: 'rlig' 1, 'calt' 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display tracking-tight;
+  }
+}
+
+/* Scrollbar fluxo na sidebar dark */
+@layer components {
+  .fluxo-scroll::-webkit-scrollbar { width: 6px; }
+  .fluxo-scroll::-webkit-scrollbar-track { background: transparent; }
+  .fluxo-scroll::-webkit-scrollbar-thumb {
+    background: rgba(0, 102, 255, 0.3);
+    border-radius: 3px;
+  }
+  .fluxo-scroll::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 102, 255, 0.5);
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   DARK MODE — classes globais que afetam TODO
+   o projeto sem precisar editar cada componente
+   ═══════════════════════════════════════════════ */
+
+/* Scrollbar geral dark */
+.dark ::-webkit-scrollbar { width: 8px; height: 8px; }
+.dark ::-webkit-scrollbar-track { background: #0f172a; }
+.dark ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+.dark ::-webkit-scrollbar-thumb:hover { background: #475569; }
+
+@layer base {
+  /* ── Inputs, selects, textareas ── */
+  .dark input[type="text"],
+  .dark input[type="email"],
+  .dark input[type="password"],
+  .dark input[type="search"],
+  .dark input[type="number"],
+  .dark input[type="date"],
+  .dark input[type="tel"],
+  .dark input[type="url"],
+  .dark select,
+  .dark textarea {
+    @apply border-slate-600 bg-slate-800 text-slate-100 placeholder-slate-400;
+  }
+  .dark input:focus,
+  .dark select:focus,
+  .dark textarea:focus {
+    @apply border-fluxo-500 ring-fluxo-500/30;
+  }
+
+  /* ── bg-white cards → dark ── */
+  .dark .bg-white {
+    background-color: #1e293b !important; /* slate-800 */
+  }
+  .dark .bg-white\/80 {
+    background-color: rgba(30, 41, 59, 0.8) !important;
+  }
+
+  /* ── bg-slate-50 → dark ── */
+  .dark .bg-slate-50 {
+    background-color: #0f172a !important; /* slate-900 */
+  }
+
+  /* ── bg-slate-100 ── */
+  .dark .bg-slate-100 {
+    background-color: #1e293b !important;
+  }
+
+  /* ── Border colors ── */
+  .dark .border-slate-200 {
+    border-color: #334155 !important; /* slate-700 */
+  }
+  .dark .border-slate-100 {
+    border-color: #1e293b !important;
+  }
+  .dark .border-slate-300 {
+    border-color: #475569 !important;
+  }
+
+  /* ── Text colors ── */
+  .dark .text-slate-900 {
+    color: #f1f5f9 !important; /* slate-100 */
+  }
+  .dark .text-slate-800 {
+    color: #e2e8f0 !important;
+  }
+  .dark .text-slate-700 {
+    color: #cbd5e1 !important;
+  }
+  .dark .text-slate-600 {
+    color: #94a3b8 !important;
+  }
+  .dark .text-slate-500 {
+    color: #64748b !important;
+  }
+
+  /* ── Gradient-to-white → gradient-to-dark ── */
+  .dark .from-fluxo-50 {
+    --tw-gradient-from: #0f172a;
+  }
+  .dark .to-white {
+    --tw-gradient-to: #1e293b;
+  }
+  .dark .bg-gradient-to-r {
+    background-image: linear-gradient(to right, var(--tw-gradient-from), var(--tw-gradient-to));
+  }
+
+  /* ── Shadow adjustments ── */
+  .dark .shadow-sm {
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3) !important;
+  }
+
+  /* ── Status badges preserve their colors (don't override) ── */
+
+  /* ── Tables ── */
+  .dark table th {
+    @apply border-slate-700 bg-slate-800 text-slate-200;
+  }
+  .dark table td {
+    @apply border-slate-700 text-slate-300;
+  }
+  .dark table tr:hover td {
+    @apply bg-slate-700/50;
+  }
+
+  /* ── Links in dark ── */
+  .dark .text-fluxo-500 {
+    color: #3385FF !important; /* fluxo-400, slightly brighter */
+  }
+  .dark .hover\:text-fluxo-500:hover {
+    color: #66A3FF !important;
+  }
+
+  /* ── Rounded-lg cards with explicit bg-white in children ── */
+  .dark .rounded-xl.bg-white,
+  .dark .rounded-lg.bg-white {
+    background-color: #1e293b !important;
+  }
+
+  /* ── Form labels ── */
+  .dark label .text-slate-500 {
+    color: #94a3b8 !important;
+  }
+}
+
+/* ── Recharts in dark ── */
+.dark .recharts-cartesian-grid line {
+  stroke: #334155 !important;
+}
+.dark .recharts-text {
+  fill: #94a3b8 !important;
+}
+.dark .recharts-tooltip-wrapper .recharts-default-tooltip {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+  color: #e2e8f0 !important;
+}
+
+/* ── Command palette overlay ── */
+.dark [data-command-palette] {
+  @apply bg-slate-800 border-slate-700;
+}

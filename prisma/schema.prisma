@@ -1,0 +1,580 @@
+// Sistema de Chamados — Fluxo Digital Tech
+// Schema Prisma. Gere o client com: `pnpm prisma generate`
+// Crie migração com:  `pnpm prisma migrate dev --name init`
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ==============================================================
+// ENUMS
+// ==============================================================
+
+enum UserType {
+  AGENT          // Time interno da Fluxo
+  CLIENT_CONTACT // Contato de um cliente
+}
+
+enum UserRole {
+  ADMIN   // Acesso total (Fluxo)
+  AGENT   // Técnico (Fluxo)
+  CLIENT  // Contato do cliente (padrão para CLIENT_CONTACT)
+}
+
+enum TicketStatus {
+  NEW             // Recém-criado, ainda sem atendimento
+  OPEN            // Visto / em triagem
+  IN_PROGRESS     // Agente trabalhando
+  WAITING_CLIENT  // Aguardando retorno do cliente
+  RESOLVED        // Resolvido, aguardando confirmação
+  CLOSED          // Encerrado
+  REOPENED        // Reaberto após fechado
+}
+
+enum TicketPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum TicketEventType {
+  CREATED
+  ASSIGNED
+  STATUS_CHANGED
+  PRIORITY_CHANGED
+  COMMENTED
+  EQUIPMENT_LINKED
+  REOPENED
+  CLOSED
+}
+
+enum EquipmentStatus {
+  ACTIVE
+  IN_REPAIR
+  RETIRED
+}
+
+enum ClientStatus {
+  ACTIVE
+  SUSPENDED
+  INACTIVE
+}
+
+// ==============================================================
+// CLIENTES (empresas que a Fluxo atende)
+// ==============================================================
+
+model Client {
+  id            String       @id @default(cuid())
+  name          String       // Nome fantasia
+  legalName     String?      // Razão social
+  cnpj          String?      @unique
+  email         String?
+  phone         String?
+  address       String?
+  status        ClientStatus @default(ACTIVE)
+  notes         String?      @db.Text
+
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  deletedAt     DateTime?
+
+  users         User[]
+  tickets       Ticket[]
+  equipment     Equipment[]
+
+  @@index([status])
+  @@index([deletedAt])
+}
+
+// ==============================================================
+// USUÁRIOS (agentes + contatos de cliente na mesma tabela)
+// ==============================================================
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  passwordHash  String
+  name          String
+  phone         String?
+
+  userType      UserType
+  role          UserRole  @default(CLIENT)
+
+  // Se userType = CLIENT_CONTACT, é o cliente dono. Se AGENT, null.
+  clientId      String?
+  client        Client?   @relation(fields: [clientId], references: [id])
+
+  isActive      Boolean   @default(true)
+  lastLoginAt   DateTime?
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  deletedAt     DateTime?
+
+  // Relações como agente
+  assignedTickets     Ticket[]         @relation("AssignedAgent")
+  authoredMessages    TicketMessage[]  @relation("MessageAuthor")
+  authoredEvents      TicketEvent[]    @relation("EventAuthor")
+  queueMemberships    QueueMember[]
+  authoredTemplates   ResponseTemplate[] @relation("TemplateAuthor")
+
+  // Relações como contato de cliente
+  openedTickets       Ticket[]         @relation("TicketOpener")
+
+  // Sistema
+  notifications       Notification[]
+  passwordTokens      PasswordResetToken[]
+  auditEvents         AuditLog[]       @relation("AuditActor")
+
+  @@index([userType, isActive])
+  @@index([clientId])
+}
+
+// ==============================================================
+// TOKEN DE PRIMEIRO ACESSO / RESET DE SENHA
+// ==============================================================
+
+model PasswordResetToken {
+  id         String    @id @default(cuid())
+  userId     String
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  // Guardamos apenas o hash (sha256). O token claro só vive no email.
+  tokenHash  String    @unique
+  purpose    String    // "invite" | "reset"
+  expiresAt  DateTime
+  usedAt     DateTime?
+  createdAt  DateTime  @default(now())
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+// ==============================================================
+// NOTIFICAÇÕES IN-APP
+// ==============================================================
+
+enum NotificationType {
+  TICKET_ASSIGNED
+  TICKET_REPLIED
+  TICKET_STATUS_CHANGED
+  TICKET_CREATED
+  SLA_WARNING
+  SLA_BREACHED
+  GENERIC
+}
+
+model Notification {
+  id        String           @id @default(cuid())
+  userId    String
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  type      NotificationType
+  title     String
+  body      String?
+  linkUrl   String?
+
+  readAt    DateTime?
+  createdAt DateTime         @default(now())
+
+  @@index([userId, readAt])
+  @@index([userId, createdAt])
+}
+
+// ==============================================================
+// TEMPLATES DE RESPOSTA RÁPIDA
+// ==============================================================
+
+model ResponseTemplate {
+  id        String   @id @default(cuid())
+  title     String
+  body      String   @db.Text
+  // Se vazio → template global (todos os agentes); senão, vira template pessoal
+  authorId  String?
+  author    User?    @relation("TemplateAuthor", fields: [authorId], references: [id], onDelete: SetNull)
+
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([authorId])
+  @@index([isActive])
+}
+
+// ==============================================================
+// AUDIT LOG
+// ==============================================================
+
+model AuditLog {
+  id          String   @id @default(cuid())
+
+  actorId     String?
+  actor       User?    @relation("AuditActor", fields: [actorId], references: [id], onDelete: SetNull)
+
+  action      String   // ex: "user.create", "ticket.status_change", "auth.login_failed"
+  entity      String?  // ex: "Ticket", "User"
+  entityId    String?
+  metadata    Json?
+
+  ipAddress   String?
+  userAgent   String?
+
+  createdAt   DateTime @default(now())
+
+  @@index([action, createdAt])
+  @@index([entity, entityId])
+  @@index([actorId, createdAt])
+}
+
+// ==============================================================
+// CATEGORIAS
+// ==============================================================
+
+model TicketCategory {
+  id          String   @id @default(cuid())
+  name        String   @unique    // Hardware, Software, Rede, Email, Acesso, Outro
+  slug        String   @unique
+  description String?
+  color       String?  // Hex, para badge
+  isActive    Boolean  @default(true)
+  sortOrder   Int      @default(0)
+
+  tickets     Ticket[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model EquipmentCategory {
+  id          String   @id @default(cuid())
+  name        String   @unique    // CPU, Notebook, Impressora, Switch, etc.
+  slug        String   @unique
+  icon        String?
+  isActive    Boolean  @default(true)
+  sortOrder   Int      @default(0)
+
+  equipment   Equipment[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// ==============================================================
+// FILAS
+// ==============================================================
+
+model Queue {
+  id          String   @id @default(cuid())
+  name        String   @unique    // Geral, Redes, Impressoras, Servidores...
+  description String?
+  color       String?
+  isActive    Boolean  @default(true)
+  sortOrder   Int      @default(0)
+
+  members     QueueMember[]
+  tickets     Ticket[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model QueueMember {
+  queueId   String
+  queue     Queue    @relation(fields: [queueId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@id([queueId, userId])
+  @@index([userId])
+}
+
+// ==============================================================
+// INVENTÁRIO / EQUIPAMENTOS
+// ==============================================================
+
+model Equipment {
+  id                String            @id @default(cuid())
+
+  clientId          String
+  client            Client            @relation(fields: [clientId], references: [id], onDelete: Cascade)
+
+  categoryId        String
+  category          EquipmentCategory @relation(fields: [categoryId], references: [id])
+
+  name              String            // "CPU do Fernando - Recepção"
+  brand             String?
+  model             String?
+  serialNumber      String?           @unique
+  patrimony         String?           // Tombamento / patrimônio interno do cliente
+  ipAddress         String?
+  macAddress        String?
+  rustdeskId        String?           // ID do RustDesk para acesso remoto
+  location          String?           // "Sala 2, 1º andar"
+  purchaseDate      DateTime?
+  warrantyExpiresAt DateTime?
+  status            EquipmentStatus   @default(ACTIVE)
+  notes             String?           @db.Text
+
+  tickets           Ticket[]
+
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  deletedAt         DateTime?
+
+  @@index([clientId, status])
+  @@index([categoryId])
+}
+
+// ==============================================================
+// CHAMADOS
+// ==============================================================
+
+model Ticket {
+  id              String         @id @default(cuid())
+
+  // Número humano: CH-2026-00001 (gerado no service layer)
+  ticketNumber    String         @unique
+
+  // Cliente (empresa) — SEMPRE preenchido, derivado do openedBy
+  clientId        String
+  client          Client         @relation(fields: [clientId], references: [id], onDelete: Cascade)
+
+  // Quem abriu (contato do cliente OU agente abrindo em nome)
+  openedById      String
+  openedBy        User           @relation("TicketOpener", fields: [openedById], references: [id])
+
+  // Atribuição
+  assignedToId    String?
+  assignedTo      User?          @relation("AssignedAgent", fields: [assignedToId], references: [id])
+  assignedAt      DateTime?
+
+  // Fila
+  queueId         String?
+  queue           Queue?         @relation(fields: [queueId], references: [id])
+
+  // Categoria
+  categoryId      String?
+  category        TicketCategory? @relation(fields: [categoryId], references: [id])
+
+  // Equipamento vinculado (opcional)
+  equipmentId     String?
+  equipment       Equipment?     @relation(fields: [equipmentId], references: [id])
+
+  // Conteúdo
+  title           String
+  description     String         @db.Text
+
+  status          TicketStatus   @default(NEW)
+  priority        TicketPriority @default(MEDIUM)
+
+  // Controle / relatórios
+  firstResponseAt DateTime?
+  resolvedAt      DateTime?
+  closedAt        DateTime?
+  reopenedCount   Int            @default(0)
+
+  // SLA — calculado na criação com base na prioridade.
+  firstResponseDueAt DateTime?
+  resolutionDueAt    DateTime?
+  slaBreached        Boolean        @default(false)
+
+  // Reabertura: aponta para ticket original
+  originalTicketId String?
+  originalTicket   Ticket?       @relation("TicketReopens", fields: [originalTicketId], references: [id])
+  reopenedAs       Ticket[]      @relation("TicketReopens")
+
+  messages        TicketMessage[]
+  events          TicketEvent[]
+  attachments     TicketAttachment[]
+  csatSurveys     CsatSurvey[]
+
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  deletedAt       DateTime?
+
+  @@index([clientId, status])
+  @@index([assignedToId, status])
+  @@index([queueId, status, priority, createdAt])
+  @@index([status, createdAt])
+  @@index([deletedAt])
+  @@index([resolutionDueAt])
+  @@index([slaBreached, status])
+}
+
+model TicketMessage {
+  id          String   @id @default(cuid())
+
+  ticketId    String
+  ticket      Ticket   @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+
+  authorId    String
+  author      User     @relation("MessageAuthor", fields: [authorId], references: [id])
+
+  body        String   @db.Text
+  isInternal  Boolean  @default(false)
+
+  attachments TicketAttachment[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  deletedAt   DateTime?
+
+  @@index([ticketId, createdAt])
+  @@index([authorId])
+}
+
+model TicketEvent {
+  id          String           @id @default(cuid())
+
+  ticketId    String
+  ticket      Ticket           @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+
+  authorId    String?
+  author      User?            @relation("EventAuthor", fields: [authorId], references: [id])
+
+  type        TicketEventType
+  oldValue    String?
+  newValue    String?
+  payload     Json?
+
+  createdAt   DateTime         @default(now())
+
+  @@index([ticketId, createdAt])
+}
+
+model TicketAttachment {
+  id          String   @id @default(cuid())
+
+  ticketId    String
+  ticket      Ticket   @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+
+  messageId   String?
+  message     TicketMessage? @relation(fields: [messageId], references: [id], onDelete: Cascade)
+
+  fileName    String
+  filePath    String
+  mimeType    String
+  size        Int
+
+  uploadedById String?
+
+  createdAt   DateTime @default(now())
+
+  @@index([ticketId])
+}
+
+model TicketSequence {
+  year      Int      @id
+  lastValue Int      @default(0)
+  updatedAt DateTime @updatedAt
+}
+
+// ==============================================================
+// PESQUISA DE SATISFAÇÃO (CSAT)
+// ==============================================================
+
+model CsatSurvey {
+  id          String   @id @default(cuid())
+
+  ticketId    String
+  ticket      Ticket   @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+
+  agentId     String?
+  respondedById String?  // quem respondeu (openedBy do ticket)
+
+  // 1-5 (1=Péssimo, 2=Ruim, 3=Regular, 4=Bom, 5=Ótimo)
+  rating      Int
+  comment     String?  @db.Text
+
+  token       String   @unique  // token único para link de pesquisa
+  answeredAt  DateTime @default(now())
+  createdAt   DateTime @default(now())
+
+  @@index([ticketId])
+  @@index([agentId])
+  @@index([rating])
+  @@index([answeredAt])
+}
+
+// ==============================================================
+// BASE DE CONHECIMENTO
+// ==============================================================
+
+model KbCategory {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  slug        String   @unique
+  description String?
+  icon        String?  // emoji ou lucide icon name
+  sortOrder   Int      @default(0)
+  isActive    Boolean  @default(true)
+
+  articles    KbArticle[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model KbArticle {
+  id          String   @id @default(cuid())
+
+  categoryId  String
+  category    KbCategory @relation(fields: [categoryId], references: [id])
+
+  title       String
+  slug        String   @unique
+  body        String   @db.Text   // Markdown
+  excerpt     String?              // Resumo curto para listagem
+
+  authorId    String?
+  isPublished Boolean  @default(false)
+  viewCount   Int      @default(0)
+  helpfulYes  Int      @default(0)
+  helpfulNo   Int      @default(0)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([categoryId, isPublished])
+  @@index([isPublished, viewCount])
+}
+
+// ==============================================================
+// REGRAS DE AUTOMAÇÃO
+// ==============================================================
+
+model AutomationRule {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+
+  // Quando dispara: "ticket.created", "ticket.status_changed", "ticket.sla_warning", "cron.hourly"
+  trigger     String
+
+  // Condições em JSON: [{ field: "status", op: "eq", value: "OPEN" }, { field: "hoursOpen", op: "gt", value: 2 }]
+  conditions  Json     @default("[]")
+
+  // Ações em JSON: [{ type: "change_status", value: "ESCALATED" }, { type: "notify", value: "admin" }]
+  actions     Json     @default("[]")
+
+  isActive    Boolean  @default(true)
+  sortOrder   Int      @default(0)  // ordem de execução
+  runCount    Int      @default(0)
+  lastRunAt   DateTime?
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([trigger, isActive])
+}
+
+// (Modelos duplicados removidos — CsatSurvey, KbCategory e KbArticle
+//  já definidos acima neste arquivo)
