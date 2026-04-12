@@ -1,5 +1,6 @@
 # --- Base ---
 FROM node:20-alpine AS base
+RUN apk add --no-cache openssl
 WORKDIR /app
 
 # --- Dependencies (todas, incluindo devDeps para o build) ---
@@ -19,6 +20,7 @@ RUN npx prisma generate && npm run build
 
 # --- Runner ---
 FROM node:20-alpine AS runner
+RUN apk add --no-cache openssl
 WORKDIR /app
 
 ENV NODE_ENV=production
