@@ -33,9 +33,9 @@ export async function GET(request: NextRequest) {
     const ticketsPromise = db.ticket.findMany({
       where: {
         deletedAt: null,
-        ...(session.user.userType === 'CLIENT_CONTACT' && {
-          clientId: session.user.clientId,
-        }),
+        ...(session.user.userType === 'CLIENT_CONTACT' && session.user.clientId
+          ? { clientId: session.user.clientId }
+          : {}),
         OR: [
           { title: { contains: query, mode: 'insensitive' } },
           { description: { contains: query, mode: 'insensitive' } },
@@ -65,7 +65,7 @@ export async function GET(request: NextRequest) {
           select: {
             id: true,
             name: true,
-            document: true,
+            cnpj: true,
           },
           take: 5,
         })
