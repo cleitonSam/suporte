@@ -174,7 +174,10 @@ export default function DashboardCharts({
                   cx="50%"
                   cy="50%"
                   labelLine={false}
-                  label={({ label, count }) => `${label}: ${count}`}
+                  label={(props) => {
+                    const { label, count } = props as unknown as { label: string; count: number };
+                    return `${label}: ${count}`;
+                  }}
                   outerRadius={100}
                   fill="#8884d8"
                   dataKey="count"

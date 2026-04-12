@@ -3,8 +3,8 @@ const nextConfig = {
   output: 'standalone',
   reactStrictMode: true,
   poweredByHeader: false,
+  serverExternalPackages: ['pdfkit'],
   experimental: {
-    serverExternalPackages: ['pdfkit'],
     serverActions: {
       bodySizeLimit: '15mb',
     },
