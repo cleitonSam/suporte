@@ -41,7 +41,7 @@ export default async function EditarAutomacaoPage({
         <form
           action={async (formData) => {
             formData.append('id', params.id);
-            return updateAutomationAction(formData);
+            await updateAutomationAction(formData);
           }}
           className="space-y-6"
         >
