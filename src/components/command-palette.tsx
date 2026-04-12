@@ -190,7 +190,7 @@ export function CommandPalette() {
                       key={c.id}
                       icon={<Building2 className="h-4 w-4" />}
                       title={c.name}
-                      subtitle={c.document ?? ''}
+                      subtitle={c.cnpj ?? ''}
                       selected={idx === selectedIndex}
                       onClick={() => navigate(`/admin/clientes/${c.id}`)}
                     />

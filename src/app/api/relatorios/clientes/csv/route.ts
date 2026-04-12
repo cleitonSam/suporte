@@ -17,7 +17,7 @@ export async function GET(req: NextRequest) {
   const clients = await db.client.findMany({
     where: { deletedAt: null },
     include: {
-      _count: { select: { tickets: true, contacts: true } },
+      _count: { select: { tickets: true, users: true } },
     },
     orderBy: { name: 'asc' },
   });
@@ -34,11 +34,11 @@ export async function GET(req: NextRequest) {
 
   const rows = clients.map((c) => [
     c.name,
-    c.document ?? '',
+    c.cnpj ?? '',
     c.phone ?? '',
     c.status,
     String(c._count.tickets),
-    String(c._count.contacts),
+    String(c._count.users),
     c.createdAt.toISOString(),
   ]);
 
