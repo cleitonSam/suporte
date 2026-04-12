@@ -1,0 +1,16 @@
+node_modules
+.next
+.git
+.github
+.env
+.env.local
+*.md
+coverage
+logs
+*.log
+uploads
+.DS_Store
+tsconfig.tsbuildinfo
+vitest.config.ts
+test-smtp.js
+test-smtp.mjs

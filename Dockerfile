@@ -2,11 +2,11 @@
 FROM node:20-alpine AS base
 WORKDIR /app
 
-# --- Dependencies ---
+# --- Dependencies (todas, incluindo devDeps para o build) ---
 FROM base AS deps
 COPY package.json package-lock.json* ./
 COPY prisma ./prisma
-RUN npm ci --omit=dev
+RUN npm ci
 RUN npx prisma generate
 
 # --- Build ---
