@@ -81,6 +81,8 @@ model Client {
   status        ClientStatus @default(ACTIVE)
   notes         String?      @db.Text
 
+  inboundToken  String?      @unique // token pra email-to-ticket (chamados-{token}@inbound...)
+
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
   deletedAt     DateTime?

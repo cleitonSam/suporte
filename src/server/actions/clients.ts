@@ -6,6 +6,7 @@ import { auth } from '@/lib/auth';
 import { db } from '@/lib/db';
 import { audit } from '@/lib/audit';
 import { isValidCnpj, stripCnpj } from '@/lib/cnpj';
+import { generateInboundToken } from '@/lib/inbound-token';
 import { z } from 'zod';
 import type { ClientStatus } from '@prisma/client';
 
@@ -57,6 +58,7 @@ export async function createClientAction(formData: FormData): Promise<void> {
       email: parsed.data.email || null,
       phone: parsed.data.phone,
       address: parsed.data.address,
+      inboundToken: generateInboundToken(),
     },
   });
 

@@ -16,6 +16,8 @@ import { WarrantyBadge } from '@/components/warranty-badge';
 import { CnpjInput } from '@/components/cnpj-input';
 import { SubmitButton } from '@/components/submit-button';
 import { EquipmentStatusDot } from '@/components/ui/status-dot';
+import { InboundAddressCard } from '@/components/inbound-address-card';
+import { buildInboundAddress } from '@/lib/inbound-token';
 
 export default async function ClienteDetalhePage({
   params,
@@ -261,6 +263,11 @@ export default async function ClienteDetalhePage({
             <SubmitButton pendingText="Salvando...">Salvar alterações</SubmitButton>
           </div>
         </form>
+      )}
+
+      {/* ABA: Dados — Endereço inbound de email */}
+      {aba === 'dados' && client.inboundToken && (
+        <InboundAddressCard address={buildInboundAddress(client.inboundToken)} />
       )}
 
       {/* ABA: Dados — Zona de risco (ADMIN apenas) */}
