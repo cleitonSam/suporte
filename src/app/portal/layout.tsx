@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { auth, signOut } from '@/lib/auth';
 import { HeadphonesIcon, LogOut, Plus, UserCircle } from 'lucide-react';
 import { NotificationsBell } from '@/components/notifications-bell';
+import { ToastFromQuery } from '@/components/toast-from-query';
 
 export default async function PortalLayout({ children }: { children: React.ReactNode }) {
   const session = await auth();
@@ -64,6 +65,7 @@ export default async function PortalLayout({ children }: { children: React.React
       </header>
 
       <main className="flex-1">
+        <ToastFromQuery />
         <div className="mx-auto max-w-5xl px-4 py-8">{children}</div>
       </main>
 

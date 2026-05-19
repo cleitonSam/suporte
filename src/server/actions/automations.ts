@@ -1,6 +1,7 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
+import { redirect } from 'next/navigation';
 import { auth } from '@/lib/auth';
 import { db } from '@/lib/db';
 import { audit } from '@/lib/audit';
@@ -174,34 +175,31 @@ export async function updateAutomationAction(formData: FormData) {
 /**
  * Deleta uma regra de automação (ADMIN apenas)
  */
-export async function deleteAutomationAction(formData: FormData) {
+export async function deleteAutomationAction(formData: FormData): Promise<void> {
   const session = await auth();
   if (!session?.user) {
-    return { error: { form: ['Não autenticado'] } };
+    redirect('/login');
   }
   if (session.user.role !== 'ADMIN') {
     await audit({
       action: 'automation.delete.forbidden',
       actorId: session.user.id,
     });
-    return { error: { form: ['Acesso negado'] } };
+    redirect('/admin/automacoes?error=forbidden');
+  }
+
+  const ruleId = formData.get('id') as string;
+  if (!ruleId) {
+    redirect('/admin/automacoes?error=validation');
   }
 
   try {
-    const ruleId = formData.get('id') as string;
-
-    if (!ruleId) {
-      return { error: { form: ['ID da regra obrigatório'] } };
-    }
-
     const rule = await db.automationRule.findUnique({ where: { id: ruleId } });
     if (!rule) {
-      return { error: { form: ['Regra não encontrada'] } };
+      redirect('/admin/automacoes?error=not_found');
     }
 
-    await db.automationRule.delete({
-      where: { id: ruleId },
-    });
+    await db.automationRule.delete({ where: { id: ruleId } });
 
     await audit({
       action: 'automation.delete',
@@ -210,14 +208,14 @@ export async function deleteAutomationAction(formData: FormData) {
       entityId: ruleId,
       metadata: { name: rule.name, trigger: rule.trigger },
     });
-
-    revalidatePath('/admin/automacoes');
-
-    return { ok: true };
   } catch (err) {
+    if ((err as { digest?: string })?.digest?.startsWith('NEXT_REDIRECT')) throw err;
     logger.error({ err }, '[automations:delete] erro');
-    return { error: { form: ['Erro ao deletar regra'] } };
+    redirect('/admin/automacoes?error=internal_error');
   }
+
+  revalidatePath('/admin/automacoes');
+  redirect('/admin/automacoes?ok=automacao.removida');
 }
 
 /**

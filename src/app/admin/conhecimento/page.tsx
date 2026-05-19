@@ -3,6 +3,7 @@ import { db } from '@/lib/db';
 import { auth } from '@/lib/auth';
 import { createKbCategoryAction, deleteKbCategoryAction } from '@/server/actions/knowledge-base';
 import { Plus, Pencil, Trash2, CheckCircle2, BookOpen } from 'lucide-react';
+import { ConfirmDialog } from '@/components/confirm-dialog';
 
 interface PageProps {
   searchParams: { created?: string; updated?: string; deleted?: string; error?: string; novo?: string };
@@ -185,24 +186,27 @@ export default async function KnowledgeBasePage({ searchParams }: PageProps) {
                 >
                   <Pencil className="h-4 w-4" />
                 </button>
-                <form
+                <ConfirmDialog
+                  title="Desativar categoria"
+                  description={
+                    <>
+                      A categoria <strong>&quot;{category.name}&quot;</strong> ficará oculta. Os
+                      artigos vinculados não serão removidos.
+                    </>
+                  }
+                  confirmLabel="Desativar"
+                  destructive
                   action={deleteKbCategoryAction}
-                  onSubmit={(e) => {
-                    if (!confirm('Desativar esta categoria? Artigos não serão removidos.')) {
-                      e.preventDefault();
-                    }
-                  }}
-                  className="contents"
+                  hiddenFields={{ id: category.id }}
                 >
-                  <input type="hidden" name="id" value={category.id} />
                   <button
-                    type="submit"
+                    type="button"
+                    aria-label={`Desativar categoria ${category.name}`}
                     className="rounded-md bg-rose-50 p-2 text-rose-600 hover:bg-rose-100"
-                    title="Desativar"
                   >
-                    <Trash2 className="h-4 w-4" />
+                    <Trash2 className="h-4 w-4" aria-hidden="true" />
                   </button>
-                </form>
+                </ConfirmDialog>
               </div>
             </div>
           ))}

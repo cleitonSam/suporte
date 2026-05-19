@@ -5,6 +5,7 @@ import { auth } from '@/lib/auth';
 import { deleteKbArticleAction } from '@/server/actions/knowledge-base';
 import { formatDate } from '@/lib/utils';
 import { Plus, Pencil, Trash2, Eye, ThumbsUp, ThumbsDown, ChevronLeft, BookOpen } from 'lucide-react';
+import { ConfirmDialog } from '@/components/confirm-dialog';
 
 interface PageProps {
   params: { categorySlug: string };
@@ -127,24 +128,27 @@ export default async function CategoryArticlesPage({ params, searchParams }: Pag
                 >
                   <Pencil className="h-4 w-4" />
                 </Link>
-                <form
+                <ConfirmDialog
+                  title="Deletar artigo"
+                  description={
+                    <>
+                      O artigo <strong>&quot;{article.title}&quot;</strong> será removido
+                      permanentemente da base de conhecimento.
+                    </>
+                  }
+                  confirmLabel="Deletar"
+                  destructive
                   action={deleteKbArticleAction}
-                  onSubmit={(e) => {
-                    if (!confirm('Deletar este artigo permanentemente?')) {
-                      e.preventDefault();
-                    }
-                  }}
-                  className="contents"
+                  hiddenFields={{ id: article.id }}
                 >
-                  <input type="hidden" name="id" value={article.id} />
                   <button
-                    type="submit"
+                    type="button"
+                    aria-label={`Deletar artigo ${article.title}`}
                     className="rounded-md bg-rose-50 p-2 text-rose-600 hover:bg-rose-100"
-                    title="Deletar"
                   >
-                    <Trash2 className="h-4 w-4" />
+                    <Trash2 className="h-4 w-4" aria-hidden="true" />
                   </button>
-                </form>
+                </ConfirmDialog>
               </div>
             </div>
           ))}

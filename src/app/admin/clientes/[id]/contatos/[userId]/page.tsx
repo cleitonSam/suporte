@@ -7,6 +7,7 @@ import {
   deleteClientContactAction,
 } from '@/server/actions/users';
 import { formatRelative, formatDate } from '@/lib/utils';
+import { ConfirmDialog } from '@/components/confirm-dialog';
 
 export default async function EditarContatoPage({
   params,
@@ -184,19 +185,27 @@ export default async function EditarContatoPage({
         <p className="mt-1 text-xs text-red-800">
           Remover o contato impede o login no portal. Os chamados dele continuam no histórico.
         </p>
-        <form
+        <ConfirmDialog
+          title="Remover contato"
+          description={
+            <>
+              O contato <strong>{user.name}</strong> não conseguirá mais acessar o portal. Os
+              chamados que ele abriu permanecem no histórico. Esta ação pode ser revertida apenas
+              recriando o contato.
+            </>
+          }
+          confirmLabel="Remover contato"
+          destructive
           action={deleteClientContactAction}
-          className="mt-3"
+          hiddenFields={{ userId: user.id, clientId: client.id }}
         >
-          <input type="hidden" name="userId" value={user.id} />
-          <input type="hidden" name="clientId" value={client.id} />
           <button
-            type="submit"
-            className="rounded-md border border-red-300 bg-white px-3 py-1.5 text-sm font-medium text-red-700 hover:bg-red-100"
+            type="button"
+            className="mt-3 rounded-md border border-red-300 bg-white px-3 py-1.5 text-sm font-medium text-red-700 hover:bg-red-100"
           >
             Remover contato
           </button>
-        </form>
+        </ConfirmDialog>
       </div>
     </div>
   );

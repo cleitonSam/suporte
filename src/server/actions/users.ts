@@ -220,7 +220,7 @@ export async function deleteClientContactAction(formData: FormData) {
   });
 
   revalidatePath(`/admin/clientes/${clientId}`);
-  redirect(`/admin/clientes/${clientId}?aba=contatos&removido=1`);
+  redirect(`/admin/clientes/${clientId}?aba=contatos&ok=contato.removido`);
 }
 
 // Troca de senha pelo próprio usuário logado

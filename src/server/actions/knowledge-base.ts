@@ -1,6 +1,7 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
+import { redirect } from 'next/navigation';
 import { auth } from '@/lib/auth';
 import { db } from '@/lib/db';
 import { audit } from '@/lib/audit';
@@ -156,12 +157,14 @@ export async function deleteKbCategoryAction(formData: FormData) {
       entityId: id,
       metadata: { name: category.name },
     });
-
-    revalidatePath('/admin/conhecimento');
   } catch (error) {
+    if ((error as { digest?: string })?.digest?.startsWith('NEXT_REDIRECT')) throw error;
     console.error('Erro ao deletar categoria:', error);
-    throw error;
+    redirect('/admin/conhecimento?error=internal_error');
   }
+
+  revalidatePath('/admin/conhecimento');
+  redirect('/admin/conhecimento?ok=categoria.removida');
 }
 
 // ==============================================================
@@ -324,12 +327,14 @@ export async function deleteKbArticleAction(formData: FormData) {
       entityId: id,
       metadata: { title: article.title },
     });
-
-    revalidatePath(`/admin/conhecimento/${article.category.slug}`);
   } catch (error) {
+    if ((error as { digest?: string })?.digest?.startsWith('NEXT_REDIRECT')) throw error;
     console.error('Erro ao deletar artigo:', error);
-    throw error;
+    redirect(`/admin/conhecimento/${article.category.slug}?error=internal_error`);
   }
+
+  revalidatePath(`/admin/conhecimento/${article.category.slug}`);
+  redirect(`/admin/conhecimento/${article.category.slug}?ok=artigo.removido`);
 }
 
 // ==============================================================

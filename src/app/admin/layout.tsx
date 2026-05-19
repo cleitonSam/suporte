@@ -20,6 +20,7 @@ import { CommandPalette } from '@/components/command-palette';
 import { SearchTrigger } from '@/components/search-trigger';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { MobileMenuButton } from '@/components/mobile-sidebar';
+import { ToastFromQuery } from '@/components/toast-from-query';
 
 const nav = [
   { href: '/admin', label: 'Dashboard', icon: LayoutDashboard },
@@ -141,6 +142,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           </div>
         </header>
         <CommandPalette />
+        <ToastFromQuery />
         <div className="mx-auto max-w-7xl p-4 sm:p-6">{children}</div>
       </main>
     </div>
