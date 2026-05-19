@@ -71,7 +71,7 @@ export function AutomationForm({
           name="name"
           defaultValue={initialData?.name || ''}
           placeholder="Ex: Escalar chamados antigos"
-          className="mt-1 block w-full rounded-lg border border-slate-300 px-3 py-2 text-sm placeholder-slate-400 focus:border-fluxo-500 focus:outline-none"
+          className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-elevate placeholder-slate-400 focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500"
           required
         />
       </div>
@@ -87,7 +87,7 @@ export function AutomationForm({
           defaultValue={initialData?.description || ''}
           placeholder="Descreva o propósito desta regra..."
           rows={3}
-          className="mt-1 block w-full rounded-lg border border-slate-300 px-3 py-2 text-sm placeholder-slate-400 focus:border-fluxo-500 focus:outline-none"
+          className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-elevate placeholder-slate-400 focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500"
         />
       </div>
 
@@ -124,7 +124,7 @@ export function AutomationForm({
           defaultValue={initialData?.conditions || '[]'}
           placeholder='[{"field":"status","op":"eq","value":"OPEN"}]'
           rows={4}
-          className="mt-2 block w-full rounded-lg border border-slate-300 px-3 py-2 text-xs font-mono placeholder-slate-400 focus:border-fluxo-500 focus:outline-none"
+          className="mt-2 block w-full rounded-md border border-slate-300 px-3 py-2 text-xs font-mono-tech shadow-elevate placeholder-slate-400 focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500"
         />
       </div>
 
@@ -141,7 +141,7 @@ export function AutomationForm({
           defaultValue={initialData?.actions || '[]'}
           placeholder='[{"type":"change_status","value":"IN_PROGRESS"}]'
           rows={4}
-          className="mt-2 block w-full rounded-lg border border-slate-300 px-3 py-2 text-xs font-mono placeholder-slate-400 focus:border-fluxo-500 focus:outline-none"
+          className="mt-2 block w-full rounded-md border border-slate-300 px-3 py-2 text-xs font-mono-tech shadow-elevate placeholder-slate-400 focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500"
         />
       </div>
 
@@ -160,7 +160,7 @@ export function AutomationForm({
 
         <Link
           href="/admin/automacoes"
-          className="inline-flex items-center gap-2 rounded-lg bg-slate-200 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-300"
+          className="inline-flex items-center gap-2 rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-slate-600"
         >
           Cancelar
         </Link>
