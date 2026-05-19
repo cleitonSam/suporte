@@ -2,15 +2,16 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import type { LucideIcon } from 'lucide-react';
 
 interface Props {
   href: string;
   label: string;
-  icon: LucideIcon;
+  /** Ícone já renderizado (passado como ReactElement). Lucide usa currentColor,
+   *  então cor é controlada pelo `<span>` wrapper. */
+  iconElement: React.ReactNode;
 }
 
-export function NavItem({ href, label, icon: Icon }: Props) {
+export function NavItem({ href, label, iconElement }: Props) {
   const pathname = usePathname();
   const isActive =
     href === '/admin'
@@ -33,14 +34,15 @@ export function NavItem({ href, label, icon: Icon }: Props) {
           className="absolute -left-3 top-1/2 h-5 w-0.5 -translate-y-1/2 rounded-r-full bg-cyan-400 shadow-[0_0_8px_rgb(34_211_238_/_0.6)]"
         />
       )}
-      <Icon
+      <span
         className={
           isActive
-            ? 'h-4 w-4 text-cyan-400'
-            : 'h-4 w-4 text-slate-400 transition-colors group-hover:text-cyan-400'
+            ? 'inline-flex h-4 w-4 items-center justify-center text-cyan-400'
+            : 'inline-flex h-4 w-4 items-center justify-center text-slate-400 transition-colors group-hover:text-cyan-400'
         }
-        aria-hidden="true"
-      />
+      >
+        {iconElement}
+      </span>
       <span>{label}</span>
     </Link>
   );

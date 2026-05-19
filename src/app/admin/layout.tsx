@@ -94,9 +94,17 @@ export default async function AdminLayout({ children }: { children: React.ReactN
 
         {/* Navegação */}
         <nav className="relative flex-1 space-y-0.5 overflow-y-auto px-3 py-4 fluxo-scroll">
-          {nav.map((item) => (
-            <NavItem key={item.href} href={item.href} label={item.label} icon={item.icon} />
-          ))}
+          {nav.map((item) => {
+            const Icon = item.icon;
+            return (
+              <NavItem
+                key={item.href}
+                href={item.href}
+                label={item.label}
+                iconElement={<Icon className="h-4 w-4" aria-hidden="true" />}
+              />
+            );
+          })}
         </nav>
 
         {/* Footer do usuário — sleeker */}
