@@ -1,5 +1,6 @@
+import Link from 'next/link';
+import { FileText, TrendingUp, Building2, Smile, ShieldCheck, ArrowRight } from 'lucide-react';
 import { db } from '@/lib/db';
-import { FileText, TrendingUp, Building2 } from 'lucide-react';
 import { ReportDownloadButton } from './download-button';
 
 export const dynamic = 'force-dynamic';
@@ -20,16 +21,72 @@ export default async function RelatoriosPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-start justify-between">
-        <div>
-          <h1 className="font-display text-2xl font-bold text-slate-900">Relatórios</h1>
-          <p className="mt-1 text-sm text-slate-600">
-            Exporte dados operacionais em PDF com identidade Fluxo Digital Tech.
-          </p>
+      <div>
+        <p className="micro-label-accent">Operação · exports</p>
+        <h1 className="font-display text-3xl font-bold text-slate-900 dark:text-white">Relatórios</h1>
+        <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">
+          Dashboards interativos e PDFs com identidade Fluxo Digital Tech.
+        </p>
+      </div>
+
+      {/* Dashboards interativos (rotas internas) */}
+      <section aria-labelledby="dashboards-heading" className="space-y-3">
+        <h2 id="dashboards-heading" className="micro-label">Dashboards interativos</h2>
+        <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+          <Link
+            href="/admin/relatorios/csat"
+            className="group relative flex items-start gap-4 overflow-hidden rounded-lg border border-slate-200 bg-white p-5 shadow-elevate transition-all hover:-translate-y-0.5 hover:shadow-elevate-lg dark:border-slate-700 dark:bg-slate-800"
+          >
+            <span
+              aria-hidden="true"
+              className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-purple-500/40 to-transparent"
+            />
+            <span
+              aria-hidden="true"
+              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md bg-purple-500/10 text-purple-600 ring-1 ring-inset ring-purple-500/20"
+            >
+              <Smile className="h-5 w-5" />
+            </span>
+            <div className="min-w-0 flex-1">
+              <h3 className="font-display text-base font-semibold text-slate-900 dark:text-white">
+                CSAT &amp; NPS
+              </h3>
+              <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">
+                Pesquisas de satisfação, distribuição, top atendentes e comentários.
+              </p>
+            </div>
+            <ArrowRight className="h-4 w-4 text-slate-400 transition-transform group-hover:translate-x-1" aria-hidden="true" />
+          </Link>
+
+          <Link
+            href="/admin/configuracoes/auditoria"
+            className="group relative flex items-start gap-4 overflow-hidden rounded-lg border border-slate-200 bg-white p-5 shadow-elevate transition-all hover:-translate-y-0.5 hover:shadow-elevate-lg dark:border-slate-700 dark:bg-slate-800"
+          >
+            <span
+              aria-hidden="true"
+              className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-amber-500/40 to-transparent"
+            />
+            <span
+              aria-hidden="true"
+              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md bg-amber-500/10 text-amber-600 ring-1 ring-inset ring-amber-500/20"
+            >
+              <ShieldCheck className="h-5 w-5" />
+            </span>
+            <div className="min-w-0 flex-1">
+              <h3 className="font-display text-base font-semibold text-slate-900 dark:text-white">
+                Auditoria
+              </h3>
+              <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">
+                Trilha completa de ações no sistema · login, mudanças, exclusões.
+              </p>
+            </div>
+            <ArrowRight className="h-4 w-4 text-slate-400 transition-transform group-hover:translate-x-1" aria-hidden="true" />
+          </Link>
         </div>
-        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-fluxo-gradient shadow-fluxo">
-          <FileText className="h-5 w-5 text-white" />
-        </div>
+      </section>
+
+      <div>
+        <h2 className="micro-label">Exports em PDF</h2>
       </div>
 
       {/* Relatório 1 — Chamados */}
@@ -145,14 +202,14 @@ function ReportCard({
   children: React.ReactNode;
 }) {
   return (
-    <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-elevate">
-      <div className="flex items-start gap-4 border-b border-slate-200 bg-gradient-to-r from-fluxo-50 to-white p-5">
-        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-fluxo-gradient text-white shadow-fluxo">
+    <div className="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-elevate dark:border-slate-700 dark:bg-slate-800">
+      <div className="flex items-start gap-4 border-b border-slate-200 bg-fluxo-500/[0.04] p-5 dark:border-slate-700 dark:bg-fluxo-500/[0.08]">
+        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md bg-fluxo-gradient text-white shadow-fluxo">
           {icon}
         </div>
         <div className="flex-1">
-          <h2 className="font-display text-base font-semibold text-slate-900">{title}</h2>
-          <p className="mt-0.5 text-xs text-slate-600">{description}</p>
+          <h3 className="font-display text-base font-semibold text-slate-900 dark:text-white">{title}</h3>
+          <p className="mt-0.5 text-xs text-slate-600 dark:text-slate-400">{description}</p>
         </div>
       </div>
       <div className="p-5">{children}</div>
