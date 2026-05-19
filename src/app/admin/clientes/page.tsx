@@ -7,19 +7,8 @@ import { formatDate } from '@/lib/utils';
 import { formatCnpj } from '@/lib/cnpj';
 import { CnpjInput } from '@/components/cnpj-input';
 import { SubmitButton } from '@/components/submit-button';
+import { ClientStatusDot } from '@/components/ui/status-dot';
 import type { ClientStatus, Prisma } from '@prisma/client';
-
-const STATUS_LABEL: Record<ClientStatus, string> = {
-  ACTIVE: 'Ativo',
-  SUSPENDED: 'Suspenso',
-  INACTIVE: 'Inativo',
-};
-
-const STATUS_PILL: Record<ClientStatus, string> = {
-  ACTIVE: 'bg-emerald-100 text-emerald-800 ring-emerald-200',
-  SUSPENDED: 'bg-amber-100 text-amber-800 ring-amber-200',
-  INACTIVE: 'bg-slate-100 text-slate-600 ring-slate-200',
-};
 
 function buildQs(curr: Record<string, string | undefined>, override: Record<string, string | null>) {
   const params = new URLSearchParams();
@@ -310,11 +299,7 @@ export default async function ClientesPage({
                       {c.phone && <div className="text-xs text-slate-500">{c.phone}</div>}
                     </td>
                     <td className="px-4 py-3">
-                      <span
-                        className={`inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-semibold ring-1 ring-inset ${STATUS_PILL[c.status]}`}
-                      >
-                        {STATUS_LABEL[c.status]}
-                      </span>
+                      <ClientStatusDot status={c.status} />
                     </td>
                     <td className="px-4 py-3 text-center">
                       <span

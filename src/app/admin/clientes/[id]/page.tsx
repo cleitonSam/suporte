@@ -15,6 +15,7 @@ import { ConfirmDialog } from '@/components/confirm-dialog';
 import { WarrantyBadge } from '@/components/warranty-badge';
 import { CnpjInput } from '@/components/cnpj-input';
 import { SubmitButton } from '@/components/submit-button';
+import { EquipmentStatusDot } from '@/components/ui/status-dot';
 
 export default async function ClienteDetalhePage({
   params,
@@ -419,13 +420,7 @@ export default async function ClienteDetalhePage({
                     <td className="px-4 py-2 text-slate-700">{e.location ?? '—'}</td>
                     <td className="px-4 py-2"><WarrantyBadge expiresAt={e.warrantyExpiresAt} /></td>
                     <td className="px-4 py-2">
-                      <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${
-                        e.status === 'ACTIVE' ? 'bg-emerald-100 text-emerald-800'
-                        : e.status === 'IN_REPAIR' ? 'bg-amber-100 text-amber-800'
-                        : 'bg-slate-100 text-slate-600'
-                      }`}>
-                        {e.status === 'ACTIVE' ? 'Ativo' : e.status === 'IN_REPAIR' ? 'Em reparo' : 'Desativado'}
-                      </span>
+                      <EquipmentStatusDot status={e.status} />
                     </td>
                     <td className="px-4 py-2">
                       <div className="flex items-center justify-end gap-1.5">
