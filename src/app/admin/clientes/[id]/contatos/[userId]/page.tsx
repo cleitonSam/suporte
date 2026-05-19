@@ -76,7 +76,7 @@ export default async function EditarContatoPage({
       )}
 
       {/* Bloco destacado — Enviar convite */}
-      <div className="mt-6 rounded-lg border-2 border-fluxo-200 bg-gradient-to-br from-fluxo-50 to-indigo-50 p-5 shadow-elevate">
+      <div className="mt-6 rounded-lg border border-fluxo-200 bg-fluxo-500/[0.04] p-5 shadow-elevate dark:border-fluxo-800/60 dark:bg-fluxo-500/[0.08]">
         <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
           <div>
             <h2 className="flex items-center gap-2 text-base font-semibold text-fluxo-800">

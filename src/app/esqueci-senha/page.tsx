@@ -10,35 +10,47 @@ export default function EsqueciSenhaPage({ searchParams }: PageProps) {
   const hasError = searchParams.error === 'validation';
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-fluxo-50 flex items-center justify-center p-6">
-      <div className="max-w-md w-full">
+    <div className="relative min-h-screen overflow-hidden bg-slate-50 dark:bg-slate-950 flex items-center justify-center p-6">
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 opacity-40"
+        style={{
+          backgroundImage:
+            'radial-gradient(circle at 20% 20%, rgb(0 102 255 / 0.10), transparent 50%), radial-gradient(circle at 80% 80%, rgb(0 242 254 / 0.06), transparent 50%)',
+        }}
+      />
+      <div className="relative max-w-md w-full">
         <div className="mb-6 text-center">
-          <div className="inline-block px-4 py-1 rounded-full bg-fluxo-100 text-fluxo-700 text-xs font-bold uppercase tracking-wider">
+          <div className="inline-block px-3 py-1 rounded-full bg-fluxo-500/15 text-fluxo-700 dark:text-fluxo-300 font-mono-tech text-[10px] font-bold uppercase tracking-tech ring-1 ring-inset ring-fluxo-500/30">
             Fluxo Suporte
           </div>
-          <h1 className="mt-4 text-2xl font-bold text-slate-900">Esqueci minha senha</h1>
-          <p className="mt-1 text-sm text-slate-600">
+          <h1 className="mt-4 font-display text-2xl font-bold text-slate-900 dark:text-white">
+            Esqueci minha senha
+          </h1>
+          <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">
             Informe seu email e enviaremos um link para redefinir sua senha.
           </p>
         </div>
 
         {enviado ? (
-          <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-6 text-center shadow-elevate">
-            <div className="mx-auto mb-3 grid h-12 w-12 place-items-center rounded-full bg-emerald-100 text-emerald-600 text-xl">
+          <div className="rounded-lg border border-emerald-200 bg-emerald-50/60 p-6 text-center shadow-elevate dark:border-emerald-900/60 dark:bg-emerald-950/30">
+            <div className="mx-auto mb-3 grid h-12 w-12 place-items-center rounded-full bg-emerald-500/15 text-emerald-600 text-xl ring-1 ring-inset ring-emerald-500/30 dark:text-emerald-400">
               ✓
             </div>
-            <h2 className="text-base font-semibold text-emerald-900">Verifique seu email</h2>
-            <p className="mt-2 text-sm text-emerald-800">
+            <h2 className="font-display text-base font-semibold text-emerald-900 dark:text-emerald-200">
+              Verifique seu email
+            </h2>
+            <p className="mt-2 text-sm text-emerald-800 dark:text-emerald-300">
               Se existir uma conta ativa com esse email, enviamos um link de redefinição.
               O link é válido por <strong>1 hora</strong>.
             </p>
-            <p className="mt-3 text-xs text-emerald-700">
+            <p className="mt-3 text-xs text-emerald-700 dark:text-emerald-400">
               Não recebeu? Verifique a pasta de spam ou tente novamente em alguns minutos.
             </p>
-            <div className="mt-5 flex flex-col gap-2">
+            <div className="mt-5">
               <Link
                 href="/login"
-                className="rounded-md bg-fluxo-500 px-4 py-2 text-sm font-medium text-white hover:bg-fluxo-600"
+                className="inline-flex w-full items-center justify-center rounded-md bg-fluxo-500 px-4 py-2 text-sm font-semibold text-white shadow-fluxo hover:bg-fluxo-600"
               >
                 Voltar ao login
               </Link>
@@ -47,13 +59,15 @@ export default function EsqueciSenhaPage({ searchParams }: PageProps) {
         ) : (
           <form
             action={requestPasswordResetAction}
-            className="rounded-xl border border-slate-200 bg-white p-6 shadow-elevate space-y-4"
+            className="rounded-lg border border-slate-200 bg-white p-6 shadow-elevate space-y-4 dark:border-slate-700 dark:bg-slate-800"
           >
             <div>
-              <label className="block text-xs font-medium text-slate-700">Email</label>
+              <label htmlFor="forgot-email" className="micro-label">Email</label>
               <input
+                id="forgot-email"
                 type="email"
                 name="email"
+                autoComplete="email"
                 required
                 autoFocus
                 className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-elevate focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500"
@@ -62,7 +76,7 @@ export default function EsqueciSenhaPage({ searchParams }: PageProps) {
             </div>
 
             {hasError && (
-              <div className="rounded-md border border-rose-200 bg-rose-50 px-3 py-2 text-xs text-rose-700">
+              <div className="rounded-md border border-rose-200 bg-rose-50/60 px-3 py-2 text-xs text-rose-700 dark:border-rose-900/60 dark:bg-rose-950/30 dark:text-rose-300">
                 Informe um email válido.
               </div>
             )}
@@ -75,7 +89,7 @@ export default function EsqueciSenhaPage({ searchParams }: PageProps) {
             </button>
 
             <div className="text-center">
-              <Link href="/login" className="text-xs text-slate-500 hover:text-slate-700">
+              <Link href="/login" className="text-xs text-slate-500 hover:text-slate-700 dark:text-slate-400">
                 Voltar ao login
               </Link>
             </div>
