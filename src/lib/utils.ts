@@ -67,3 +67,43 @@ export function nextTicketNumber(year: number, lastValue: number) {
   const seq = String(lastValue + 1).padStart(5, '0');
   return `CH-${year}-${seq}`;
 }
+
+export const TICKET_EVENT_LABEL: Record<string, string> = {
+  CREATED: 'Chamado aberto',
+  ASSIGNED: 'Atribuído',
+  STATUS_CHANGED: 'Status alterado',
+  PRIORITY_CHANGED: 'Prioridade alterada',
+  COMMENTED: 'Nova mensagem',
+  EQUIPMENT_LINKED: 'Equipamento vinculado',
+  REOPENED: 'Reaberto',
+  CLOSED: 'Fechado',
+};
+
+export function formatDuration(minutes: number): string {
+  if (minutes <= 0) return '—';
+  if (minutes < 60) return `${minutes} min`;
+  const hours = minutes / 60;
+  if (hours < 24) {
+    const h = Math.floor(hours);
+    const m = Math.round((hours - h) * 60);
+    return m > 0 ? `${h}h ${m}m` : `${h}h`;
+  }
+  const days = hours / 24;
+  const d = Math.floor(days);
+  const h = Math.round((days - d) * 24);
+  return h > 0 ? `${d}d ${h}h` : `${d}d`;
+}
+
+export function formatDelta(curr: number, prev: number): {
+  pct: number;
+  direction: 'up' | 'down' | 'flat';
+  label: string;
+} {
+  if (prev === 0 && curr === 0) return { pct: 0, direction: 'flat', label: 'sem variação' };
+  if (prev === 0) return { pct: 100, direction: 'up', label: 'novo' };
+  const diff = curr - prev;
+  const pct = Math.round((diff / prev) * 100);
+  const direction: 'up' | 'down' | 'flat' = diff > 0 ? 'up' : diff < 0 ? 'down' : 'flat';
+  const label = direction === 'flat' ? 'sem variação' : `${Math.abs(pct)}%`;
+  return { pct: Math.abs(pct), direction, label };
+}
