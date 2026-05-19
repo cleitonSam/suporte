@@ -45,6 +45,10 @@
   }
 
   .dark {
+    /* Diz pro browser que essa pagina e dark - pega scrollbars,
+       autofill bg, selection color, etc */
+    color-scheme: dark;
+
     /* Refined deep tech dark (not pure black, not too blue) */
     --background: 222 32% 6%;        /* slate-950 com leve azulado */
     --foreground: 215 20% 92%;
@@ -146,23 +150,38 @@
 .dark ::-webkit-scrollbar-thumb:hover { background: #475569; }
 
 @layer base {
-  /* ── Inputs, selects, textareas (catchall: pega ate inputs sem type=) ── */
+  /* ── Inputs, selects, textareas (catchall: pega ate inputs sem type=) ──
+     IMPORTANT por design: garantir contraste no dark independente
+     de classes Tailwind especificas que possam estar no className. */
   input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="color"]):not([type="range"]):not([type="submit"]):not([type="button"]):not([type="reset"]):not([type="image"]),
   select,
   textarea {
-    color: hsl(var(--foreground));
+    color: hsl(var(--foreground)) !important;
   }
 
   .dark input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="color"]):not([type="range"]):not([type="submit"]):not([type="button"]):not([type="reset"]):not([type="image"]),
   .dark select,
   .dark textarea {
-    background-color: hsl(var(--surface-2));
-    border-color: hsl(var(--border-strong));
-    color: hsl(var(--foreground));
+    background-color: hsl(var(--surface-2)) !important;
+    border-color: hsl(var(--border-strong)) !important;
+    color: hsl(var(--foreground)) !important;
   }
   .dark input::placeholder,
   .dark textarea::placeholder {
-    color: hsl(var(--muted-foreground));
+    color: hsl(var(--muted-foreground)) !important;
+  }
+
+  /* Selection no dark fica mais legivel */
+  .dark ::selection {
+    background-color: hsl(var(--primary) / 0.4);
+    color: hsl(var(--foreground));
+  }
+
+  /* Option dentro de select no dark (browsers gerenciam, mas algumas
+     vezes herdam mal). Force o tom. */
+  .dark select option {
+    background-color: hsl(var(--surface-1));
+    color: hsl(var(--foreground));
   }
 
   /* Autofill no Chrome: forca cor de fundo e texto pra match com tema */
