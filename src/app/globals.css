@@ -9,27 +9,32 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 47.4% 11.2%;
+    /* Semantic surfaces (light) */
+    --background: 220 20% 98%;      /* slate-50ish, subtle warmth */
+    --foreground: 222 47% 11%;
+
+    --surface-1: 0 0% 100%;          /* primary card */
+    --surface-2: 220 14% 96%;        /* nested/hover */
+    --surface-3: 220 13% 91%;        /* inset/elevated nested */
 
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 47.4% 11.2%;
+    --card-foreground: 222 47% 11%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
+    --border: 220 13% 91%;           /* slate-200 */
+    --border-strong: 215 16% 80%;    /* slate-300 */
+    --input: 220 13% 91%;
 
-    /* Primary = Fluxo #0066FF */
     --primary: 217 100% 50%;
     --primary-foreground: 0 0% 100%;
 
     --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary-foreground: 222 47% 11%;
 
     --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent-foreground: 222 47% 11%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
@@ -40,23 +45,37 @@
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --primary: 217.2 91.2% 59.8%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 30.6%;
+    /* Refined deep tech dark (not pure black, not too blue) */
+    --background: 222 32% 6%;        /* slate-950 com leve azulado */
+    --foreground: 215 20% 92%;
+
+    --surface-1: 222 28% 9%;         /* card layer */
+    --surface-2: 222 24% 12%;        /* nested/hover */
+    --surface-3: 222 22% 16%;        /* inset/elevated */
+
+    --muted: 222 22% 14%;
+    --muted-foreground: 215 18% 62%;
+
+    --card: 222 28% 9%;
+    --card-foreground: 215 20% 92%;
+
+    --border: 222 22% 16%;
+    --border-strong: 222 18% 24%;
+    --input: 222 22% 16%;
+
+    --primary: 217 100% 60%;         /* leve brilho a mais no dark */
+    --primary-foreground: 222 47% 11%;
+
+    --secondary: 222 22% 14%;
+    --secondary-foreground: 215 20% 92%;
+
+    --accent: 222 22% 14%;
+    --accent-foreground: 215 20% 92%;
+
+    --destructive: 0 62.8% 50%;
     --destructive-foreground: 210 40% 98%;
-    --ring: 224.3 76.3% 48%;
+
+    --ring: 217 100% 60%;
   }
 }
 
@@ -64,14 +83,41 @@
   * {
     @apply border-border;
   }
+
+  html {
+    /* Tabular numbers globalmente — visual técnico consistente */
+    font-variant-numeric: tabular-nums;
+  }
+
   body {
     @apply bg-background text-foreground font-sans;
-    font-feature-settings: 'rlig' 1, 'calt' 1;
+    font-feature-settings: 'rlig' 1, 'calt' 1, 'ss01' 1, 'cv11' 1;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+
+    /* Dot-grid técnico, opacidade baixa pra textura sem ruído */
+    background-image: theme('backgroundImage.dot-grid');
+    background-size: theme('backgroundSize.grid');
+    background-attachment: fixed;
   }
+
+  .dark body {
+    background-image: theme('backgroundImage.dot-grid-dark');
+  }
+
   h1, h2, h3, h4, h5, h6 {
     @apply font-display tracking-tight;
+  }
+
+  /* Mono mais técnico, com features ligadas */
+  code, kbd, samp, pre, .font-mono {
+    font-feature-settings: 'ss01' 1, 'cv11' 1, 'zero' 1, 'tnum' 1;
+    font-variant-ligatures: contextual;
+  }
+
+  /* Foco refinado */
+  *:focus-visible {
+    @apply outline-none ring-2 ring-fluxo-500 ring-offset-2 ring-offset-background;
   }
 }
 
@@ -111,7 +157,13 @@
   .dark input[type="url"],
   .dark select,
   .dark textarea {
-    @apply border-slate-600 bg-slate-800 text-slate-100 placeholder-slate-400;
+    background-color: hsl(var(--surface-2));
+    border-color: hsl(var(--border-strong));
+    color: hsl(var(--foreground));
+  }
+  .dark input::placeholder,
+  .dark textarea::placeholder {
+    color: hsl(var(--muted-foreground));
   }
   .dark input:focus,
   .dark select:focus,
@@ -119,50 +171,50 @@
     @apply border-fluxo-500 ring-fluxo-500/30;
   }
 
-  /* ── bg-white cards → dark ── */
+  /* ── bg-white cards → dark surface-1 (deep slate, não slate-800 puro) ── */
   .dark .bg-white {
-    background-color: #1e293b !important; /* slate-800 */
+    background-color: hsl(var(--surface-1)) !important;
   }
   .dark .bg-white\/80 {
-    background-color: rgba(30, 41, 59, 0.8) !important;
+    background-color: hsl(var(--surface-1) / 0.8) !important;
   }
 
-  /* ── bg-slate-50 → dark ── */
+  /* ── bg-slate-50 → dark base (fundo de página) ── */
   .dark .bg-slate-50 {
-    background-color: #0f172a !important; /* slate-900 */
+    background-color: hsl(var(--background)) !important;
   }
 
-  /* ── bg-slate-100 ── */
+  /* ── bg-slate-100 → dark surface-2 (nested) ── */
   .dark .bg-slate-100 {
-    background-color: #1e293b !important;
+    background-color: hsl(var(--surface-2)) !important;
   }
 
   /* ── Border colors ── */
   .dark .border-slate-200 {
-    border-color: #334155 !important; /* slate-700 */
+    border-color: hsl(var(--border)) !important;
   }
   .dark .border-slate-100 {
-    border-color: #1e293b !important;
+    border-color: hsl(var(--border) / 0.6) !important;
   }
   .dark .border-slate-300 {
-    border-color: #475569 !important;
+    border-color: hsl(var(--border-strong)) !important;
   }
 
   /* ── Text colors ── */
   .dark .text-slate-900 {
-    color: #f1f5f9 !important; /* slate-100 */
+    color: hsl(var(--foreground)) !important;
   }
   .dark .text-slate-800 {
-    color: #e2e8f0 !important;
+    color: hsl(var(--foreground) / 0.95) !important;
   }
   .dark .text-slate-700 {
-    color: #cbd5e1 !important;
+    color: hsl(var(--foreground) / 0.85) !important;
   }
   .dark .text-slate-600 {
-    color: #94a3b8 !important;
+    color: hsl(var(--muted-foreground)) !important;
   }
   .dark .text-slate-500 {
-    color: #64748b !important;
+    color: hsl(var(--muted-foreground) / 0.75) !important;
   }
 
   /* ── Gradient-to-white → gradient-to-dark ── */
@@ -216,18 +268,75 @@
 
 /* ── Recharts in dark ── */
 .dark .recharts-cartesian-grid line {
-  stroke: #334155 !important;
+  stroke: hsl(var(--border)) !important;
 }
 .dark .recharts-text {
-  fill: #94a3b8 !important;
+  fill: hsl(var(--muted-foreground)) !important;
 }
 .dark .recharts-tooltip-wrapper .recharts-default-tooltip {
-  background-color: #1e293b !important;
-  border-color: #334155 !important;
-  color: #e2e8f0 !important;
+  background-color: hsl(var(--surface-1)) !important;
+  border-color: hsl(var(--border-strong)) !important;
+  color: hsl(var(--foreground)) !important;
 }
 
 /* ── Command palette overlay ── */
 .dark [data-command-palette] {
-  @apply bg-slate-800 border-slate-700;
+  background-color: hsl(var(--surface-1));
+  border-color: hsl(var(--border));
+}
+
+/* ═══════════════════════════════════════════════
+   UTILITY CLASSES — sistema tecnológico
+   ═══════════════════════════════════════════════ */
+
+@layer utilities {
+  /* Card unificado — substitui combinações inconsistentes de
+     border-slate-200 + bg-white + shadow-sm + rounded-(lg|xl|2xl) */
+  .card-surface {
+    @apply rounded-lg border border-slate-200 bg-white shadow-elevate dark:border-slate-700 dark:bg-slate-800;
+  }
+  .card-surface-flat {
+    @apply rounded-lg border border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-800;
+  }
+
+  /* Hero band — gradiente mais sutil pra cards de destaque */
+  .hero-band {
+    background: linear-gradient(135deg, rgb(0 102 255 / 0.04) 0%, rgb(0 242 254 / 0.02) 100%);
+  }
+  .dark .hero-band {
+    background: linear-gradient(135deg, rgb(0 102 255 / 0.10) 0%, rgb(0 242 254 / 0.04) 100%);
+  }
+
+  /* Micro-label técnico — uppercase tracked */
+  .micro-label {
+    @apply text-[10px] font-semibold uppercase tracking-micro text-slate-500 dark:text-slate-400;
+  }
+  .micro-label-accent {
+    @apply text-[11px] font-semibold uppercase tracking-micro text-fluxo-600 dark:text-cyan-400;
+  }
+
+  /* Mono code feel — usado em IDs, ticket numbers, CNPJ formatado, IPs */
+  .font-mono-tech {
+    @apply font-mono tabular-nums;
+    font-feature-settings: 'ss01' 1, 'zero' 1, 'tnum' 1;
+  }
+
+  /* Dot grid background util — pra hero sections */
+  .bg-grid-pattern {
+    background-image: theme('backgroundImage.dot-grid');
+    background-size: theme('backgroundSize.grid');
+  }
+  .dark .bg-grid-pattern {
+    background-image: theme('backgroundImage.dot-grid-dark');
+  }
+
+  /* Hover lift sutil pra cards interativos */
+  .hover-lift {
+    @apply transition-all duration-200 hover:-translate-y-0.5 hover:shadow-elevate-lg;
+  }
+
+  /* Linha decorativa horizontal — separador tech */
+  .tech-divider {
+    @apply h-px w-full bg-gradient-to-r from-transparent via-slate-200 to-transparent dark:via-slate-700;
+  }
 }

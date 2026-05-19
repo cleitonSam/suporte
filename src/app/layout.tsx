@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { Poppins, Montserrat } from 'next/font/google';
+import { Poppins, Montserrat, JetBrains_Mono } from 'next/font/google';
 import { ToastProvider } from '@/components/toast';
 import './globals.css';
 
@@ -14,6 +14,13 @@ const montserrat = Montserrat({
   subsets: ['latin'],
   weight: ['500', '600', '700', '800'],
   variable: '--font-montserrat',
+  display: 'swap',
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-jetbrains',
   display: 'swap',
 });
 
@@ -44,7 +51,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="pt-BR" className={`dark ${poppins.variable} ${montserrat.variable}`}>
+    <html lang="pt-BR" className={`dark ${poppins.variable} ${montserrat.variable} ${jetbrainsMono.variable}`}>
       <body className="min-h-screen bg-background font-sans antialiased">
         {/* Script inline para aplicar dark mode antes do React hidratar (evita flash) */}
         <script

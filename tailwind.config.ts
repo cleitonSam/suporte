@@ -15,6 +15,7 @@ const config: Config = {
       fontFamily: {
         sans: ['var(--font-poppins)', 'system-ui', 'sans-serif'],
         display: ['var(--font-montserrat)', 'var(--font-poppins)', 'system-ui', 'sans-serif'],
+        mono: ['var(--font-jetbrains)', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'Consolas', 'monospace'],
       },
       colors: {
         fluxo: {
@@ -75,10 +76,29 @@ const config: Config = {
       backgroundImage: {
         'fluxo-gradient': 'linear-gradient(135deg, #0066FF 0%, #00F2FE 100%)',
         'fluxo-gradient-dark': 'linear-gradient(135deg, #020617 0%, #0A1F3D 60%, #003D99 100%)',
+        'dot-grid':
+          'radial-gradient(circle at center, rgb(100 116 139 / 0.15) 1px, transparent 1px)',
+        'dot-grid-dark':
+          'radial-gradient(circle at center, rgb(148 163 184 / 0.12) 1px, transparent 1px)',
+        'mesh-fluxo':
+          'radial-gradient(at 0% 0%, rgb(0 102 255 / 0.08) 0px, transparent 50%), radial-gradient(at 100% 100%, rgb(0 242 254 / 0.06) 0px, transparent 50%)',
+      },
+      backgroundSize: {
+        grid: '24px 24px',
+        'grid-sm': '16px 16px',
       },
       boxShadow: {
-        'fluxo': '0 4px 14px 0 rgba(0, 102, 255, 0.25)',
-        'fluxo-lg': '0 10px 40px -5px rgba(0, 102, 255, 0.35)',
+        fluxo: '0 4px 14px 0 rgb(0 102 255 / 0.18)',
+        'fluxo-lg': '0 10px 40px -5px rgb(0 102 255 / 0.28)',
+        elevate: '0 1px 2px 0 rgb(15 23 42 / 0.04), 0 1px 3px 0 rgb(15 23 42 / 0.06)',
+        'elevate-lg':
+          '0 4px 6px -2px rgb(15 23 42 / 0.04), 0 12px 24px -8px rgb(15 23 42 / 0.08)',
+        'inset-line': 'inset 0 1px 0 0 rgb(255 255 255 / 0.04)',
+        glow: '0 0 0 1px rgb(0 102 255 / 0.5), 0 0 20px 0 rgb(0 102 255 / 0.15)',
+      },
+      letterSpacing: {
+        micro: '0.12em',
+        tech: '0.18em',
       },
       borderRadius: {
         lg: 'var(--radius)',

@@ -61,16 +61,23 @@ export function KpiCard({
         : ArrowDownRight;
 
   return (
-    <div className="group relative overflow-hidden rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition-shadow hover:shadow-md dark:border-slate-700 dark:bg-slate-800">
+    <div className="group relative overflow-hidden rounded-lg border border-slate-200 bg-white p-5 shadow-elevate transition-all hover:-translate-y-0.5 hover:shadow-elevate-lg dark:border-slate-700 dark:bg-slate-800">
+      {/* Accent line top — micro detalhe técnico */}
+      <span
+        aria-hidden="true"
+        className="absolute inset-x-0 top-0 h-px"
+        style={{
+          background: `linear-gradient(to right, transparent, ${t.spark}80, transparent)`,
+        }}
+      />
+
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0 flex-1">
-          <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-500 dark:text-slate-400">
-            {label}
-          </p>
+          <p className="micro-label">{label}</p>
           <p className="mt-2 font-display text-3xl font-bold leading-none text-slate-900 dark:text-white">
             {value}
             {suffix && (
-              <span className="ml-0.5 text-base font-medium text-slate-400 dark:text-slate-500">
+              <span className="ml-0.5 font-mono-tech text-base font-medium text-slate-400 dark:text-slate-500">
                 {suffix}
               </span>
             )}
@@ -78,7 +85,7 @@ export function KpiCard({
         </div>
         <div
           aria-hidden="true"
-          className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ring-1 ring-inset ${t.iconBg} ${t.iconText} ${t.ring}`}
+          className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-md ring-1 ring-inset ${t.iconBg} ${t.iconText} ${t.ring}`}
         >
           {icon}
         </div>
@@ -88,7 +95,7 @@ export function KpiCard({
         <div className="min-w-0 flex-1">
           {delta && (
             <span
-              className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-semibold ${deltaColor}`}
+              className={`inline-flex items-center gap-1 rounded font-mono-tech text-[10px] font-semibold uppercase tracking-tech px-1.5 py-0.5 ${deltaColor}`}
             >
               <DeltaIcon className="h-3 w-3" aria-hidden="true" />
               {delta.label}
