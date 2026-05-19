@@ -21,6 +21,7 @@ export type AuditAction =
   | 'user.invite_resent'
   | 'client.create'
   | 'client.update'
+  | 'client.status_change'
   | 'client.delete'
   | 'ticket.create'
   | 'ticket.update'

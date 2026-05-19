@@ -1,13 +1,15 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { Pencil, Trash2 } from 'lucide-react';
+import { Pencil, Trash2, PauseCircle, PlayCircle, PowerOff } from 'lucide-react';
 import { db } from '@/lib/db';
-import { updateClientAction } from '@/server/actions/clients';
+import { updateClientAction, updateClientStatusAction } from '@/server/actions/clients';
 import { resendInviteAction } from '@/server/actions/users';
 import { deleteEquipmentAction } from '@/server/actions/equipment';
 import { TICKET_STATUS_COLOR, TICKET_STATUS_LABEL, formatRelative, formatDate } from '@/lib/utils';
 import { ConfirmDialog } from '@/components/confirm-dialog';
 import { WarrantyBadge } from '@/components/warranty-badge';
+import { CnpjInput } from '@/components/cnpj-input';
+import { SubmitButton } from '@/components/submit-button';
 
 export default async function ClienteDetalhePage({
   params,
@@ -106,17 +108,93 @@ export default async function ClienteDetalhePage({
         </div>
       )}
 
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-slate-900">{client.name}</h1>
-        <span
-          className={`rounded-full px-3 py-1 text-xs font-medium ${
-            client.status === 'ACTIVE'
-              ? 'bg-emerald-100 text-emerald-800'
-              : 'bg-slate-100 text-slate-600'
-          }`}
-        >
-          {client.status === 'ACTIVE' ? 'Ativo' : client.status === 'SUSPENDED' ? 'Suspenso' : 'Inativo'}
-        </span>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="flex items-center gap-3">
+          <h1 className="font-display text-2xl font-bold text-slate-900 dark:text-white">{client.name}</h1>
+          <span
+            className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ring-1 ring-inset ${
+              client.status === 'ACTIVE'
+                ? 'bg-emerald-100 text-emerald-800 ring-emerald-200'
+                : client.status === 'SUSPENDED'
+                  ? 'bg-amber-100 text-amber-800 ring-amber-200'
+                  : 'bg-slate-100 text-slate-600 ring-slate-200'
+            }`}
+          >
+            {client.status === 'ACTIVE' ? 'Ativo' : client.status === 'SUSPENDED' ? 'Suspenso' : 'Inativo'}
+          </span>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-2">
+          {client.status !== 'ACTIVE' && (
+            <ConfirmDialog
+              title="Reativar cliente"
+              description={
+                <>
+                  O cliente <strong>{client.name}</strong> voltará ao status <strong>Ativo</strong>.
+                  Contatos vinculados poderão acessar o portal novamente.
+                </>
+              }
+              confirmLabel="Reativar"
+              action={updateClientStatusAction}
+              hiddenFields={{ id: client.id, status: 'ACTIVE' }}
+            >
+              <button
+                type="button"
+                className="inline-flex items-center gap-1.5 rounded-md border border-emerald-300 bg-emerald-50 px-3 py-1.5 text-xs font-semibold text-emerald-700 transition-colors hover:bg-emerald-100"
+              >
+                <PlayCircle className="h-3.5 w-3.5" aria-hidden="true" />
+                Reativar
+              </button>
+            </ConfirmDialog>
+          )}
+          {client.status === 'ACTIVE' && (
+            <ConfirmDialog
+              title="Suspender cliente"
+              description={
+                <>
+                  O cliente <strong>{client.name}</strong> ficará suspenso. Os contatos não
+                  perderão acesso ao portal, mas o status indica pausa no atendimento. Pode
+                  ser revertido a qualquer momento.
+                </>
+              }
+              confirmLabel="Suspender"
+              action={updateClientStatusAction}
+              hiddenFields={{ id: client.id, status: 'SUSPENDED' }}
+            >
+              <button
+                type="button"
+                className="inline-flex items-center gap-1.5 rounded-md border border-amber-300 bg-amber-50 px-3 py-1.5 text-xs font-semibold text-amber-700 transition-colors hover:bg-amber-100"
+              >
+                <PauseCircle className="h-3.5 w-3.5" aria-hidden="true" />
+                Suspender
+              </button>
+            </ConfirmDialog>
+          )}
+          {client.status !== 'INACTIVE' && (
+            <ConfirmDialog
+              title="Inativar cliente"
+              description={
+                <>
+                  O cliente <strong>{client.name}</strong> será marcado como <strong>Inativo</strong>.
+                  Use para clientes que não fazem mais parte da carteira. O histórico de chamados e
+                  equipamentos é preservado.
+                </>
+              }
+              confirmLabel="Inativar"
+              destructive
+              action={updateClientStatusAction}
+              hiddenFields={{ id: client.id, status: 'INACTIVE' }}
+            >
+              <button
+                type="button"
+                className="inline-flex items-center gap-1.5 rounded-md border border-slate-300 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 transition-colors hover:bg-slate-50"
+              >
+                <PowerOff className="h-3.5 w-3.5" aria-hidden="true" />
+                Inativar
+              </button>
+            </ConfirmDialog>
+          )}
+        </div>
       </div>
 
       {/* Abas */}
@@ -138,44 +216,41 @@ export default async function ClienteDetalhePage({
 
       {/* ABA: Dados */}
       {aba === 'dados' && (
-        <form action={updateClientAction} className="mt-6 rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+        <form action={updateClientAction} className="mt-6 rounded-lg border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-800">
           <input type="hidden" name="id" value={client.id} />
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div>
-              <label className="block text-sm font-medium text-slate-700">Nome / Fantasia *</label>
-              <input name="name" required defaultValue={client.name}
+              <label htmlFor="edit-client-name" className="block text-sm font-medium text-slate-700 dark:text-slate-200">Nome / Fantasia *</label>
+              <input id="edit-client-name" name="name" required minLength={2} defaultValue={client.name}
                 className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-slate-700">Razão Social</label>
-              <input name="legalName" defaultValue={client.legalName ?? ''}
+              <label htmlFor="edit-client-legal" className="block text-sm font-medium text-slate-700 dark:text-slate-200">Razão Social</label>
+              <input id="edit-client-legal" name="legalName" defaultValue={client.legalName ?? ''}
                 className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-slate-700">CNPJ</label>
-              <input name="cnpj" defaultValue={client.cnpj ?? ''}
+              <label htmlFor="edit-client-cnpj" className="block text-sm font-medium text-slate-700 dark:text-slate-200">CNPJ</label>
+              <CnpjInput id="edit-client-cnpj" name="cnpj" defaultValue={client.cnpj} />
+            </div>
+            <div>
+              <label htmlFor="edit-client-email" className="block text-sm font-medium text-slate-700 dark:text-slate-200">Email</label>
+              <input id="edit-client-email" name="email" type="email" autoComplete="email" defaultValue={client.email ?? ''}
                 className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-slate-700">Email</label>
-              <input name="email" type="email" defaultValue={client.email ?? ''}
+              <label htmlFor="edit-client-phone" className="block text-sm font-medium text-slate-700 dark:text-slate-200">Telefone</label>
+              <input id="edit-client-phone" name="phone" autoComplete="tel" defaultValue={client.phone ?? ''}
                 className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-slate-700">Telefone</label>
-              <input name="phone" defaultValue={client.phone ?? ''}
-                className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500" />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-slate-700">Endereço</label>
-              <input name="address" defaultValue={client.address ?? ''}
+              <label htmlFor="edit-client-address" className="block text-sm font-medium text-slate-700 dark:text-slate-200">Endereço</label>
+              <input id="edit-client-address" name="address" autoComplete="street-address" defaultValue={client.address ?? ''}
                 className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500" />
             </div>
           </div>
-          <div className="mt-4">
-            <button type="submit" className="rounded-md bg-fluxo-500 px-4 py-2 text-sm font-medium text-white hover:bg-fluxo-600">
-              Salvar alterações
-            </button>
+          <div className="mt-5">
+            <SubmitButton pendingText="Salvando...">Salvar alterações</SubmitButton>
           </div>
         </form>
       )}

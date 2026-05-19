@@ -15,6 +15,7 @@ const MESSAGES: Record<string, { type: ToastType; msg: string }> = {
   'cliente.criado':       { type: 'success', msg: 'Cliente criado com sucesso.' },
   'cliente.atualizado':   { type: 'success', msg: 'Cliente atualizado.' },
   'cliente.suspenso':     { type: 'info',    msg: 'Cliente suspenso.' },
+  'cliente.inativado':    { type: 'info',    msg: 'Cliente inativado.' },
   'cliente.reativado':    { type: 'success', msg: 'Cliente reativado.' },
   'cliente.removido':     { type: 'info',    msg: 'Cliente removido.' },
 
