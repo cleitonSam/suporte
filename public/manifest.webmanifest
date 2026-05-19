@@ -38,8 +38,23 @@
       "short_name": "Novo",
       "url": "/portal/novo",
       "icons": [{ "src": "/icons/icon.svg", "sizes": "any", "type": "image/svg+xml" }]
+    },
+    {
+      "name": "Abrir do WhatsApp",
+      "short_name": "WhatsApp",
+      "url": "/admin/chamados/novo/wa",
+      "icons": [{ "src": "/icons/icon.svg", "sizes": "any", "type": "image/svg+xml" }]
     }
   ],
+  "share_target": {
+    "action": "/admin/chamados/novo/wa",
+    "method": "GET",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url"
+    }
+  },
   "screenshots": [],
   "prefer_related_applications": false
 }

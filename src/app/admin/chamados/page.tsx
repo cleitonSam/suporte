@@ -6,6 +6,7 @@ import {
   Search,
   UserCircle,
   Inbox,
+  MessageSquare,
 } from 'lucide-react';
 import { db } from '@/lib/db';
 import { auth } from '@/lib/auth';
@@ -194,6 +195,14 @@ export default async function ChamadosListPage({ searchParams }: PageProps) {
             shared={savedFilters.filter((f) => f.isShared && f.userId !== session.user!.id)}
             currentUserId={session.user.id}
           />
+          <Link
+            href="/admin/chamados/novo/wa"
+            className="inline-flex items-center gap-1.5 rounded-md border border-emerald-300 bg-emerald-50 px-3 py-2 text-xs font-semibold text-emerald-700 transition-colors hover:bg-emerald-100 dark:border-emerald-700/60 dark:bg-emerald-950/40 dark:text-emerald-300 dark:hover:bg-emerald-900/40"
+            title="Criar chamado a partir do WhatsApp"
+          >
+            <MessageSquare className="h-3.5 w-3.5" aria-hidden="true" />
+            Do WhatsApp
+          </Link>
           <Link
             href="/admin/chamados/novo"
             className="inline-flex items-center gap-1.5 rounded-md bg-fluxo-500 px-4 py-2 text-sm font-semibold text-white shadow-fluxo transition hover:bg-fluxo-600"
