@@ -36,6 +36,7 @@ import { TicketStatusTimeline } from '@/components/ticket-status-timeline';
 import { MessageBubble } from '@/components/message-bubble';
 import { ActivityIcon } from '@/components/dashboard/activity-icon';
 import { TicketStatusDot, PriorityDot } from '@/components/ui/status-dot';
+import { MacroDropdown } from '@/components/macro-dropdown';
 import {
   TICKET_STATUS_LABEL,
   TICKET_EVENT_LABEL,
@@ -71,7 +72,7 @@ export default async function ChamadoAdminPage({
 
   const isEditing = searchParams.editando === '1';
 
-  const [ticket, agents, queues, templates, categories, equipment] = await Promise.all([
+  const [ticket, agents, queues, templates, categories, equipment, macros] = await Promise.all([
     db.ticket.findFirst({
       where: { id: params.id, deletedAt: null },
       include: {
@@ -118,6 +119,11 @@ export default async function ChamadoAdminPage({
       select: { id: true, name: true },
       orderBy: { name: 'asc' },
       take: 100,
+    }),
+    db.ticketMacro.findMany({
+      where: { isActive: true, deletedAt: null },
+      select: { id: true, name: true, description: true, icon: true },
+      orderBy: [{ sortOrder: 'asc' }, { name: 'asc' }],
     }),
   ]);
 
@@ -175,6 +181,13 @@ export default async function ChamadoAdminPage({
 
             {/* Quick actions */}
             <div className="flex flex-wrap items-center gap-2">
+              {!isClosed && (
+                <MacroDropdown
+                  ticketId={ticket.id}
+                  macros={macros}
+                  returnTo={`/admin/chamados/${ticket.id}`}
+                />
+              )}
               {isOpen && (
                 <>
                   <form action={resolveTicketAction}>

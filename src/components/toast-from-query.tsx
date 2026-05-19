@@ -33,6 +33,13 @@ const MESSAGES: Record<string, { type: ToastType; msg: string }> = {
   // Bulk operations
   'bulk.aplicado':        { type: 'success', msg: 'Ação aplicada nos chamados selecionados.' },
 
+  // Saved filters
+  'filtro.salvo':         { type: 'success', msg: 'Filtro salvo.' },
+  'filtro.removido':      { type: 'info',    msg: 'Filtro removido.' },
+
+  // Macros
+  'macro.aplicada':       { type: 'success', msg: 'Macro aplicada no chamado.' },
+
   // Chamados / templates / automação / KB
   'template.removido':    { type: 'info',    msg: 'Template removido.' },
   'automacao.removida':   { type: 'info',    msg: 'Regra de automação removida.' },

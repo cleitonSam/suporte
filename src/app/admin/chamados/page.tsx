@@ -14,6 +14,7 @@ import { bulkUpdateTicketsAction } from '@/server/actions/ticket-admin';
 import { SlaBadge } from '@/components/sla-badge';
 import { TicketStatusDot, PriorityDot } from '@/components/ui/status-dot';
 import { BulkActionsBar, SelectAllCheckbox } from '@/components/bulk-actions-bar';
+import { SavedFiltersMenu } from '@/components/saved-filters-menu';
 import { formatRelative } from '@/lib/utils';
 import type { TicketPriority, TicketStatus } from '@prisma/client';
 
@@ -70,7 +71,7 @@ export default async function ChamadosListPage({ searchParams }: PageProps) {
 
   const status = searchParams.status ? [searchParams.status as TicketStatus] : undefined;
 
-  const [clients, queues, agents, result, statusCounts, breachedCount, warningCount, unassignedCount, mineCount] =
+  const [clients, queues, agents, savedFilters, result, statusCounts, breachedCount, warningCount, unassignedCount, mineCount] =
     await Promise.all([
       db.client.findMany({
         where: { deletedAt: null, status: 'ACTIVE' },
@@ -82,6 +83,14 @@ export default async function ChamadosListPage({ searchParams }: PageProps) {
         where: { userType: 'AGENT', isActive: true, deletedAt: null },
         select: { id: true, name: true },
         orderBy: { name: 'asc' },
+      }),
+      db.savedFilter.findMany({
+        where: {
+          scope: 'ticket',
+          OR: [{ userId: session.user.id }, { isShared: true }],
+        },
+        select: { id: true, name: true, queryString: true, isShared: true, userId: true },
+        orderBy: [{ isShared: 'asc' }, { name: 'asc' }],
       }),
       listTickets({
         search: searchParams.q,
@@ -178,13 +187,21 @@ export default async function ChamadosListPage({ searchParams }: PageProps) {
             {openTotal === 1 ? '' : 's'} no total
           </p>
         </div>
-        <Link
-          href="/admin/chamados/novo"
-          className="inline-flex items-center gap-1.5 rounded-md bg-fluxo-500 px-4 py-2 text-sm font-semibold text-white shadow-fluxo transition hover:bg-fluxo-600"
-        >
-          <TicketIcon className="h-4 w-4" aria-hidden="true" />
-          Abrir chamado
-        </Link>
+        <div className="flex items-center gap-2">
+          <SavedFiltersMenu
+            scope="ticket"
+            mine={savedFilters.filter((f) => f.userId === session.user!.id)}
+            shared={savedFilters.filter((f) => f.isShared && f.userId !== session.user!.id)}
+            currentUserId={session.user.id}
+          />
+          <Link
+            href="/admin/chamados/novo"
+            className="inline-flex items-center gap-1.5 rounded-md bg-fluxo-500 px-4 py-2 text-sm font-semibold text-white shadow-fluxo transition hover:bg-fluxo-600"
+          >
+            <TicketIcon className="h-4 w-4" aria-hidden="true" />
+            Abrir chamado
+          </Link>
+        </div>
       </div>
 
       {/* Alerta SLA */}

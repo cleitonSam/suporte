@@ -132,10 +132,61 @@ model User {
   notifications       Notification[]
   passwordTokens      PasswordResetToken[]
   pushSubscriptions   PushSubscription[]
+  savedFilters        SavedFilter[]
+  authoredMacros      TicketMacro[]    @relation("MacroAuthor")
   auditEvents         AuditLog[]       @relation("AuditActor")
 
   @@index([userType, isActive])
   @@index([clientId])
+}
+
+// ==============================================================
+// SAVED FILTERS — agente salva conjuntos de filtros recorrentes
+// ==============================================================
+
+model SavedFilter {
+  id        String   @id @default(cuid())
+
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  name      String
+  scope     String   @default("ticket")
+  queryString String  @db.Text
+  isShared  Boolean  @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId, scope])
+  @@index([isShared, scope])
+}
+
+// ==============================================================
+// MACROS — combina varias acoes em 1 click no ticket
+// ==============================================================
+
+model TicketMacro {
+  id          String   @id @default(cuid())
+
+  name        String
+  description String?
+  icon        String?
+
+  actions     Json     @default("[]")
+
+  authorId    String?
+  author      User?    @relation("MacroAuthor", fields: [authorId], references: [id], onDelete: SetNull)
+
+  isActive    Boolean  @default(true)
+  sortOrder   Int      @default(0)
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
+
+  @@index([authorId, isActive])
+  @@index([deletedAt])
 }
 
 // ==============================================================
