@@ -1,8 +1,9 @@
 import Link from 'next/link';
 import { auth, signOut } from '@/lib/auth';
-import { HeadphonesIcon, LogOut, Plus, UserCircle } from 'lucide-react';
+import { LogOut, Plus, UserCircle } from 'lucide-react';
 import { NotificationsBell } from '@/components/notifications-bell';
 import { ToastFromQuery } from '@/components/toast-from-query';
+import { LogoFluxo } from '@/components/logo-fluxo';
 
 export default async function PortalLayout({ children }: { children: React.ReactNode }) {
   const session = await auth();
@@ -18,13 +19,11 @@ export default async function PortalLayout({ children }: { children: React.React
       <header className="sticky top-0 z-20 border-b border-slate-200 bg-white/95 backdrop-blur dark:border-slate-700/60 dark:bg-slate-900/95">
         <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-4">
           <Link href="/portal" className="flex items-center gap-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-fluxo-gradient shadow-fluxo">
-              <HeadphonesIcon className="h-4 w-4 text-white" />
-            </div>
+            <LogoFluxo size="sm" priority className="dark:brightness-0 dark:invert" />
             <div className="flex flex-col leading-tight">
-              <span className="font-display text-sm font-bold text-slate-900 dark:text-white">Fluxo Suporte</span>
+              <span className="font-display text-sm font-bold text-slate-900 dark:text-white">Suporte</span>
               <span className="text-[10px] font-medium uppercase tracking-widest text-fluxo-600 dark:text-cyan-400">
-                Digital Tech
+                Portal do cliente
               </span>
             </div>
           </Link>

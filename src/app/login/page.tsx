@@ -1,7 +1,8 @@
 import { signIn } from '@/lib/auth';
 import { AuthError } from 'next-auth';
 import { redirect } from 'next/navigation';
-import { HeadphonesIcon, Shield, Zap, Clock } from 'lucide-react';
+import { Shield, Zap, Clock } from 'lucide-react';
+import { LogoFluxo } from '@/components/logo-fluxo';
 
 export default function LoginPage({
   searchParams,
@@ -34,13 +35,11 @@ export default function LoginPage({
 
         {/* Logo */}
         <div className="relative flex items-center gap-3">
-          <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-fluxo-gradient shadow-fluxo-lg">
-            <HeadphonesIcon className="h-5 w-5 text-white" />
-          </div>
+          <LogoFluxo size="md" onDark priority />
           <div>
-            <div className="font-display text-lg font-bold text-white">Fluxo Suporte</div>
+            <div className="font-display text-lg font-bold text-white">Suporte</div>
             <div className="text-[10px] font-medium uppercase tracking-[0.2em] text-cyan-400">
-              Digital Tech
+              Plataforma de chamados
             </div>
           </div>
         </div>
@@ -75,13 +74,11 @@ export default function LoginPage({
         <div className="w-full max-w-sm">
           {/* Logo mobile */}
           <div className="mb-8 flex items-center gap-3 lg:hidden">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-fluxo-gradient shadow-fluxo">
-              <HeadphonesIcon className="h-5 w-5 text-white" />
-            </div>
+            <LogoFluxo size="sm" className="dark:brightness-0 dark:invert" />
             <div>
-              <div className="font-display text-base font-bold text-slate-900 dark:text-white">Fluxo Suporte</div>
+              <div className="font-display text-base font-bold text-slate-900 dark:text-white">Suporte</div>
               <div className="text-[10px] font-medium uppercase tracking-[0.2em] text-fluxo-600 dark:text-cyan-400">
-                Digital Tech
+                Plataforma de chamados
               </div>
             </div>
           </div>

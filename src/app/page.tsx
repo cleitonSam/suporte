@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import {
-  HeadphonesIcon,
   Ticket,
   ShieldCheck,
   Monitor,
@@ -16,6 +15,7 @@ import {
   Activity,
 } from 'lucide-react';
 import { auth } from '@/lib/auth';
+import { LogoFluxo } from '@/components/logo-fluxo';
 
 export const metadata: Metadata = {
   title: 'Fluxo Suporte — Helpdesk pro provedor de TI brasileiro',
@@ -56,12 +56,10 @@ export default async function LandingPage() {
       <header className="relative border-b border-slate-900 bg-slate-950/60 backdrop-blur">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
           <div className="flex items-center gap-3">
-            <div className="relative flex h-9 w-9 items-center justify-center rounded-md bg-fluxo-gradient shadow-fluxo">
-              <HeadphonesIcon className="h-4 w-4 text-white" aria-hidden="true" />
-            </div>
+            <LogoFluxo size="sm" onDark priority />
             <div className="flex flex-col leading-tight">
               <span className="font-display text-sm font-bold tracking-tight text-white">
-                Fluxo Suporte
+                Suporte
               </span>
               <span className="font-mono-tech text-[9px] uppercase tracking-tech text-cyan-400/80">
                 [ tech.ops ]
@@ -335,9 +333,7 @@ export default async function LandingPage() {
       <footer className="relative border-t border-slate-900 py-10">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-4 sm:flex-row">
           <div className="flex items-center gap-2">
-            <div className="flex h-7 w-7 items-center justify-center rounded bg-fluxo-gradient">
-              <HeadphonesIcon className="h-3.5 w-3.5 text-white" aria-hidden="true" />
-            </div>
+            <LogoFluxo size="xs" onDark />
             <span className="text-sm font-medium text-slate-300">Fluxo Digital Tech</span>
           </div>
           <p className="font-mono-tech text-[10px] uppercase tracking-tech text-slate-600">

@@ -23,6 +23,7 @@ import { MobileMenuButton } from '@/components/mobile-sidebar';
 import { ToastFromQuery } from '@/components/toast-from-query';
 import { NavItem } from '@/components/admin/nav-item';
 import { StatusDot } from '@/components/ui/status-dot';
+import { LogoFluxo } from '@/components/logo-fluxo';
 
 const nav = [
   { href: '/admin', label: 'Dashboard', icon: LayoutDashboard },
@@ -63,16 +64,10 @@ export default async function AdminLayout({ children }: { children: React.ReactN
 
         {/* Logo */}
         <div className="relative flex h-16 flex-shrink-0 items-center gap-3 border-b border-slate-800/60 px-5">
-          <div className="relative flex h-9 w-9 items-center justify-center rounded-md bg-fluxo-gradient shadow-fluxo">
-            <HeadphonesIcon className="h-4 w-4 text-white" aria-hidden="true" />
-            <span
-              aria-hidden="true"
-              className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full border-2 border-[#0a1228] bg-emerald-400 shadow-[0_0_6px_rgb(74_222_128_/_0.6)]"
-            />
-          </div>
+          <LogoFluxo size="sm" priority />
           <div className="flex flex-col leading-tight">
             <span className="font-display text-sm font-bold tracking-tight text-white">
-              Fluxo Suporte
+              Suporte
             </span>
             <span className="font-mono-tech text-[9px] uppercase tracking-tech text-cyan-400/80">
               [ tech.ops ]
@@ -165,11 +160,9 @@ export default async function AdminLayout({ children }: { children: React.ReactN
             <MobileMenuButton />
             {/* Logo mini no mobile */}
             <div className="flex items-center gap-2 lg:hidden">
-              <div className="flex h-7 w-7 items-center justify-center rounded-md bg-fluxo-gradient">
-                <HeadphonesIcon className="h-3.5 w-3.5 text-white" aria-hidden="true" />
-              </div>
+              <LogoFluxo size="xs" />
               <span className="font-display text-sm font-bold text-slate-900 dark:text-white">
-                Fluxo
+                Suporte
               </span>
             </div>
             {/* Status pill desktop */}
