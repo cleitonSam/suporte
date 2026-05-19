@@ -15,12 +15,15 @@ import {
 export default async function ChamadoDetalhePage({ params }: { params: { id: string } }) {
   const session = await auth();
   const user = session?.user;
+  if (!user) notFound();
 
   const ticket = await db.ticket.findFirst({
     where: {
       id: params.id,
       deletedAt: null,
-      ...(user.userType === 'CLIENT_CONTACT' && { clientId: user.clientId }),
+      ...(user.userType === 'CLIENT_CONTACT' && user.clientId
+        ? { clientId: user.clientId }
+        : {}),
     },
     include: {
       client: true,

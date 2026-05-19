@@ -19,7 +19,7 @@ interface TicketResult {
 interface ClientResult {
   id: string;
   name: string;
-  document: string | null;
+  cnpj: string | null;
 }
 
 interface UserResult {

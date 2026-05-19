@@ -3,7 +3,6 @@ const nextConfig = {
   output: 'standalone',
   reactStrictMode: true,
   poweredByHeader: false,
-  serverExternalPackages: ['pdfkit'],
   typescript: {
     ignoreBuildErrors: true,
   },
@@ -11,6 +10,7 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   experimental: {
+    serverComponentsExternalPackages: ['pdfkit'],
     serverActions: {
       bodySizeLimit: '15mb',
     },

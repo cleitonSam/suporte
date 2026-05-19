@@ -1,3 +1,4 @@
+import { TicketStatus, TicketPriority } from '@prisma/client';
 import { db } from './db';
 import { logger, child } from './logger';
 import { notify } from './notifications';
@@ -79,7 +80,8 @@ async function executeAction(action: Action, ticketId: string, ctx: TicketContex
   try {
     switch (action.type) {
       case 'change_status': {
-        const newStatus = action.value;
+        const newStatus = action.value as TicketStatus | undefined;
+        if (!newStatus) break;
         await db.ticket.update({
           where: { id: ticketId },
           data: { status: newStatus },
@@ -97,7 +99,8 @@ async function executeAction(action: Action, ticketId: string, ctx: TicketContex
       }
 
       case 'change_priority': {
-        const newPriority = action.value;
+        const newPriority = action.value as TicketPriority | undefined;
+        if (!newPriority) break;
         await db.ticket.update({
           where: { id: ticketId },
           data: { priority: newPriority },

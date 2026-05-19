@@ -28,7 +28,10 @@ export default async function NovoChamadoPage() {
       </p>
 
       <form
-        action={createTicketAction}
+        action={async (formData) => {
+          'use server';
+          await createTicketAction(formData);
+        }}
         className="mt-6 space-y-4 rounded-lg border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-800"
       >
         <div>

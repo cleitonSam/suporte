@@ -88,11 +88,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     async jwt({ token, user }) {
       if (user) {
         token.userId = user.id;
-        // @ts-expect-error - we injected these on authorize()
         token.userType = user.userType;
-        // @ts-expect-error
         token.role = user.role;
-        // @ts-expect-error
         token.clientId = user.clientId;
       }
       return token;
@@ -100,9 +97,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     async session({ session, token }) {
       if (session.user) {
         session.user.id = token.userId as string;
-        session.user.userType = token.userType;
-        session.user.role = token.role;
-        session.user.clientId = token.clientId;
+        session.user.userType = token.userType as typeof session.user.userType;
+        session.user.role = token.role as typeof session.user.role;
+        session.user.clientId = (token.clientId ?? null) as string | null;
       }
       return session;
     },

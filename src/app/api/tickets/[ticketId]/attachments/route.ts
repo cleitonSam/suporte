@@ -30,9 +30,9 @@ export async function POST(
     where: {
       id: params.ticketId,
       deletedAt: null,
-      ...(session.user.userType === 'CLIENT_CONTACT' && {
-        clientId: session.user.clientId,
-      }),
+      ...(session.user.userType === 'CLIENT_CONTACT' && session.user.clientId
+        ? { clientId: session.user.clientId }
+        : {}),
     },
     select: { id: true },
   });

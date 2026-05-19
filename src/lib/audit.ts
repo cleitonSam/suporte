@@ -32,6 +32,20 @@ export type AuditAction =
   | 'template.create'
   | 'template.update'
   | 'template.delete'
+  | 'automation.create'
+  | 'automation.create.forbidden'
+  | 'automation.update'
+  | 'automation.update.forbidden'
+  | 'automation.delete'
+  | 'automation.delete.forbidden'
+  | 'automation.toggle'
+  | 'automation.toggle.forbidden'
+  | 'kb.category_create'
+  | 'kb.category_update'
+  | 'kb.category_delete'
+  | 'kb.article_create'
+  | 'kb.article_update'
+  | 'kb.article_delete'
   | 'rate_limit.hit';
 
 export interface AuditParams {

@@ -15,10 +15,18 @@ export async function createCategoryAction(formData: FormData) {
 
   if (!name) return;
 
+  const slug = name
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+
   const last = await db.ticketCategory.findFirst({ orderBy: { sortOrder: 'desc' } });
   await db.ticketCategory.create({
     data: {
       name,
+      slug,
       color,
       sortOrder: (last?.sortOrder ?? 0) + 1,
       isActive: true,
