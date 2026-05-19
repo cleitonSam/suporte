@@ -146,15 +146,14 @@
 .dark ::-webkit-scrollbar-thumb:hover { background: #475569; }
 
 @layer base {
-  /* ── Inputs, selects, textareas ── */
-  .dark input[type="text"],
-  .dark input[type="email"],
-  .dark input[type="password"],
-  .dark input[type="search"],
-  .dark input[type="number"],
-  .dark input[type="date"],
-  .dark input[type="tel"],
-  .dark input[type="url"],
+  /* ── Inputs, selects, textareas (catchall: pega ate inputs sem type=) ── */
+  input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="color"]):not([type="range"]):not([type="submit"]):not([type="button"]):not([type="reset"]):not([type="image"]),
+  select,
+  textarea {
+    color: hsl(var(--foreground));
+  }
+
+  .dark input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="color"]):not([type="range"]):not([type="submit"]):not([type="button"]):not([type="reset"]):not([type="image"]),
   .dark select,
   .dark textarea {
     background-color: hsl(var(--surface-2));
@@ -165,6 +164,18 @@
   .dark textarea::placeholder {
     color: hsl(var(--muted-foreground));
   }
+
+  /* Autofill no Chrome: forca cor de fundo e texto pra match com tema */
+  .dark input:-webkit-autofill,
+  .dark input:-webkit-autofill:hover,
+  .dark input:-webkit-autofill:focus,
+  .dark textarea:-webkit-autofill,
+  .dark select:-webkit-autofill {
+    -webkit-text-fill-color: hsl(var(--foreground));
+    -webkit-box-shadow: 0 0 0 1000px hsl(var(--surface-2)) inset;
+    transition: background-color 5000s ease-in-out 0s;
+  }
+
   .dark input:focus,
   .dark select:focus,
   .dark textarea:focus {
