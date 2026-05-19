@@ -99,24 +99,28 @@ export default function LoginPage({
 
           <form action={login} className="mt-6 space-y-4">
             <div>
-              <label className="block text-xs font-medium uppercase tracking-wider text-slate-500 dark:text-slate-400">
+              <label htmlFor="login-email" className="block text-xs font-medium uppercase tracking-wider text-slate-500 dark:text-slate-400">
                 Email
               </label>
               <input
+                id="login-email"
                 name="email"
                 type="email"
+                autoComplete="email"
                 required
                 placeholder="voce@empresa.com.br"
                 className="mt-1 block w-full rounded-md border border-slate-300 bg-white px-3 py-2.5 text-sm shadow-sm focus:border-fluxo-500 focus:outline-none focus:ring-2 focus:ring-fluxo-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:placeholder-slate-400"
               />
             </div>
             <div>
-              <label className="block text-xs font-medium uppercase tracking-wider text-slate-500 dark:text-slate-400">
+              <label htmlFor="login-password" className="block text-xs font-medium uppercase tracking-wider text-slate-500 dark:text-slate-400">
                 Senha
               </label>
               <input
+                id="login-password"
                 name="password"
                 type="password"
+                autoComplete="current-password"
                 required
                 placeholder="••••••••"
                 className="mt-1 block w-full rounded-md border border-slate-300 bg-white px-3 py-2.5 text-sm shadow-sm focus:border-fluxo-500 focus:outline-none focus:ring-2 focus:ring-fluxo-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:placeholder-slate-400"

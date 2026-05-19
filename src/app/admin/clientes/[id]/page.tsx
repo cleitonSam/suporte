@@ -190,12 +190,12 @@ export default async function ClienteDetalhePage({
             <table className="min-w-[700px] divide-y divide-slate-200 text-sm">
               <thead className="bg-slate-50">
                 <tr>
-                  <th className="px-4 py-2 text-left font-medium text-slate-600">Nome</th>
-                  <th className="px-4 py-2 text-left font-medium text-slate-600">Email</th>
-                  <th className="px-4 py-2 text-left font-medium text-slate-600">Telefone</th>
-                  <th className="px-4 py-2 text-left font-medium text-slate-600">Último acesso</th>
-                  <th className="px-4 py-2 text-left font-medium text-slate-600">Status</th>
-                  <th className="px-4 py-2 text-left font-medium text-slate-600">Ações</th>
+                  <th scope="col" className="px-4 py-2 text-left font-medium text-slate-600">Nome</th>
+                  <th scope="col" className="px-4 py-2 text-left font-medium text-slate-600">Email</th>
+                  <th scope="col" className="px-4 py-2 text-left font-medium text-slate-600">Telefone</th>
+                  <th scope="col" className="px-4 py-2 text-left font-medium text-slate-600">Último acesso</th>
+                  <th scope="col" className="px-4 py-2 text-left font-medium text-slate-600">Status</th>
+                  <th scope="col" className="px-4 py-2 text-left font-medium text-slate-600">Ações</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-200">
@@ -262,13 +262,13 @@ export default async function ClienteDetalhePage({
             <table className="min-w-[700px] divide-y divide-slate-200 text-sm">
               <thead className="bg-slate-50">
                 <tr>
-                  <th className="px-4 py-2 text-left font-medium text-slate-600">Nome</th>
-                  <th className="px-4 py-2 text-left font-medium text-slate-600">Categoria</th>
-                  <th className="px-4 py-2 text-left font-medium text-slate-600">Marca / Modelo</th>
-                  <th className="px-4 py-2 text-left font-medium text-slate-600">Serial / Patrimônio</th>
-                  <th className="px-4 py-2 text-left font-medium text-slate-600">Localização</th>
-                  <th className="px-4 py-2 text-left font-medium text-slate-600">Garantia</th>
-                  <th className="px-4 py-2 text-left font-medium text-slate-600">Status</th>
+                  <th scope="col" className="px-4 py-2 text-left font-medium text-slate-600">Nome</th>
+                  <th scope="col" className="px-4 py-2 text-left font-medium text-slate-600">Categoria</th>
+                  <th scope="col" className="px-4 py-2 text-left font-medium text-slate-600">Marca / Modelo</th>
+                  <th scope="col" className="px-4 py-2 text-left font-medium text-slate-600">Serial / Patrimônio</th>
+                  <th scope="col" className="px-4 py-2 text-left font-medium text-slate-600">Localização</th>
+                  <th scope="col" className="px-4 py-2 text-left font-medium text-slate-600">Garantia</th>
+                  <th scope="col" className="px-4 py-2 text-left font-medium text-slate-600">Status</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-200">
@@ -317,11 +317,11 @@ export default async function ClienteDetalhePage({
             <table className="min-w-[700px] divide-y divide-slate-200 text-sm">
               <thead className="bg-slate-50">
                 <tr>
-                  <th className="px-4 py-2 text-left font-medium text-slate-600">Número</th>
-                  <th className="px-4 py-2 text-left font-medium text-slate-600">Título</th>
-                  <th className="px-4 py-2 text-left font-medium text-slate-600">Status</th>
-                  <th className="px-4 py-2 text-left font-medium text-slate-600">Atendente</th>
-                  <th className="px-4 py-2 text-left font-medium text-slate-600">Aberto</th>
+                  <th scope="col" className="px-4 py-2 text-left font-medium text-slate-600">Número</th>
+                  <th scope="col" className="px-4 py-2 text-left font-medium text-slate-600">Título</th>
+                  <th scope="col" className="px-4 py-2 text-left font-medium text-slate-600">Status</th>
+                  <th scope="col" className="px-4 py-2 text-left font-medium text-slate-600">Atendente</th>
+                  <th scope="col" className="px-4 py-2 text-left font-medium text-slate-600">Aberto</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-200">

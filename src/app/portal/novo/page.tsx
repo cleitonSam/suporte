@@ -35,8 +35,9 @@ export default async function NovoChamadoPage() {
         className="mt-6 space-y-4 rounded-lg border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-800"
       >
         <div>
-          <label className="block text-sm font-medium text-slate-700">Título *</label>
+          <label htmlFor="portal-ticket-title" className="block text-sm font-medium text-slate-700">Título *</label>
           <input
+            id="portal-ticket-title"
             name="title"
             required
             minLength={5}
@@ -47,8 +48,9 @@ export default async function NovoChamadoPage() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-slate-700">Descrição *</label>
+          <label htmlFor="portal-ticket-description" className="block text-sm font-medium text-slate-700">Descrição *</label>
           <textarea
+            id="portal-ticket-description"
             name="description"
             required
             minLength={10}
@@ -60,8 +62,9 @@ export default async function NovoChamadoPage() {
 
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <div>
-            <label className="block text-sm font-medium text-slate-700">Prioridade</label>
+            <label htmlFor="portal-ticket-priority" className="block text-sm font-medium text-slate-700">Prioridade</label>
             <select
+              id="portal-ticket-priority"
               name="priority"
               defaultValue="MEDIUM"
               className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500"
@@ -74,8 +77,9 @@ export default async function NovoChamadoPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700">Categoria</label>
+            <label htmlFor="portal-ticket-category" className="block text-sm font-medium text-slate-700">Categoria</label>
             <select
+              id="portal-ticket-category"
               name="categoryId"
               className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500"
             >
@@ -91,10 +95,11 @@ export default async function NovoChamadoPage() {
 
         {equipments.length > 0 && (
           <div>
-            <label className="block text-sm font-medium text-slate-700">
+            <label htmlFor="portal-ticket-equipment" className="block text-sm font-medium text-slate-700">
               Equipamento relacionado
             </label>
             <select
+              id="portal-ticket-equipment"
               name="equipmentId"
               className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500"
             >

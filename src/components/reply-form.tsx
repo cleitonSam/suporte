@@ -43,10 +43,10 @@ export function ReplyForm({ ticketId, templates = [], allowInternal = true, clie
 
       <div className="mb-2 flex items-center justify-between gap-4">
         <div className="flex items-center gap-4">
-          <label className="text-sm font-medium text-slate-700">Resposta</label>
+          <label htmlFor="reply-body" className="text-sm font-medium text-slate-700">Resposta</label>
           {allowInternal && (
             <label className="flex items-center gap-1.5 text-sm text-slate-600">
-              <input type="checkbox" name="isInternal" value="true" className="rounded" />
+              <input id="reply-internal" type="checkbox" name="isInternal" value="true" className="rounded" />
               Nota interna
             </label>
           )}
@@ -81,6 +81,7 @@ export function ReplyForm({ ticketId, templates = [], allowInternal = true, clie
       </div>
 
       <textarea
+        id="reply-body"
         ref={textareaRef}
         name="body"
         required

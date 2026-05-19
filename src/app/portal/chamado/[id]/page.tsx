@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { auth } from '@/lib/auth';
@@ -11,6 +12,22 @@ import {
   PRIORITY_LABEL,
   formatDate,
 } from '@/lib/utils';
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { id: string };
+}): Promise<Metadata> {
+  const ticket = await db.ticket.findUnique({
+    where: { id: params.id },
+    select: { ticketNumber: true, title: true },
+  });
+  if (!ticket) return { title: 'Chamado não encontrado' };
+  return {
+    title: `${ticket.ticketNumber} — ${ticket.title}`,
+    description: 'Detalhes do seu chamado de suporte',
+  };
+}
 
 export default async function ChamadoDetalhePage({ params }: { params: { id: string } }) {
   const session = await auth();

@@ -21,13 +21,16 @@ export function ThemeToggle() {
     localStorage.setItem('theme', next ? 'dark' : 'light');
   }
 
+  const label = dark ? 'Alternar para modo claro' : 'Alternar para modo escuro';
   return (
     <button
       onClick={toggle}
+      type="button"
       className="flex items-center justify-center rounded-md border border-slate-200 p-1.5 text-slate-500 transition-colors hover:bg-slate-50 hover:text-slate-700 dark:border-slate-600 dark:text-slate-400 dark:hover:bg-slate-700 dark:hover:text-slate-200"
-      title={dark ? 'Modo claro' : 'Modo escuro'}
+      title={label}
+      aria-label={label}
     >
-      {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+      {dark ? <Sun className="h-4 w-4" aria-hidden="true" /> : <Moon className="h-4 w-4" aria-hidden="true" />}
     </button>
   );
 }

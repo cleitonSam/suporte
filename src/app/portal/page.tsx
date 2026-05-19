@@ -110,11 +110,11 @@ export default async function PortalHome({ searchParams }: PageProps) {
           <table className="min-w-[700px] divide-y divide-slate-200 text-sm dark:divide-slate-700">
             <thead className="bg-slate-50 dark:bg-slate-800/80">
               <tr>
-                <th className="px-4 py-3 text-left font-medium text-slate-600 dark:text-slate-300">Número</th>
-                <th className="px-4 py-3 text-left font-medium text-slate-600 dark:text-slate-300">Título</th>
-                <th className="px-4 py-3 text-left font-medium text-slate-600 dark:text-slate-300">Status</th>
-                <th className="px-4 py-3 text-left font-medium text-slate-600 dark:text-slate-300">Prioridade</th>
-                <th className="px-4 py-3 text-left font-medium text-slate-600 dark:text-slate-300">Última atualização</th>
+                <th scope="col" className="px-4 py-3 text-left font-medium text-slate-600 dark:text-slate-300">Número</th>
+                <th scope="col" className="px-4 py-3 text-left font-medium text-slate-600 dark:text-slate-300">Título</th>
+                <th scope="col" className="px-4 py-3 text-left font-medium text-slate-600 dark:text-slate-300">Status</th>
+                <th scope="col" className="px-4 py-3 text-left font-medium text-slate-600 dark:text-slate-300">Prioridade</th>
+                <th scope="col" className="px-4 py-3 text-left font-medium text-slate-600 dark:text-slate-300">Última atualização</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-200 dark:divide-slate-700">

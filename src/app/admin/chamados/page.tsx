@@ -63,8 +63,9 @@ export default async function ChamadosListPage({ searchParams }: PageProps) {
 
       <form method="GET" className="mt-4 flex flex-wrap items-end gap-3 rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
         <div className="flex-1 min-w-[200px]">
-          <label className="block text-xs font-medium text-slate-600">Buscar</label>
+          <label htmlFor="filter-q" className="block text-xs font-medium text-slate-600">Buscar</label>
           <input
+            id="filter-q"
             type="text"
             name="q"
             defaultValue={searchParams.q}
@@ -73,8 +74,9 @@ export default async function ChamadosListPage({ searchParams }: PageProps) {
           />
         </div>
         <div>
-          <label className="block text-xs font-medium text-slate-600">Status</label>
+          <label htmlFor="filter-status" className="block text-xs font-medium text-slate-600">Status</label>
           <select
+            id="filter-status"
             name="status"
             defaultValue={searchParams.status ?? ''}
             className="mt-1 block rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm"
@@ -89,8 +91,9 @@ export default async function ChamadosListPage({ searchParams }: PageProps) {
           </select>
         </div>
         <div>
-          <label className="block text-xs font-medium text-slate-600">Cliente</label>
+          <label htmlFor="filter-client" className="block text-xs font-medium text-slate-600">Cliente</label>
           <select
+            id="filter-client"
             name="clientId"
             defaultValue={searchParams.clientId ?? ''}
             className="mt-1 block rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm"
@@ -104,8 +107,9 @@ export default async function ChamadosListPage({ searchParams }: PageProps) {
           </select>
         </div>
         <div>
-          <label className="block text-xs font-medium text-slate-600">Fila</label>
+          <label htmlFor="filter-queue" className="block text-xs font-medium text-slate-600">Fila</label>
           <select
+            id="filter-queue"
             name="queueId"
             defaultValue={searchParams.queueId ?? ''}
             className="mt-1 block rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm"
@@ -119,8 +123,9 @@ export default async function ChamadosListPage({ searchParams }: PageProps) {
           </select>
         </div>
         <div>
-          <label className="block text-xs font-medium text-slate-600">SLA</label>
+          <label htmlFor="filter-sla" className="block text-xs font-medium text-slate-600">SLA</label>
           <select
+            id="filter-sla"
             name="sla"
             defaultValue={searchParams.sla ?? ''}
             className="mt-1 block rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm"
@@ -142,15 +147,15 @@ export default async function ChamadosListPage({ searchParams }: PageProps) {
         <table className="min-w-[700px] divide-y divide-slate-200 text-sm">
           <thead className="bg-slate-50">
             <tr>
-              <th className="px-4 py-2 text-left font-medium text-slate-600">Número</th>
-              <th className="px-4 py-2 text-left font-medium text-slate-600">Título</th>
-              <th className="px-4 py-2 text-left font-medium text-slate-600">Cliente</th>
-              <th className="px-4 py-2 text-left font-medium text-slate-600">Fila</th>
-              <th className="px-4 py-2 text-left font-medium text-slate-600">Status</th>
-              <th className="px-4 py-2 text-left font-medium text-slate-600">Prioridade</th>
-              <th className="px-4 py-2 text-left font-medium text-slate-600">SLA</th>
-              <th className="px-4 py-2 text-left font-medium text-slate-600">Atendente</th>
-              <th className="px-4 py-2 text-left font-medium text-slate-600">Aberto</th>
+              <th scope="col" className="px-4 py-2 text-left font-medium text-slate-600">Número</th>
+              <th scope="col" className="px-4 py-2 text-left font-medium text-slate-600">Título</th>
+              <th scope="col" className="px-4 py-2 text-left font-medium text-slate-600">Cliente</th>
+              <th scope="col" className="px-4 py-2 text-left font-medium text-slate-600">Fila</th>
+              <th scope="col" className="px-4 py-2 text-left font-medium text-slate-600">Status</th>
+              <th scope="col" className="px-4 py-2 text-left font-medium text-slate-600">Prioridade</th>
+              <th scope="col" className="px-4 py-2 text-left font-medium text-slate-600">SLA</th>
+              <th scope="col" className="px-4 py-2 text-left font-medium text-slate-600">Atendente</th>
+              <th scope="col" className="px-4 py-2 text-left font-medium text-slate-600">Aberto</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-200">

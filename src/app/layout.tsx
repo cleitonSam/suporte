@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Poppins, Montserrat } from 'next/font/google';
 import { ToastProvider } from '@/components/toast';
 import './globals.css';
@@ -18,8 +18,28 @@ const montserrat = Montserrat({
 });
 
 export const metadata: Metadata = {
-  title: 'Fluxo Suporte — Fluxo Digital Tech',
+  title: {
+    default: 'Fluxo Suporte — Fluxo Digital Tech',
+    template: '%s · Fluxo Suporte',
+  },
   description: 'Sistema de chamados da Fluxo Digital Tech',
+  applicationName: 'Fluxo Suporte',
+  robots: { index: false, follow: false },
+  openGraph: {
+    title: 'Fluxo Suporte',
+    description: 'Sistema de chamados da Fluxo Digital Tech',
+    type: 'website',
+    locale: 'pt_BR',
+  },
+};
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#f8fafc' },
+    { media: '(prefers-color-scheme: dark)', color: '#020617' },
+  ],
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

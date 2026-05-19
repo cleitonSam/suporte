@@ -50,16 +50,18 @@ export function SlaBadge({
   const showMins =
     mins !== null && (status === 'on_track' || status === 'warning' || status === 'breached');
 
+  const fullLabel =
+    variant === 'resolution'
+      ? `SLA de resolução: ${label}${snap.label ? ` (${snap.label})` : ''}`
+      : `SLA de primeira resposta: ${label}${snap.label ? ` (${snap.label})` : ''}`;
   return (
     <span
       className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-semibold ring-1 ring-inset ${statusStyles[status]}`}
-      title={
-        variant === 'resolution'
-          ? `SLA de resolução (${snap.label})`
-          : `SLA de primeira resposta (${snap.label})`
-      }
+      title={fullLabel}
+      aria-label={fullLabel}
+      role="status"
     >
-      <Icon className="h-3 w-3" />
+      <Icon className="h-3 w-3" aria-hidden="true" />
       <span>{label}</span>
       {showMins && (
         <span className="font-normal opacity-75">

@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { db } from '@/lib/db';
@@ -22,6 +23,22 @@ import {
   formatDate,
   formatRelative,
 } from '@/lib/utils';
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { id: string };
+}): Promise<Metadata> {
+  const ticket = await db.ticket.findUnique({
+    where: { id: params.id },
+    select: { ticketNumber: true, title: true, client: { select: { name: true } } },
+  });
+  if (!ticket) return { title: 'Chamado não encontrado' };
+  return {
+    title: `${ticket.ticketNumber} — ${ticket.title}`,
+    description: `Chamado ${ticket.ticketNumber} (${ticket.client.name})`,
+  };
+}
 
 export default async function ChamadoAdminPage({
   params,
