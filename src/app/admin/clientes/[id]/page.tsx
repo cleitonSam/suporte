@@ -1,9 +1,13 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { Pencil, Trash2 } from 'lucide-react';
 import { db } from '@/lib/db';
 import { updateClientAction } from '@/server/actions/clients';
 import { resendInviteAction } from '@/server/actions/users';
+import { deleteEquipmentAction } from '@/server/actions/equipment';
 import { TICKET_STATUS_COLOR, TICKET_STATUS_LABEL, formatRelative, formatDate } from '@/lib/utils';
+import { ConfirmDialog } from '@/components/confirm-dialog';
+import { WarrantyBadge } from '@/components/warranty-badge';
 
 export default async function ClienteDetalhePage({
   params,
@@ -269,11 +273,12 @@ export default async function ClienteDetalhePage({
                   <th scope="col" className="px-4 py-2 text-left font-medium text-slate-600">Localização</th>
                   <th scope="col" className="px-4 py-2 text-left font-medium text-slate-600">Garantia</th>
                   <th scope="col" className="px-4 py-2 text-left font-medium text-slate-600">Status</th>
+                  <th scope="col" className="px-4 py-2 text-right font-medium text-slate-600">Ações</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-200">
                 {client.equipment.length === 0 && (
-                  <tr><td colSpan={7} className="px-4 py-6 text-center text-slate-500">Nenhum equipamento cadastrado.</td></tr>
+                  <tr><td colSpan={8} className="px-4 py-6 text-center text-slate-500">Nenhum equipamento cadastrado.</td></tr>
                 )}
                 {client.equipment.map((e) => (
                   <tr key={e.id} className="hover:bg-slate-50">
@@ -286,13 +291,7 @@ export default async function ClienteDetalhePage({
                       {!e.serialNumber && !e.patrimony && '—'}
                     </td>
                     <td className="px-4 py-2 text-slate-700">{e.location ?? '—'}</td>
-                    <td className="px-4 py-2 text-slate-700">
-                      {e.warrantyExpiresAt ? (
-                        <span className={new Date(e.warrantyExpiresAt) < new Date() ? 'text-red-600' : 'text-emerald-700'}>
-                          {formatDate(e.warrantyExpiresAt).split(' ')[0]}
-                        </span>
-                      ) : '—'}
-                    </td>
+                    <td className="px-4 py-2"><WarrantyBadge expiresAt={e.warrantyExpiresAt} /></td>
                     <td className="px-4 py-2">
                       <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${
                         e.status === 'ACTIVE' ? 'bg-emerald-100 text-emerald-800'
@@ -301,6 +300,43 @@ export default async function ClienteDetalhePage({
                       }`}>
                         {e.status === 'ACTIVE' ? 'Ativo' : e.status === 'IN_REPAIR' ? 'Em reparo' : 'Desativado'}
                       </span>
+                    </td>
+                    <td className="px-4 py-2">
+                      <div className="flex items-center justify-end gap-1.5">
+                        <Link
+                          href={`/admin/clientes/${client.id}/equipamentos/${e.id}/editar`}
+                          aria-label={`Editar ${e.name}`}
+                          className="rounded-md border border-slate-200 p-1.5 text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900"
+                          title="Editar"
+                        >
+                          <Pencil className="h-3.5 w-3.5" aria-hidden="true" />
+                        </Link>
+                        <ConfirmDialog
+                          title="Remover equipamento"
+                          description={
+                            <>
+                              O equipamento <strong>{e.name}</strong> será removido do inventário.
+                              Esta ação pode ser desfeita restaurando o registro no banco.
+                            </>
+                          }
+                          confirmLabel="Remover"
+                          destructive
+                          action={deleteEquipmentAction}
+                          hiddenFields={{
+                            id: e.id,
+                            returnTo: `/admin/clientes/${client.id}?aba=equipamentos`,
+                          }}
+                        >
+                          <button
+                            type="button"
+                            aria-label={`Remover ${e.name}`}
+                            className="rounded-md border border-rose-200 p-1.5 text-rose-600 transition-colors hover:bg-rose-50"
+                            title="Remover"
+                          >
+                            <Trash2 className="h-3.5 w-3.5" aria-hidden="true" />
+                          </button>
+                        </ConfirmDialog>
+                      </div>
                     </td>
                   </tr>
                 ))}

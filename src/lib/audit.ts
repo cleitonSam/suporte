@@ -46,6 +46,10 @@ export type AuditAction =
   | 'kb.article_create'
   | 'kb.article_update'
   | 'kb.article_delete'
+  | 'equipment.create'
+  | 'equipment.update'
+  | 'equipment.status_change'
+  | 'equipment.delete'
   | 'rate_limit.hit';
 
 export interface AuditParams {

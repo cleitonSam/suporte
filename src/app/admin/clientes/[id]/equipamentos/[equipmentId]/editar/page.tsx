@@ -1,14 +1,21 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { db } from '@/lib/db';
-import { createEquipmentAction } from '@/server/actions/equipment';
+import { updateEquipmentAction } from '@/server/actions/equipment';
 import { EquipmentForm } from '@/components/equipment-form';
 
-export default async function NovoEquipamentoPage({ params }: { params: { id: string } }) {
-  const [client, categories] = await Promise.all([
+interface PageProps {
+  params: { id: string; equipmentId: string };
+}
+
+export default async function EditarEquipamentoPage({ params }: PageProps) {
+  const [client, equipment, categories] = await Promise.all([
     db.client.findFirst({
       where: { id: params.id, deletedAt: null },
       select: { id: true, name: true },
+    }),
+    db.equipment.findFirst({
+      where: { id: params.equipmentId, deletedAt: null, clientId: params.id },
     }),
     db.equipmentCategory.findMany({
       where: { isActive: true },
@@ -16,7 +23,7 @@ export default async function NovoEquipamentoPage({ params }: { params: { id: st
     }),
   ]);
 
-  if (!client) notFound();
+  if (!client || !equipment) notFound();
 
   return (
     <div className="mx-auto max-w-2xl">
@@ -30,23 +37,24 @@ export default async function NovoEquipamentoPage({ params }: { params: { id: st
           {client.name}
         </Link>
         <span aria-hidden="true">/</span>
-        <span className="font-medium text-slate-900 dark:text-white">Novo equipamento</span>
+        <span className="font-medium text-slate-900 dark:text-white">Editar equipamento</span>
       </div>
 
       <h1 className="font-display text-2xl font-bold text-slate-900 dark:text-white">
-        Novo equipamento
+        Editar equipamento
       </h1>
       <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">
-        Cadastro de ativo de TI para <strong>{client.name}</strong>.
+        Atualizando <strong>{equipment.name}</strong>.
       </p>
 
       <div className="mt-6">
         <EquipmentForm
-          action={createEquipmentAction}
+          action={updateEquipmentAction}
           clientId={client.id}
           categories={categories}
+          defaults={equipment}
           cancelHref={`/admin/clientes/${client.id}?aba=equipamentos`}
-          submitLabel="Salvar equipamento"
+          submitLabel="Salvar alterações"
         />
       </div>
     </div>
