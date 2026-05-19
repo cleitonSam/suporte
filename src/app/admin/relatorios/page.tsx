@@ -59,6 +59,31 @@ export default async function RelatoriosPage() {
           </Link>
 
           <Link
+            href="/admin/relatorios/saude"
+            className="group relative flex items-start gap-4 overflow-hidden rounded-lg border border-slate-200 bg-white p-5 shadow-elevate transition-all hover:-translate-y-0.5 hover:shadow-elevate-lg dark:border-slate-700 dark:bg-slate-800"
+          >
+            <span
+              aria-hidden="true"
+              className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-500/40 to-transparent"
+            />
+            <span
+              aria-hidden="true"
+              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md bg-emerald-500/10 text-emerald-600 ring-1 ring-inset ring-emerald-500/20"
+            >
+              <Smile className="h-5 w-5" />
+            </span>
+            <div className="min-w-0 flex-1">
+              <h3 className="font-display text-base font-semibold text-slate-900 dark:text-white">
+                Saúde dos clientes
+              </h3>
+              <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">
+                Health score por cliente: CSAT, SLA, reabertura e engajamento.
+              </p>
+            </div>
+            <ArrowRight className="h-4 w-4 text-slate-400 transition-transform group-hover:translate-x-1" aria-hidden="true" />
+          </Link>
+
+          <Link
             href="/admin/configuracoes/auditoria"
             className="group relative flex items-start gap-4 overflow-hidden rounded-lg border border-slate-200 bg-white p-5 shadow-elevate transition-all hover:-translate-y-0.5 hover:shadow-elevate-lg dark:border-slate-700 dark:bg-slate-800"
           >
