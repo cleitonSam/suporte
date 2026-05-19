@@ -35,12 +35,10 @@ import { SubmitButton } from '@/components/submit-button';
 import { TicketStatusTimeline } from '@/components/ticket-status-timeline';
 import { MessageBubble } from '@/components/message-bubble';
 import { ActivityIcon } from '@/components/dashboard/activity-icon';
+import { TicketStatusDot, PriorityDot } from '@/components/ui/status-dot';
 import {
-  TICKET_STATUS_COLOR,
   TICKET_STATUS_LABEL,
   TICKET_EVENT_LABEL,
-  PRIORITY_COLOR,
-  PRIORITY_LABEL,
   formatDate,
   formatRelative,
 } from '@/lib/utils';
@@ -162,20 +160,12 @@ export default async function ChamadoAdminPage({
               >
                 {ticket.title}
               </h1>
-              <div className="mt-3 flex flex-wrap items-center gap-2">
-                <span
-                  className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-[11px] font-semibold ${TICKET_STATUS_COLOR[ticket.status]}`}
-                >
-                  {TICKET_STATUS_LABEL[ticket.status]}
-                </span>
-                <span
-                  className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-[11px] font-medium ${PRIORITY_COLOR[ticket.priority]}`}
-                >
-                  {PRIORITY_LABEL[ticket.priority]}
-                </span>
+              <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2">
+                <TicketStatusDot status={ticket.status} />
+                <PriorityDot priority={ticket.priority} />
                 {ticket.category && (
-                  <span className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-2.5 py-0.5 text-[11px] font-medium text-slate-700 dark:bg-slate-700 dark:text-slate-300">
-                    <Tag className="h-3 w-3" aria-hidden="true" />
+                  <span className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-600 dark:text-slate-400">
+                    <Tag className="h-3 w-3 text-slate-400" aria-hidden="true" />
                     {ticket.category.name}
                   </span>
                 )}
