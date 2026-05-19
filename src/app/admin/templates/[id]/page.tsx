@@ -35,7 +35,7 @@ export default async function EditTemplatePage({ params, searchParams }: PagePro
 
       <form
         action={updateTemplateAction}
-        className="space-y-3 rounded-xl border border-slate-200 bg-white p-5 shadow-sm"
+        className="space-y-3 rounded-xl border border-slate-200 bg-white p-5 shadow-elevate"
       >
         <input type="hidden" name="id" value={template.id} />
         <div>

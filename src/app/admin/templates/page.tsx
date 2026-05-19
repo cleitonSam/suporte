@@ -61,7 +61,7 @@ export default async function TemplatesPage({ searchParams }: PageProps) {
       {isCreating && (
         <form
           action={createTemplateAction}
-          className="space-y-3 rounded-xl border border-slate-200 bg-white p-5 shadow-sm"
+          className="space-y-3 rounded-xl border border-slate-200 bg-white p-5 shadow-elevate"
         >
           <h2 className="text-sm font-semibold text-slate-900">Novo template</h2>
           <div>
@@ -105,7 +105,7 @@ export default async function TemplatesPage({ searchParams }: PageProps) {
         </form>
       )}
 
-      <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+      <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-elevate">
         {templates.length === 0 ? (
           <div className="p-10 text-center text-sm text-slate-500">
             Nenhum template cadastrado ainda.

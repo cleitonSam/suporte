@@ -145,7 +145,7 @@ export default async function InventarioPage({
       {/* Filtros */}
       <form
         method="GET"
-        className="grid grid-cols-1 gap-3 rounded-xl border border-slate-200 bg-white p-4 shadow-sm sm:grid-cols-2 lg:grid-cols-5 dark:border-slate-700 dark:bg-slate-800"
+        className="grid grid-cols-1 gap-3 rounded-xl border border-slate-200 bg-white p-4 shadow-elevate sm:grid-cols-2 lg:grid-cols-5 dark:border-slate-700 dark:bg-slate-800"
       >
         <div className="lg:col-span-2">
           <label htmlFor="inv-q" className="block text-xs font-medium text-slate-600 dark:text-slate-400">
@@ -162,7 +162,7 @@ export default async function InventarioPage({
               name="q"
               defaultValue={searchParams.q}
               placeholder="Nome, serial, IP, modelo..."
-              className="block w-full rounded-md border border-slate-300 px-3 py-2 pl-8 text-sm shadow-sm focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500"
+              className="block w-full rounded-md border border-slate-300 px-3 py-2 pl-8 text-sm shadow-elevate focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500"
             />
           </div>
         </div>
@@ -174,7 +174,7 @@ export default async function InventarioPage({
             id="inv-client"
             name="clientId"
             defaultValue={searchParams.clientId ?? ''}
-            className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm"
+            className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-elevate"
           >
             <option value="">Todos</option>
             {clients.map((c) => (
@@ -190,7 +190,7 @@ export default async function InventarioPage({
             id="inv-category"
             name="categoryId"
             defaultValue={searchParams.categoryId ?? ''}
-            className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm"
+            className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-elevate"
           >
             <option value="">Todas</option>
             {categories.map((c) => (
@@ -206,7 +206,7 @@ export default async function InventarioPage({
             id="inv-status"
             name="status"
             defaultValue={searchParams.status ?? ''}
-            className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm"
+            className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-elevate"
           >
             <option value="">Todos</option>
             <option value="ACTIVE">Ativo</option>
@@ -256,14 +256,14 @@ export default async function InventarioPage({
 
       {/* Lista */}
       {equipment.length === 0 ? (
-        <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-12 text-center shadow-sm dark:border-slate-600 dark:bg-slate-800">
+        <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-12 text-center shadow-elevate dark:border-slate-600 dark:bg-slate-800">
           <Package className="mx-auto h-8 w-8 text-slate-300" aria-hidden="true" />
           <p className="mt-3 text-sm text-slate-500">
             Nenhum equipamento encontrado com esses filtros.
           </p>
         </div>
       ) : (
-        <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-800">
+        <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-elevate dark:border-slate-700 dark:bg-slate-800">
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-slate-200 text-sm dark:divide-slate-700">
               <thead className="bg-slate-50/60 dark:bg-slate-800/60">

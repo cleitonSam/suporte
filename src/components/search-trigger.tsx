@@ -9,7 +9,7 @@ export function SearchTrigger() {
         // Simulate Ctrl+K to open the command palette
         window.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', ctrlKey: true }));
       }}
-      className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm text-slate-500 shadow-sm transition-colors hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-slate-700"
+      className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-sm text-slate-500 shadow-elevate transition-colors hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-slate-700"
       title="Busca global (Ctrl+K)"
     >
       <Search className="h-3.5 w-3.5 text-slate-400" />

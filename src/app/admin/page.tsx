@@ -465,7 +465,7 @@ export default async function AdminDashboard() {
 
       {/* Activity feed */}
       <section aria-labelledby="activity-heading">
-        <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-800">
+        <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-elevate dark:border-slate-700 dark:bg-slate-800">
           <div className="flex items-center justify-between border-b border-slate-200 px-5 py-3 dark:border-slate-700">
             <div className="flex items-center gap-2">
               <Activity className="h-4 w-4 text-fluxo-500" aria-hidden="true" />

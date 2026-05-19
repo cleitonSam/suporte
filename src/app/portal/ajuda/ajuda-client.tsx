@@ -97,7 +97,7 @@ export default function AjudaClient({ categories }: Props) {
                 <p className="mb-4 text-sm text-slate-600 dark:text-slate-400">{category.description}</p>
               )}
 
-              <div className="mt-auto flex items-center justify-between border-t border-slate-100 pt-4 dark:border-slate-700">
+              <div className="mt-auto flex items-center justify-between border-t border-slate-200 pt-4 dark:border-slate-700">
                 <span className="text-xs font-medium text-slate-500 dark:text-slate-400">
                   {category._count.articles}{' '}
                   {category._count.articles === 1 ? 'artigo' : 'artigos'}

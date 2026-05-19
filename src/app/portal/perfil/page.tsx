@@ -21,7 +21,7 @@ export default async function PortalPerfilPage({
       <p className="mt-1 text-sm text-slate-600">Gerencie sua conta e altere sua senha.</p>
 
       {/* Dados da conta */}
-      <div className="mt-6 rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+      <div className="mt-6 rounded-lg border border-slate-200 bg-white p-6 shadow-elevate">
         <h2 className="mb-4 text-sm font-semibold text-slate-900">Dados da conta</h2>
         <div className="space-y-3 text-sm">
           <div className="flex justify-between">
@@ -36,7 +36,7 @@ export default async function PortalPerfilPage({
       </div>
 
       {/* Troca de senha */}
-      <div className="mt-6 rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+      <div className="mt-6 rounded-lg border border-slate-200 bg-white p-6 shadow-elevate">
         <h2 className="mb-4 text-sm font-semibold text-slate-900">Alterar senha</h2>
         <p className="mb-4 text-sm text-slate-600">
           Se você recebeu uma senha temporária por email, troque-a aqui agora.
@@ -60,7 +60,7 @@ export default async function PortalPerfilPage({
               name="currentPassword"
               type="password"
               required
-              className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500"
+              className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-elevate focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500"
             />
           </div>
           <div>
@@ -70,7 +70,7 @@ export default async function PortalPerfilPage({
               type="password"
               required
               minLength={8}
-              className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500"
+              className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-elevate focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500"
             />
           </div>
           <div>
@@ -80,7 +80,7 @@ export default async function PortalPerfilPage({
               type="password"
               required
               minLength={8}
-              className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500"
+              className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-elevate focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500"
             />
           </div>
           <div>

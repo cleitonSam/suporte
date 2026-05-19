@@ -81,7 +81,7 @@ export default async function KnowledgeBasePage({ searchParams }: PageProps) {
       {isCreating && (
         <form
           action={createKbCategoryAction}
-          className="space-y-3 rounded-xl border border-slate-200 bg-white p-5 shadow-sm"
+          className="space-y-3 rounded-xl border border-slate-200 bg-white p-5 shadow-elevate"
         >
           <h2 className="text-sm font-semibold text-slate-900">Nova categoria</h2>
           <div>
@@ -150,7 +150,7 @@ export default async function KnowledgeBasePage({ searchParams }: PageProps) {
           {categories.map((category) => (
             <div
               key={category.id}
-              className="flex flex-col rounded-lg border border-slate-200 bg-white p-4 shadow-sm hover:shadow-md transition-shadow"
+              className="flex flex-col rounded-lg border border-slate-200 bg-white p-4 shadow-elevate hover:shadow-md transition-shadow"
             >
               <div className="flex items-start justify-between">
                 <div className="flex-1">

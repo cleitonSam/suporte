@@ -220,7 +220,7 @@ export function CommandPalette() {
         )}
 
         {/* Footer hint */}
-        <div className="border-t border-slate-100 px-4 py-2 text-[11px] text-slate-400 dark:border-slate-700">
+        <div className="border-t border-slate-200 px-4 py-2 text-[11px] text-slate-400 dark:border-slate-700">
           <kbd className="rounded border border-slate-200 bg-slate-50 px-1 py-0.5 font-mono text-[10px] dark:border-slate-600 dark:bg-slate-700">↑↓</kbd>{' '}
           navegar{' '}
           <kbd className="rounded border border-slate-200 bg-slate-50 px-1 py-0.5 font-mono text-[10px] dark:border-slate-600 dark:bg-slate-700">Enter</kbd>{' '}

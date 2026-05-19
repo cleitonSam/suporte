@@ -184,7 +184,7 @@ export function NotificationsBell({ variant = 'dark' }: Props = {}) {
                     key={n.id}
                     href={n.linkUrl}
                     onClick={() => isUnread && handleMarkRead(n.id)}
-                    className="block border-b border-slate-100 last:border-b-0 dark:border-slate-700"
+                    className="block border-b border-slate-200 last:border-b-0 dark:border-slate-700"
                   >
                     {content}
                   </Link>
@@ -193,7 +193,7 @@ export function NotificationsBell({ variant = 'dark' }: Props = {}) {
                     key={n.id}
                     type="button"
                     onClick={() => isUnread && handleMarkRead(n.id)}
-                    className="block w-full border-b border-slate-100 text-left last:border-b-0 dark:border-slate-700"
+                    className="block w-full border-b border-slate-200 text-left last:border-b-0 dark:border-slate-700"
                   >
                     {content}
                   </button>

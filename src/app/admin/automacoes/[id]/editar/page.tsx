@@ -37,7 +37,7 @@ export default async function EditarAutomacaoPage({
         </p>
       </div>
 
-      <div className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+      <div className="rounded-lg border border-slate-200 bg-white p-6 shadow-elevate">
         <form
           action={async (formData) => {
             formData.append('id', params.id);

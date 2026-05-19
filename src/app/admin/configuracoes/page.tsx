@@ -88,19 +88,19 @@ export default async function ConfiguracoesPage({
               <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
                 <div>
                   <label className="block text-xs font-medium text-slate-700">Nome completo *</label>
-                  <input name="name" required className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500" />
+                  <input name="name" required className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-elevate focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500" />
                 </div>
                 <div>
                   <label className="block text-xs font-medium text-slate-700">Email *</label>
-                  <input name="email" type="email" required className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500" />
+                  <input name="email" type="email" required className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-elevate focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500" />
                 </div>
                 <div>
                   <label className="block text-xs font-medium text-slate-700">Senha inicial * (mín. 8 chars)</label>
-                  <input name="password" type="password" required minLength={8} className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500" />
+                  <input name="password" type="password" required minLength={8} className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-elevate focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500" />
                 </div>
                 <div>
                   <label className="block text-xs font-medium text-slate-700">Perfil</label>
-                  <select name="role" className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm">
+                  <select name="role" className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-elevate">
                     <option value="AGENT">Agente (T.I.)</option>
                     <option value="ADMIN">Administrador</option>
                   </select>
@@ -118,7 +118,7 @@ export default async function ConfiguracoesPage({
             </form>
           )}
 
-          <div className="overflow-x-auto rounded-lg border border-slate-200 bg-white shadow-sm">
+          <div className="overflow-x-auto rounded-lg border border-slate-200 bg-white shadow-elevate">
             <table className="min-w-[700px] divide-y divide-slate-200 text-sm">
               <thead className="bg-slate-50">
                 <tr>
@@ -172,23 +172,23 @@ export default async function ConfiguracoesPage({
         <div className="mt-6 space-y-6">
           {/* Criar nova fila */}
           {isAdmin && (
-            <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+            <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-elevate">
               <h3 className="mb-3 font-semibold text-slate-900">Nova fila</h3>
               <form action={createQueueAction} className="flex flex-wrap items-end gap-3">
                 <div>
                   <label className="block text-xs font-medium text-slate-600">Nome *</label>
                   <input name="name" required placeholder="Ex: Redes, Impressoras, Urgências"
-                    className="mt-1 rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500 w-full sm:w-48" />
+                    className="mt-1 rounded-md border border-slate-300 px-3 py-2 text-sm shadow-elevate focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500 w-full sm:w-48" />
                 </div>
                 <div>
                   <label className="block text-xs font-medium text-slate-600">Descrição</label>
                   <input name="description" placeholder="Opcional"
-                    className="mt-1 rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500 w-full sm:w-56" />
+                    className="mt-1 rounded-md border border-slate-300 px-3 py-2 text-sm shadow-elevate focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500 w-full sm:w-56" />
                 </div>
                 <div>
                   <label className="block text-xs font-medium text-slate-600">Cor</label>
                   <input name="color" type="color" defaultValue="#3b82f6"
-                    className="mt-1 h-9 w-16 rounded-md border border-slate-300 px-1 py-1 shadow-sm" />
+                    className="mt-1 h-9 w-16 rounded-md border border-slate-300 px-1 py-1 shadow-elevate" />
                 </div>
                 <button type="submit" className="rounded-md bg-fluxo-500 px-4 py-2 text-sm font-medium text-white hover:bg-fluxo-600">
                   Criar fila
@@ -204,8 +204,8 @@ export default async function ConfiguracoesPage({
             const isSelected = selectedQueue?.id === q.id;
 
             return (
-              <div key={q.id} className="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
-                <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50 px-5 py-3">
+              <div key={q.id} className="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-elevate">
+                <div className="flex items-center justify-between border-b border-slate-200 bg-slate-50 px-5 py-3">
                   <div className="flex items-center gap-3">
                     {q.color && (
                       <div className="h-3 w-3 rounded-full flex-shrink-0" style={{ backgroundColor: q.color }} />
@@ -303,18 +303,18 @@ export default async function ConfiguracoesPage({
         <div className="mt-6 space-y-6">
           {/* Criar nova categoria */}
           {isAdmin && (
-            <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+            <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-elevate">
               <h3 className="mb-3 font-semibold text-slate-900">Nova categoria</h3>
               <form action={createCategoryAction} className="flex flex-wrap items-end gap-3">
                 <div>
                   <label className="block text-xs font-medium text-slate-600">Nome *</label>
                   <input name="name" required placeholder="Ex: Hardware, Software, Rede..."
-                    className="mt-1 rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500 w-full sm:w-48" />
+                    className="mt-1 rounded-md border border-slate-300 px-3 py-2 text-sm shadow-elevate focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500 w-full sm:w-48" />
                 </div>
                 <div>
                   <label className="block text-xs font-medium text-slate-600">Cor</label>
                   <input name="color" type="color" defaultValue="#64748b"
-                    className="mt-1 h-9 w-16 rounded-md border border-slate-300 px-1 py-1 shadow-sm" />
+                    className="mt-1 h-9 w-16 rounded-md border border-slate-300 px-1 py-1 shadow-elevate" />
                 </div>
                 <button type="submit" className="rounded-md bg-fluxo-500 px-4 py-2 text-sm font-medium text-white hover:bg-fluxo-600">
                   Criar categoria
@@ -324,7 +324,7 @@ export default async function ConfiguracoesPage({
           )}
 
           {/* Lista de categorias */}
-          <div className="overflow-x-auto rounded-lg border border-slate-200 bg-white shadow-sm">
+          <div className="overflow-x-auto rounded-lg border border-slate-200 bg-white shadow-elevate">
             <table className="min-w-[700px] divide-y divide-slate-200 text-sm">
               <thead className="bg-slate-50">
                 <tr>

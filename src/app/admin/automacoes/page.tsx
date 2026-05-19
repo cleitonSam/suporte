@@ -57,7 +57,7 @@ export default async function AutomationsPage() {
           {rules.map((rule) => (
             <div
               key={rule.id}
-              className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm hover:shadow-md transition-shadow"
+              className="rounded-lg border border-slate-200 bg-white p-5 shadow-elevate hover:shadow-md transition-shadow"
             >
               <div className="flex items-start justify-between">
                 <div className="flex-1">

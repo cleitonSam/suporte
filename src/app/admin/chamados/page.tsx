@@ -295,7 +295,7 @@ export default async function ChamadosListPage({ searchParams }: PageProps) {
               name="q"
               defaultValue={searchParams.q}
               placeholder="Título, descrição ou número (CH-...)"
-              className="block w-full rounded-md border border-slate-300 px-3 py-2 pl-8 text-sm shadow-sm focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500"
+              className="block w-full rounded-md border border-slate-300 px-3 py-2 pl-8 text-sm shadow-elevate focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500"
             />
           </div>
         </div>
@@ -307,7 +307,7 @@ export default async function ChamadosListPage({ searchParams }: PageProps) {
             id="tk-client"
             name="clientId"
             defaultValue={searchParams.clientId ?? ''}
-            className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm"
+            className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-elevate"
           >
             <option value="">Todos</option>
             {clients.map((c) => (
@@ -323,7 +323,7 @@ export default async function ChamadosListPage({ searchParams }: PageProps) {
             id="tk-queue"
             name="queueId"
             defaultValue={searchParams.queueId ?? ''}
-            className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm"
+            className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-elevate"
           >
             <option value="">Todas</option>
             {queues.map((q) => (
@@ -339,7 +339,7 @@ export default async function ChamadosListPage({ searchParams }: PageProps) {
             id="tk-sla"
             name="sla"
             defaultValue={searchParams.sla ?? ''}
-            className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm"
+            className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-elevate"
           >
             <option value="">Todos</option>
             <option value="warning">Vencendo (&lt;1h)</option>

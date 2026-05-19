@@ -51,12 +51,12 @@ export function EquipmentForm({
 }: Props) {
   const v = defaults ?? {};
   const inputClass =
-    'mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500';
+    'mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-elevate focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500';
   const monoClass = `${inputClass} font-mono`;
   const labelClass = 'block text-sm font-medium text-slate-700 dark:text-slate-200';
 
   return (
-    <form action={action} className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-800">
+    <form action={action} className="rounded-lg border border-slate-200 bg-white p-6 shadow-elevate dark:border-slate-700 dark:bg-slate-800">
       <input type="hidden" name="clientId" value={clientId} />
       {v.id && <input type="hidden" name="id" value={v.id} />}
 

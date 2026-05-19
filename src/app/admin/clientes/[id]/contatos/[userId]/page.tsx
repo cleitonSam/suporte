@@ -76,7 +76,7 @@ export default async function EditarContatoPage({
       )}
 
       {/* Bloco destacado — Enviar convite */}
-      <div className="mt-6 rounded-lg border-2 border-fluxo-200 bg-gradient-to-br from-fluxo-50 to-indigo-50 p-5 shadow-sm">
+      <div className="mt-6 rounded-lg border-2 border-fluxo-200 bg-gradient-to-br from-fluxo-50 to-indigo-50 p-5 shadow-elevate">
         <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
           <div>
             <h2 className="flex items-center gap-2 text-base font-semibold text-fluxo-800">
@@ -95,7 +95,7 @@ export default async function EditarContatoPage({
             <input type="hidden" name="from" value="edit" />
             <button
               type="submit"
-              className="inline-flex items-center gap-2 whitespace-nowrap rounded-md bg-fluxo-500 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-fluxo-600"
+              className="inline-flex items-center gap-2 whitespace-nowrap rounded-md bg-fluxo-500 px-4 py-2 text-sm font-semibold text-white shadow-elevate hover:bg-fluxo-600"
             >
               ✉ Enviar convite agora
             </button>
@@ -106,7 +106,7 @@ export default async function EditarContatoPage({
       {/* Formulário de edição */}
       <form
         action={updateClientContactAction}
-        className="mt-6 space-y-4 rounded-lg border border-slate-200 bg-white p-6 shadow-sm"
+        className="mt-6 space-y-4 rounded-lg border border-slate-200 bg-white p-6 shadow-elevate"
       >
         <input type="hidden" name="userId" value={user.id} />
         <input type="hidden" name="clientId" value={client.id} />
@@ -118,21 +118,21 @@ export default async function EditarContatoPage({
               <label className="block text-sm font-medium text-slate-700">Nome completo *</label>
               <input
                 name="name" required defaultValue={user.name}
-                className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500"
+                className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-elevate focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500"
               />
             </div>
             <div>
               <label className="block text-sm font-medium text-slate-700">Email *</label>
               <input
                 name="email" type="email" required defaultValue={user.email}
-                className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500"
+                className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-elevate focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500"
               />
             </div>
             <div>
               <label className="block text-sm font-medium text-slate-700">Telefone</label>
               <input
                 name="phone" defaultValue={user.phone ?? ''}
-                className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500"
+                className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-elevate focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500"
               />
             </div>
           </div>
@@ -151,7 +151,7 @@ export default async function EditarContatoPage({
           </div>
         </div>
 
-        <div className="flex flex-wrap gap-2 border-t border-slate-100 pt-4">
+        <div className="flex flex-wrap gap-2 border-t border-slate-200 pt-4">
           <button
             type="submit"
             className="rounded-md bg-fluxo-500 px-4 py-2 text-sm font-medium text-white hover:bg-fluxo-600"
@@ -168,7 +168,7 @@ export default async function EditarContatoPage({
       </form>
 
       {/* Metadados + remover */}
-      <div className="mt-6 rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+      <div className="mt-6 rounded-lg border border-slate-200 bg-white p-5 shadow-elevate">
         <h2 className="text-sm font-semibold uppercase tracking-wider text-slate-600">Informações</h2>
         <dl className="mt-3 grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
           <dt className="text-slate-500">Cadastrado em</dt>

@@ -82,7 +82,7 @@ export default async function CategoryArticlesPage({ params, searchParams }: Pag
           {articles.map((article) => (
             <div
               key={article.id}
-              className="flex items-start justify-between rounded-lg border border-slate-200 bg-white p-4 hover:shadow-sm transition-shadow"
+              className="flex items-start justify-between rounded-lg border border-slate-200 bg-white p-4 hover:shadow-elevate transition-shadow"
             >
               <div className="flex-1">
                 <div className="flex items-center gap-2">

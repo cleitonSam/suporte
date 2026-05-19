@@ -23,7 +23,7 @@ export default function EsqueciSenhaPage({ searchParams }: PageProps) {
         </div>
 
         {enviado ? (
-          <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-6 text-center shadow-sm">
+          <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-6 text-center shadow-elevate">
             <div className="mx-auto mb-3 grid h-12 w-12 place-items-center rounded-full bg-emerald-100 text-emerald-600 text-xl">
               ✓
             </div>
@@ -47,7 +47,7 @@ export default function EsqueciSenhaPage({ searchParams }: PageProps) {
         ) : (
           <form
             action={requestPasswordResetAction}
-            className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm space-y-4"
+            className="rounded-xl border border-slate-200 bg-white p-6 shadow-elevate space-y-4"
           >
             <div>
               <label className="block text-xs font-medium text-slate-700">Email</label>
@@ -56,7 +56,7 @@ export default function EsqueciSenhaPage({ searchParams }: PageProps) {
                 name="email"
                 required
                 autoFocus
-                className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500"
+                className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-elevate focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500"
                 placeholder="seu@email.com"
               />
             </div>

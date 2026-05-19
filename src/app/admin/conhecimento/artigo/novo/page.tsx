@@ -43,7 +43,7 @@ export default async function CreateArticlePage({ searchParams }: PageProps) {
 
       <form
         action={createKbArticleAction}
-        className="space-y-5 rounded-xl border border-slate-200 bg-white p-6 shadow-sm"
+        className="space-y-5 rounded-xl border border-slate-200 bg-white p-6 shadow-elevate"
       >
         <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
           <div>

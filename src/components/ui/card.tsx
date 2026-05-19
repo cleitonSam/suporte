@@ -46,7 +46,7 @@ interface CardHeaderProps {
 
 export function CardHeader({ icon, title, description, action, className }: CardHeaderProps) {
   return (
-    <div className={cn('flex items-start gap-3 border-b border-slate-100 px-5 py-3 dark:border-slate-700', className)}>
+    <div className={cn('flex items-start gap-3 border-b border-slate-200 px-5 py-3 dark:border-slate-700', className)}>
       {icon && (
         <span
           aria-hidden="true"

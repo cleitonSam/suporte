@@ -145,7 +145,7 @@ export default async function ChamadoAdminPage({
       {/* Hero band */}
       <section
         aria-labelledby="ticket-title"
-        className="relative overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-800"
+        className="relative overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-elevate dark:border-slate-700 dark:bg-slate-800"
       >
         <div aria-hidden="true" className="absolute -right-20 -top-20 h-48 w-48 rounded-full bg-fluxo-500/10 blur-3xl" />
         <div className="relative space-y-5 p-6 sm:p-8">
@@ -191,7 +191,7 @@ export default async function ChamadoAdminPage({
                     <input type="hidden" name="ticketId" value={ticket.id} />
                     <button
                       type="submit"
-                      className="inline-flex items-center gap-1.5 rounded-md border border-slate-300 bg-white px-3.5 py-2 text-sm font-medium text-slate-700 shadow-sm transition-colors hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-slate-600"
+                      className="inline-flex items-center gap-1.5 rounded-md border border-slate-300 bg-white px-3.5 py-2 text-sm font-medium text-slate-700 shadow-elevate transition-colors hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-slate-600"
                     >
                       <Lock className="h-4 w-4" aria-hidden="true" />
                       Fechar
@@ -235,7 +235,7 @@ export default async function ChamadoAdminPage({
               {!isEditing ? (
                 <Link
                   href={`/admin/chamados/${ticket.id}?editando=1`}
-                  className="inline-flex items-center gap-1.5 rounded-md border border-slate-300 bg-white px-3.5 py-2 text-sm font-medium text-slate-600 shadow-sm transition-colors hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-slate-600"
+                  className="inline-flex items-center gap-1.5 rounded-md border border-slate-300 bg-white px-3.5 py-2 text-sm font-medium text-slate-600 shadow-elevate transition-colors hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-slate-600"
                 >
                   <Pencil className="h-4 w-4" aria-hidden="true" />
                   Editar
@@ -243,7 +243,7 @@ export default async function ChamadoAdminPage({
               ) : (
                 <Link
                   href={`/admin/chamados/${ticket.id}`}
-                  className="inline-flex items-center gap-1.5 rounded-md border border-slate-300 bg-white px-3.5 py-2 text-sm font-medium text-slate-600 shadow-sm transition-colors hover:bg-slate-50"
+                  className="inline-flex items-center gap-1.5 rounded-md border border-slate-300 bg-white px-3.5 py-2 text-sm font-medium text-slate-600 shadow-elevate transition-colors hover:bg-slate-50"
                 >
                   Cancelar edição
                 </Link>
@@ -264,7 +264,7 @@ export default async function ChamadoAdminPage({
           {isEditing ? (
             <form
               action={editTicketAction}
-              className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-800"
+              className="rounded-xl border border-slate-200 bg-white p-6 shadow-elevate dark:border-slate-700 dark:bg-slate-800"
             >
               <input type="hidden" name="ticketId" value={ticket.id} />
               <div>
@@ -276,7 +276,7 @@ export default async function ChamadoAdminPage({
                   name="title"
                   defaultValue={ticket.title}
                   required
-                  className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500"
+                  className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-elevate focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500"
                 />
               </div>
               <div className="mt-4">
@@ -289,7 +289,7 @@ export default async function ChamadoAdminPage({
                   defaultValue={ticket.description ?? ''}
                   required
                   rows={6}
-                  className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500"
+                  className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-elevate focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500"
                 />
               </div>
               <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -301,7 +301,7 @@ export default async function ChamadoAdminPage({
                     id="tk-edit-cat"
                     name="categoryId"
                     defaultValue={ticket.category?.id ?? ''}
-                    className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm"
+                    className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-elevate"
                   >
                     <option value="">— Nenhuma —</option>
                     {categories.map((c) => (
@@ -317,7 +317,7 @@ export default async function ChamadoAdminPage({
                     id="tk-edit-eq"
                     name="equipmentId"
                     defaultValue={ticket.equipment?.id ?? ''}
-                    className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm"
+                    className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-elevate"
                   >
                     <option value="">— Nenhum —</option>
                     {equipment.map((e) => (
@@ -337,8 +337,8 @@ export default async function ChamadoAdminPage({
               </div>
             </form>
           ) : (
-            <article className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-800">
-              <header className="border-b border-slate-100 px-6 py-3 dark:border-slate-700">
+            <article className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-elevate dark:border-slate-700 dark:bg-slate-800">
+              <header className="border-b border-slate-200 px-6 py-3 dark:border-slate-700">
                 <h2 className="font-display text-sm font-semibold text-slate-900 dark:text-white">
                   Descrição do problema
                 </h2>
@@ -401,9 +401,9 @@ export default async function ChamadoAdminPage({
           {/* Controle */}
           <section
             aria-labelledby="control-heading"
-            className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-800"
+            className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-elevate dark:border-slate-700 dark:bg-slate-800"
           >
-            <header className="border-b border-slate-100 px-4 py-3 dark:border-slate-700">
+            <header className="border-b border-slate-200 px-4 py-3 dark:border-slate-700">
               <h3
                 id="control-heading"
                 className="font-display text-xs font-semibold uppercase tracking-wider text-slate-500"
@@ -468,9 +468,9 @@ export default async function ChamadoAdminPage({
           {/* Detalhes */}
           <section
             aria-labelledby="details-heading"
-            className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-800"
+            className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-elevate dark:border-slate-700 dark:bg-slate-800"
           >
-            <header className="border-b border-slate-100 px-4 py-3 dark:border-slate-700">
+            <header className="border-b border-slate-200 px-4 py-3 dark:border-slate-700">
               <h3
                 id="details-heading"
                 className="font-display text-xs font-semibold uppercase tracking-wider text-slate-500"
@@ -539,9 +539,9 @@ export default async function ChamadoAdminPage({
           {/* Histórico */}
           <section
             aria-labelledby="history-heading"
-            className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-800"
+            className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-elevate dark:border-slate-700 dark:bg-slate-800"
           >
-            <header className="border-b border-slate-100 px-4 py-3 dark:border-slate-700">
+            <header className="border-b border-slate-200 px-4 py-3 dark:border-slate-700">
               <h3
                 id="history-heading"
                 className="flex items-center gap-1.5 font-display text-xs font-semibold uppercase tracking-wider text-slate-500"
@@ -617,7 +617,7 @@ function InlineSelectForm({
           id={`ctrl-${name}-${ticketId}`}
           name={name}
           defaultValue={defaultValue}
-          className="flex-1 rounded-md border border-slate-300 bg-white px-2 py-1.5 text-sm shadow-sm focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500 dark:border-slate-600 dark:bg-slate-700"
+          className="flex-1 rounded-md border border-slate-300 bg-white px-2 py-1.5 text-sm shadow-elevate focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500 dark:border-slate-600 dark:bg-slate-700"
         >
           {options.map((o) => (
             <option key={o.value} value={o.value}>{o.label}</option>

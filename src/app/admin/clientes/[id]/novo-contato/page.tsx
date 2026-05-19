@@ -44,7 +44,7 @@ export default async function NovoContatoPage({
 
       <form
         action={createClientContactAction}
-        className="mt-6 space-y-5 rounded-lg border border-slate-200 bg-white p-6 shadow-sm"
+        className="mt-6 space-y-5 rounded-lg border border-slate-200 bg-white p-6 shadow-elevate"
       >
         <input type="hidden" name="clientId" value={client.id} />
 
@@ -54,7 +54,7 @@ export default async function NovoContatoPage({
             <input
               name="name" required
               placeholder="Ex: Maria Silva"
-              className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500"
+              className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-elevate focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500"
             />
           </div>
 
@@ -63,7 +63,7 @@ export default async function NovoContatoPage({
             <input
               name="email" type="email" required
               placeholder="maria@empresa.com.br"
-              className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500"
+              className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-elevate focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500"
             />
             <p className="mt-1 text-xs text-slate-500">O convite será enviado para este endereço.</p>
           </div>
@@ -73,7 +73,7 @@ export default async function NovoContatoPage({
             <input
               name="phone"
               placeholder="(11) 99999-9999"
-              className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500"
+              className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-elevate focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500"
             />
           </div>
 
@@ -84,7 +84,7 @@ export default async function NovoContatoPage({
             <input
               name="password" type="text" minLength={8}
               placeholder="Deixe em branco para gerar automaticamente"
-              className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm font-mono shadow-sm focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500"
+              className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm font-mono shadow-elevate focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500"
             />
             <p className="mt-1 text-xs text-slate-500">
               Se deixar em branco, o sistema gera uma senha aleatória de 10 caracteres e envia por email.
@@ -116,7 +116,7 @@ export default async function NovoContatoPage({
         <div className="flex flex-wrap gap-2 pt-1">
           <button
             type="submit"
-            className="rounded-md bg-fluxo-500 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-fluxo-600"
+            className="rounded-md bg-fluxo-500 px-4 py-2 text-sm font-medium text-white shadow-elevate hover:bg-fluxo-600"
           >
             Criar e enviar convite
           </button>

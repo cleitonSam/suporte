@@ -18,7 +18,7 @@ export default async function NovaAutomacaoPage() {
         </p>
       </div>
 
-      <div className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+      <div className="rounded-lg border border-slate-200 bg-white p-6 shadow-elevate">
         <AutomationForm action={createAutomationAction} />
       </div>
 

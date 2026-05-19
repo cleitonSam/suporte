@@ -20,7 +20,7 @@ export default async function PrimeiroAcessoPage({ params, searchParams }: PageP
   if (!verified) {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center p-6">
-        <div className="max-w-md w-full rounded-xl border border-slate-200 bg-white p-8 text-center shadow-sm">
+        <div className="max-w-md w-full rounded-xl border border-slate-200 bg-white p-8 text-center shadow-elevate">
           <div className="mx-auto mb-4 grid h-12 w-12 place-items-center rounded-full bg-rose-100 text-rose-600">!</div>
           <h1 className="text-xl font-bold text-slate-900">Link inválido ou expirado</h1>
           <p className="mt-2 text-sm text-slate-600">
@@ -75,7 +75,7 @@ export default async function PrimeiroAcessoPage({ params, searchParams }: PageP
 
         <form
           action={completePasswordResetAction}
-          className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm space-y-4"
+          className="rounded-xl border border-slate-200 bg-white p-6 shadow-elevate space-y-4"
         >
           <input type="hidden" name="token" value={token} />
 
@@ -87,7 +87,7 @@ export default async function PrimeiroAcessoPage({ params, searchParams }: PageP
               required
               minLength={8}
               autoFocus
-              className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500"
+              className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-elevate focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500"
               placeholder="Mínimo 8 caracteres"
             />
           </div>
@@ -99,7 +99,7 @@ export default async function PrimeiroAcessoPage({ params, searchParams }: PageP
               name="confirmPassword"
               required
               minLength={8}
-              className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500"
+              className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-elevate focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500"
             />
           </div>
 

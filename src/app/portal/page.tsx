@@ -177,7 +177,7 @@ export default async function PortalHome({ searchParams }: PageProps) {
 
       {/* Listagem */}
       {tickets.length === 0 ? (
-        <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-12 text-center shadow-sm dark:border-slate-600 dark:bg-slate-800">
+        <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-12 text-center shadow-elevate dark:border-slate-600 dark:bg-slate-800">
           <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-fluxo-500/10 text-fluxo-600 ring-1 ring-inset ring-fluxo-500/20">
             <LifeBuoy className="h-5 w-5" aria-hidden="true" />
           </div>
@@ -213,7 +213,7 @@ export default async function PortalHome({ searchParams }: PageProps) {
               <li key={t.id}>
                 <Link
                   href={`/portal/chamado/${t.id}`}
-                  className="relative block overflow-hidden rounded-xl border border-slate-200 bg-white p-4 pl-5 shadow-sm transition hover:shadow-md dark:border-slate-700 dark:bg-slate-800"
+                  className="relative block overflow-hidden rounded-xl border border-slate-200 bg-white p-4 pl-5 shadow-elevate transition hover:shadow-md dark:border-slate-700 dark:bg-slate-800"
                 >
                   <span
                     aria-hidden="true"
@@ -251,7 +251,7 @@ export default async function PortalHome({ searchParams }: PageProps) {
           </ul>
 
           {/* Tabela no desktop */}
-          <div className="hidden overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-800 md:block">
+          <div className="hidden overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-elevate dark:border-slate-700 dark:bg-slate-800 md:block">
             <table className="min-w-full divide-y divide-slate-200 text-sm dark:divide-slate-700">
               <thead className="bg-slate-50/60 dark:bg-slate-800/60">
                 <tr>

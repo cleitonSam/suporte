@@ -32,7 +32,7 @@ export default async function NovoChamadoPage() {
           'use server';
           await createTicketAction(formData);
         }}
-        className="mt-6 space-y-4 rounded-lg border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-800"
+        className="mt-6 space-y-4 rounded-lg border border-slate-200 bg-white p-6 shadow-elevate dark:border-slate-700 dark:bg-slate-800"
       >
         <div>
           <label htmlFor="portal-ticket-title" className="block text-sm font-medium text-slate-700">Título *</label>
@@ -43,7 +43,7 @@ export default async function NovoChamadoPage() {
             minLength={5}
             maxLength={200}
             placeholder="Ex: Impressora não imprime desde manhã"
-            className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500"
+            className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-elevate focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500"
           />
         </div>
 
@@ -56,7 +56,7 @@ export default async function NovoChamadoPage() {
             minLength={10}
             rows={6}
             placeholder="O que está acontecendo? Quando começou? O que já tentou?"
-            className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500"
+            className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-elevate focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500"
           />
         </div>
 
@@ -67,7 +67,7 @@ export default async function NovoChamadoPage() {
               id="portal-ticket-priority"
               name="priority"
               defaultValue="MEDIUM"
-              className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500"
+              className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-elevate focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500"
             >
               <option value="LOW">Baixa</option>
               <option value="MEDIUM">Média</option>
@@ -81,7 +81,7 @@ export default async function NovoChamadoPage() {
             <select
               id="portal-ticket-category"
               name="categoryId"
-              className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500"
+              className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-elevate focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500"
             >
               <option value="">— Selecione —</option>
               {categories.map((c) => (
@@ -101,7 +101,7 @@ export default async function NovoChamadoPage() {
             <select
               id="portal-ticket-equipment"
               name="equipmentId"
-              className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500"
+              className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-elevate focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500"
             >
               <option value="">— Nenhum —</option>
               {equipments.map((e) => (
@@ -116,7 +116,7 @@ export default async function NovoChamadoPage() {
         <div className="flex justify-end gap-2 pt-2">
           <button
             type="submit"
-            className="rounded-md bg-fluxo-500 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-fluxo-600"
+            className="rounded-md bg-fluxo-500 px-4 py-2 text-sm font-medium text-white shadow-elevate hover:bg-fluxo-600"
           >
             Abrir chamado
           </button>

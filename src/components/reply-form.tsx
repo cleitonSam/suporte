@@ -37,7 +37,7 @@ export function ReplyForm({ ticketId, templates = [], allowInternal = true, clie
         await replyTicketAction(fd);
         setBody('');
       }}
-      className="mt-4 rounded-lg border border-slate-200 bg-white p-4 shadow-sm"
+      className="mt-4 rounded-lg border border-slate-200 bg-white p-4 shadow-elevate"
     >
       <input type="hidden" name="ticketId" value={ticketId} />
 
@@ -68,7 +68,7 @@ export function ReplyForm({ ticketId, templates = [], allowInternal = true, clie
                     key={t.id}
                     type="button"
                     onClick={() => applyTemplate(t)}
-                    className="block w-full border-b border-slate-100 px-3 py-2 text-left hover:bg-fluxo-50 last:border-b-0"
+                    className="block w-full border-b border-slate-200 px-3 py-2 text-left hover:bg-fluxo-50 last:border-b-0"
                   >
                     <div className="text-sm font-medium text-slate-900">{t.title}</div>
                     <div className="line-clamp-2 text-xs text-slate-500">{t.body}</div>
@@ -89,7 +89,7 @@ export function ReplyForm({ ticketId, templates = [], allowInternal = true, clie
         value={body}
         onChange={(e) => setBody(e.target.value)}
         placeholder="Escreva sua resposta..."
-        className="block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500"
+        className="block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-elevate focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500"
       />
       <div className="mt-3 flex justify-end">
         <button

@@ -79,7 +79,7 @@ export default async function FilaPage() {
           <p className="text-slate-500">Você não está em nenhuma fila.</p>
         )}
         {queues.map((q) => (
-          <div key={q.id} className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+          <div key={q.id} className="rounded-lg border border-slate-200 bg-white p-5 shadow-elevate">
             <h3 className="text-lg font-semibold text-slate-900">{q.name}</h3>
             {q.description && <p className="mt-1 text-sm text-slate-600">{q.description}</p>}
             <p className="mt-3 text-3xl font-bold text-fluxo-500">{q._count.tickets}</p>
@@ -118,7 +118,7 @@ export default async function FilaPage() {
           </div>
         )}
         {active.map((t) => (
-          <div key={t.id} className="rounded-lg border border-slate-200 bg-white shadow-sm">
+          <div key={t.id} className="rounded-lg border border-slate-200 bg-white shadow-elevate">
             <div className="flex items-center gap-4 p-4">
               {/* Info principal */}
               <div className="min-w-0 flex-1">

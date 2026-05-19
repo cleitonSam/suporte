@@ -119,7 +119,7 @@ export default async function ClientesPage({
                 name="name"
                 required
                 minLength={2}
-                className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500"
+                className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-elevate focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500"
               />
             </div>
             <div>
@@ -129,7 +129,7 @@ export default async function ClientesPage({
               <input
                 id="client-legal"
                 name="legalName"
-                className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500"
+                className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-elevate focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500"
               />
             </div>
             <div>
@@ -147,7 +147,7 @@ export default async function ClientesPage({
                 name="email"
                 type="email"
                 autoComplete="email"
-                className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500"
+                className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-elevate focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500"
               />
             </div>
             <div>
@@ -158,7 +158,7 @@ export default async function ClientesPage({
                 id="client-phone"
                 name="phone"
                 autoComplete="tel"
-                className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500"
+                className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-elevate focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500"
               />
             </div>
             <div>
@@ -169,7 +169,7 @@ export default async function ClientesPage({
                 id="client-address"
                 name="address"
                 autoComplete="street-address"
-                className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500"
+                className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-elevate focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500"
               />
             </div>
           </div>
@@ -229,7 +229,7 @@ export default async function ClientesPage({
             name="q"
             defaultValue={searchParams.q}
             placeholder="Nome, razão social, CNPJ ou email..."
-            className="block w-full rounded-md border border-slate-300 bg-white px-3 py-2 pl-8 text-sm shadow-sm focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500"
+            className="block w-full rounded-md border border-slate-300 bg-white px-3 py-2 pl-8 text-sm shadow-elevate focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500"
           />
         </div>
         <button
@@ -250,7 +250,7 @@ export default async function ClientesPage({
 
       {/* Lista */}
       {clients.length === 0 ? (
-        <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-12 text-center shadow-sm dark:border-slate-600 dark:bg-slate-800">
+        <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-12 text-center shadow-elevate dark:border-slate-600 dark:bg-slate-800">
           <Building2 className="mx-auto h-8 w-8 text-slate-300" aria-hidden="true" />
           <p className="mt-3 text-sm text-slate-500">
             Nenhum cliente encontrado.{' '}
@@ -262,7 +262,7 @@ export default async function ClientesPage({
           </p>
         </div>
       ) : (
-        <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-800">
+        <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-elevate dark:border-slate-700 dark:bg-slate-800">
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-slate-200 text-sm dark:divide-slate-700">
               <thead className="bg-slate-50/60 dark:bg-slate-800/60">

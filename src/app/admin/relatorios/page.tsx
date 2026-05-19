@@ -145,8 +145,8 @@ function ReportCard({
   children: React.ReactNode;
 }) {
   return (
-    <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
-      <div className="flex items-start gap-4 border-b border-slate-100 bg-gradient-to-r from-fluxo-50 to-white p-5">
+    <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-elevate">
+      <div className="flex items-start gap-4 border-b border-slate-200 bg-gradient-to-r from-fluxo-50 to-white p-5">
         <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-fluxo-gradient text-white shadow-fluxo">
           {icon}
         </div>

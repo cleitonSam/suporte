@@ -109,7 +109,7 @@ export default function LoginPage({
                 autoComplete="email"
                 required
                 placeholder="voce@empresa.com.br"
-                className="mt-1 block w-full rounded-md border border-slate-300 bg-white px-3 py-2.5 text-sm shadow-sm focus:border-fluxo-500 focus:outline-none focus:ring-2 focus:ring-fluxo-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:placeholder-slate-400"
+                className="mt-1 block w-full rounded-md border border-slate-300 bg-white px-3 py-2.5 text-sm shadow-elevate focus:border-fluxo-500 focus:outline-none focus:ring-2 focus:ring-fluxo-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:placeholder-slate-400"
               />
             </div>
             <div>
@@ -123,7 +123,7 @@ export default function LoginPage({
                 autoComplete="current-password"
                 required
                 placeholder="••••••••"
-                className="mt-1 block w-full rounded-md border border-slate-300 bg-white px-3 py-2.5 text-sm shadow-sm focus:border-fluxo-500 focus:outline-none focus:ring-2 focus:ring-fluxo-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:placeholder-slate-400"
+                className="mt-1 block w-full rounded-md border border-slate-300 bg-white px-3 py-2.5 text-sm shadow-elevate focus:border-fluxo-500 focus:outline-none focus:ring-2 focus:ring-fluxo-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:placeholder-slate-400"
               />
             </div>
             <button

@@ -82,7 +82,7 @@ export default async function ChamadoDetalhePage({ params }: { params: { id: str
         )}
       </div>
 
-      <div className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+      <div className="rounded-lg border border-slate-200 bg-white p-6 shadow-elevate">
         <div className="flex items-start justify-between">
           <div className="flex-1 min-w-0">
             <p className="font-mono text-xs text-slate-500">{ticket.ticketNumber}</p>
@@ -111,7 +111,7 @@ export default async function ChamadoDetalhePage({ params }: { params: { id: str
         </div>
 
         {(ticket.category || ticket.equipment || ticket.assignedTo) && (
-          <div className="mt-4 flex flex-wrap gap-4 border-t border-slate-100 pt-4 text-xs text-slate-600">
+          <div className="mt-4 flex flex-wrap gap-4 border-t border-slate-200 pt-4 text-xs text-slate-600">
             {ticket.category && <span>Categoria: <strong>{ticket.category.name}</strong></span>}
             {ticket.equipment && <span>Equipamento: <strong>{ticket.equipment.name}</strong></span>}
             {ticket.assignedTo && <span>Atendente: <strong>{ticket.assignedTo.name}</strong></span>}

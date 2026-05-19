@@ -224,18 +224,18 @@ export default async function ClienteDetalhePage({
 
       {/* ABA: Dados */}
       {aba === 'dados' && (
-        <form action={updateClientAction} className="mt-6 rounded-lg border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-800">
+        <form action={updateClientAction} className="mt-6 rounded-lg border border-slate-200 bg-white p-6 shadow-elevate dark:border-slate-700 dark:bg-slate-800">
           <input type="hidden" name="id" value={client.id} />
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div>
               <label htmlFor="edit-client-name" className="block text-sm font-medium text-slate-700 dark:text-slate-200">Nome / Fantasia *</label>
               <input id="edit-client-name" name="name" required minLength={2} defaultValue={client.name}
-                className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500" />
+                className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-elevate focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500" />
             </div>
             <div>
               <label htmlFor="edit-client-legal" className="block text-sm font-medium text-slate-700 dark:text-slate-200">Razão Social</label>
               <input id="edit-client-legal" name="legalName" defaultValue={client.legalName ?? ''}
-                className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500" />
+                className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-elevate focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500" />
             </div>
             <div>
               <label htmlFor="edit-client-cnpj" className="block text-sm font-medium text-slate-700 dark:text-slate-200">CNPJ</label>
@@ -244,17 +244,17 @@ export default async function ClienteDetalhePage({
             <div>
               <label htmlFor="edit-client-email" className="block text-sm font-medium text-slate-700 dark:text-slate-200">Email</label>
               <input id="edit-client-email" name="email" type="email" autoComplete="email" defaultValue={client.email ?? ''}
-                className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500" />
+                className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-elevate focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500" />
             </div>
             <div>
               <label htmlFor="edit-client-phone" className="block text-sm font-medium text-slate-700 dark:text-slate-200">Telefone</label>
               <input id="edit-client-phone" name="phone" autoComplete="tel" defaultValue={client.phone ?? ''}
-                className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500" />
+                className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-elevate focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500" />
             </div>
             <div>
               <label htmlFor="edit-client-address" className="block text-sm font-medium text-slate-700 dark:text-slate-200">Endereço</label>
               <input id="edit-client-address" name="address" autoComplete="street-address" defaultValue={client.address ?? ''}
-                className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500" />
+                className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-elevate focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500" />
             </div>
           </div>
           <div className="mt-5">
@@ -317,7 +317,7 @@ export default async function ClienteDetalhePage({
               + Novo contato
             </Link>
           </div>
-          <div className="overflow-x-auto rounded-lg border border-slate-200 bg-white shadow-sm">
+          <div className="overflow-x-auto rounded-lg border border-slate-200 bg-white shadow-elevate">
             <table className="min-w-[700px] divide-y divide-slate-200 text-sm">
               <thead className="bg-slate-50">
                 <tr>
@@ -389,7 +389,7 @@ export default async function ClienteDetalhePage({
               + Novo equipamento
             </Link>
           </div>
-          <div className="overflow-x-auto rounded-lg border border-slate-200 bg-white shadow-sm">
+          <div className="overflow-x-auto rounded-lg border border-slate-200 bg-white shadow-elevate">
             <table className="min-w-[700px] divide-y divide-slate-200 text-sm">
               <thead className="bg-slate-50">
                 <tr>
@@ -470,7 +470,7 @@ export default async function ClienteDetalhePage({
       {/* ABA: Chamados */}
       {aba === 'chamados' && (
         <div className="mt-6">
-          <div className="overflow-x-auto rounded-lg border border-slate-200 bg-white shadow-sm">
+          <div className="overflow-x-auto rounded-lg border border-slate-200 bg-white shadow-elevate">
             <table className="min-w-[700px] divide-y divide-slate-200 text-sm">
               <thead className="bg-slate-50">
                 <tr>

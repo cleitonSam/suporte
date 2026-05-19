@@ -27,26 +27,26 @@ export default async function NovoChamadoAdminPage() {
         Cria um chamado em nome de um cliente diretamente pelo painel do agente.
       </p>
 
-      <form action={createTicketByAgentAction} className="mt-6 space-y-4 rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+      <form action={createTicketByAgentAction} className="mt-6 space-y-4 rounded-lg border border-slate-200 bg-white p-6 shadow-elevate">
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <div className="md:col-span-2">
             <label htmlFor="agent-ticket-title" className="block text-sm font-medium text-slate-700">Título *</label>
             <input id="agent-ticket-title" name="title" required minLength={5} maxLength={200}
               placeholder="Descreva o problema brevemente"
-              className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500" />
+              className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-elevate focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500" />
           </div>
 
           <div className="md:col-span-2">
             <label htmlFor="agent-ticket-description" className="block text-sm font-medium text-slate-700">Descrição *</label>
             <textarea id="agent-ticket-description" name="description" required minLength={10} rows={5}
               placeholder="Detalhe o problema, ambiente, erro apresentado..."
-              className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500" />
+              className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-elevate focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500" />
           </div>
 
           <div>
             <label htmlFor="agent-ticket-client" className="block text-sm font-medium text-slate-700">Cliente *</label>
             <select id="agent-ticket-client" name="clientId" required
-              className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500">
+              className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-elevate focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500">
               <option value="">— Selecione o cliente —</option>
               {clients.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
             </select>
@@ -55,7 +55,7 @@ export default async function NovoChamadoAdminPage() {
           <div>
             <label htmlFor="agent-ticket-category" className="block text-sm font-medium text-slate-700">Categoria</label>
             <select id="agent-ticket-category" name="categoryId"
-              className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500">
+              className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-elevate focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500">
               <option value="">— Nenhuma —</option>
               {categories.map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
             </select>
@@ -64,7 +64,7 @@ export default async function NovoChamadoAdminPage() {
           <div>
             <label htmlFor="agent-ticket-priority" className="block text-sm font-medium text-slate-700">Prioridade</label>
             <select id="agent-ticket-priority" name="priority" defaultValue="MEDIUM"
-              className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500">
+              className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-elevate focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500">
               <option value="LOW">Baixa</option>
               <option value="MEDIUM">Média</option>
               <option value="HIGH">Alta</option>
@@ -75,7 +75,7 @@ export default async function NovoChamadoAdminPage() {
           <div>
             <label htmlFor="agent-ticket-queue" className="block text-sm font-medium text-slate-700">Fila</label>
             <select id="agent-ticket-queue" name="queueId"
-              className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500">
+              className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-elevate focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500">
               <option value="">— Padrão (Geral) —</option>
               {queues.map((q) => <option key={q.id} value={q.id}>{q.name}</option>)}
             </select>
@@ -84,7 +84,7 @@ export default async function NovoChamadoAdminPage() {
           <div>
             <label htmlFor="agent-ticket-assignee" className="block text-sm font-medium text-slate-700">Atribuir a</label>
             <select id="agent-ticket-assignee" name="assignedToId"
-              className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-sm focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500">
+              className="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 text-sm shadow-elevate focus:border-fluxo-500 focus:outline-none focus:ring-1 focus:ring-fluxo-500">
               <option value="">— Sem atribuição —</option>
               {agents.map((a) => <option key={a.id} value={a.id}>{a.name}</option>)}
             </select>

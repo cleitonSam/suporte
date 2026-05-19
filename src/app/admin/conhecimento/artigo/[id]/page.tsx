@@ -50,7 +50,7 @@ export default async function EditArticlePage({ params, searchParams }: PageProp
 
       <form
         action={updateKbArticleAction}
-        className="space-y-5 rounded-xl border border-slate-200 bg-white p-6 shadow-sm"
+        className="space-y-5 rounded-xl border border-slate-200 bg-white p-6 shadow-elevate"
       >
         <input type="hidden" name="id" value={article.id} />
 
