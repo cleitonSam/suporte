@@ -133,6 +133,10 @@ interface ListTicketsFilter {
   search?: string;
   /** 'breached' = SLA vencido (ativos), 'warning' = vencendo em até 1h */
   sla?: 'breached' | 'warning';
+  /** Restringe a status ativos (NEW/OPEN/IN_PROGRESS/WAITING_CLIENT/REOPENED). */
+  onlyOpen?: boolean;
+  /** Apenas tickets sem agente atribuído. */
+  unassignedOnly?: boolean;
   page?: number;
   pageSize?: number;
 }
@@ -151,11 +155,19 @@ export async function listTickets(filter: ListTicketsFilter = {}) {
   const now = new Date();
   const oneHourLater = new Date(now.getTime() + 60 * 60 * 1000);
 
+  const statusFilter =
+    filter.status && filter.status.length > 0
+      ? filter.status
+      : filter.onlyOpen || filter.unassignedOnly || filter.sla
+        ? ACTIVE_STATUSES
+        : undefined;
+
   const where: Prisma.TicketWhereInput = {
     deletedAt: null,
     ...(filter.clientId && { clientId: filter.clientId }),
-    ...(filter.status && filter.status.length > 0 && { status: { in: filter.status } }),
+    ...(statusFilter && { status: { in: statusFilter } }),
     ...(filter.assignedToId && { assignedToId: filter.assignedToId }),
+    ...(filter.unassignedOnly && { assignedToId: null }),
     ...(filter.queueId && { queueId: filter.queueId }),
     ...(filter.search && {
       OR: [
@@ -164,13 +176,9 @@ export async function listTickets(filter: ListTicketsFilter = {}) {
         { ticketNumber: { contains: filter.search, mode: 'insensitive' } },
       ],
     }),
-    ...(filter.sla === 'breached' && {
-      slaBreached: true,
-      status: { in: ACTIVE_STATUSES },
-    }),
+    ...(filter.sla === 'breached' && { slaBreached: true }),
     ...(filter.sla === 'warning' && {
       slaBreached: false,
-      status: { in: ACTIVE_STATUSES },
       resolutionDueAt: { gte: now, lte: oneHourLater },
     }),
   };
