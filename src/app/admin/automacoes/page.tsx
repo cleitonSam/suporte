@@ -11,6 +11,7 @@ export default async function AutomationsPage() {
   }
 
   const rules = await db.automationRule.findMany({
+    where: { deletedAt: null },
     orderBy: [{ sortOrder: 'asc' }, { createdAt: 'desc' }],
   });
 

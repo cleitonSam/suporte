@@ -301,7 +301,7 @@ export async function runAutomations(trigger: string, ticketId: string) {
 
     // Buscar regras ativas para este trigger
     const rules = await db.automationRule.findMany({
-      where: { trigger, isActive: true },
+      where: { trigger, isActive: true, deletedAt: null },
       orderBy: { sortOrder: 'asc' },
     });
 

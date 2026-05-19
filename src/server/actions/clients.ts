@@ -157,3 +157,87 @@ export async function updateClientStatusAction(formData: FormData): Promise<void
   revalidatePath('/admin/clientes');
   redirect(`/admin/clientes/${id}?ok=${STATUS_OK[status]}`);
 }
+
+/**
+ * Soft-delete de cliente com cascade explicito em:
+ *   - User (contatos): deletedAt + isActive=false (impede login)
+ *   - Equipment: deletedAt
+ *   - Ticket: deletedAt
+ *
+ * Esta acao NUNCA apaga linhas fisicamente. Tudo permanece no banco com
+ * deletedAt setado — o audit log registra os counts para reconstrucao.
+ * Para reativar, seria necessario uma acao de "restore" (nao implementada).
+ *
+ * So ADMIN pode disparar (acao destrutiva irreversivel pela UI).
+ */
+export async function deleteClientAction(formData: FormData): Promise<void> {
+  const session = await auth();
+  if (!session?.user) redirect('/login');
+  if (session.user.userType !== 'AGENT') redirect('/admin?error=forbidden');
+  if (session.user.role !== 'ADMIN') {
+    await audit({
+      action: 'client.delete',
+      actorId: session.user.id,
+      entity: 'Client',
+      metadata: { reason: 'forbidden_role', role: session.user.role },
+    });
+    redirect('/admin/clientes?error=forbidden');
+  }
+
+  const id = formData.get('id') as string;
+  if (!id) redirect('/admin/clientes?error=validation');
+
+  const existing = await db.client.findUnique({
+    where: { id, deletedAt: null },
+    select: {
+      name: true,
+      _count: {
+        select: {
+          users: { where: { deletedAt: null } },
+          equipment: { where: { deletedAt: null } },
+          tickets: { where: { deletedAt: null } },
+        },
+      },
+    },
+  });
+  if (!existing) redirect('/admin/clientes?error=not_found');
+
+  const now = new Date();
+
+  await db.$transaction([
+    db.user.updateMany({
+      where: { clientId: id, deletedAt: null },
+      data: { deletedAt: now, isActive: false },
+    }),
+    db.equipment.updateMany({
+      where: { clientId: id, deletedAt: null },
+      data: { deletedAt: now },
+    }),
+    db.ticket.updateMany({
+      where: { clientId: id, deletedAt: null },
+      data: { deletedAt: now },
+    }),
+    db.client.update({
+      where: { id },
+      data: { deletedAt: now, status: 'INACTIVE' },
+    }),
+  ]);
+
+  await audit({
+    action: 'client.delete',
+    actorId: session.user.id,
+    entity: 'Client',
+    entityId: id,
+    metadata: {
+      name: existing.name,
+      cascade: {
+        users: existing._count.users,
+        equipment: existing._count.equipment,
+        tickets: existing._count.tickets,
+      },
+    },
+  });
+
+  revalidatePath('/admin/clientes');
+  redirect('/admin/clientes?ok=cliente.removido');
+}

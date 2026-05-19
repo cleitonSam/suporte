@@ -83,6 +83,7 @@ export default async function ChamadoAdminPage({
     db.responseTemplate.findMany({
       where: {
         isActive: true,
+        deletedAt: null,
         OR: [{ authorId: null }, { authorId: session.user.id }],
       },
       select: { id: true, title: true, body: true },

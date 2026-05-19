@@ -14,6 +14,7 @@ export default async function TemplatesPage({ searchParams }: PageProps) {
 
   const templates = await db.responseTemplate.findMany({
     where: {
+      deletedAt: null,
       OR: [{ authorId: null }, { authorId: session.user.id }],
     },
     include: { author: { select: { id: true, name: true } } },

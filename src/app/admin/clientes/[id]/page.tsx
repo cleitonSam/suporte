@@ -1,8 +1,13 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { Pencil, Trash2, PauseCircle, PlayCircle, PowerOff } from 'lucide-react';
+import { Pencil, Trash2, PauseCircle, PlayCircle, PowerOff, AlertOctagon } from 'lucide-react';
+import { auth } from '@/lib/auth';
 import { db } from '@/lib/db';
-import { updateClientAction, updateClientStatusAction } from '@/server/actions/clients';
+import {
+  updateClientAction,
+  updateClientStatusAction,
+  deleteClientAction,
+} from '@/server/actions/clients';
 import { resendInviteAction } from '@/server/actions/users';
 import { deleteEquipmentAction } from '@/server/actions/equipment';
 import { TICKET_STATUS_COLOR, TICKET_STATUS_LABEL, formatRelative, formatDate } from '@/lib/utils';
@@ -18,6 +23,8 @@ export default async function ClienteDetalhePage({
   params: { id: string };
   searchParams: { aba?: string; saved?: string; convite?: string; removido?: string; error?: string };
 }) {
+  const session = await auth();
+  const isAdmin = session?.user?.role === 'ADMIN';
   const aba = searchParams.aba ?? 'dados';
 
   const client = await db.client.findFirst({
@@ -253,6 +260,50 @@ export default async function ClienteDetalhePage({
             <SubmitButton pendingText="Salvando...">Salvar alterações</SubmitButton>
           </div>
         </form>
+      )}
+
+      {/* ABA: Dados — Zona de risco (ADMIN apenas) */}
+      {aba === 'dados' && isAdmin && (
+        <div className="mt-6 rounded-lg border border-rose-200 bg-rose-50/60 p-5 dark:border-rose-900/60 dark:bg-rose-950/30">
+          <div className="flex items-start gap-3">
+            <AlertOctagon className="mt-0.5 h-5 w-5 shrink-0 text-rose-600" aria-hidden="true" />
+            <div className="flex-1">
+              <h3 className="font-display text-sm font-semibold text-rose-900 dark:text-rose-200">
+                Zona de risco
+              </h3>
+              <p className="mt-1 text-xs text-rose-800 dark:text-rose-300">
+                Remover o cliente arquiva todos os contatos, equipamentos e chamados vinculados.
+                A operação fica registrada no audit log com os números de cascata, mas a UI não
+                tem botão de reverter — só por intervenção no banco.
+              </p>
+              <div className="mt-3">
+                <ConfirmDialog
+                  title={`Remover cliente ${client.name}?`}
+                  description={
+                    <>
+                      Esta ação arquiva (soft-delete) o cliente <strong>{client.name}</strong> e em
+                      cascata: <strong>{client.users.length}</strong> contato(s),{' '}
+                      <strong>{client.equipment.length}</strong> equipamento(s) e todos os chamados
+                      do histórico. O audit log vai registrar a operação com os números.
+                    </>
+                  }
+                  confirmLabel="Remover cliente"
+                  destructive
+                  action={deleteClientAction}
+                  hiddenFields={{ id: client.id }}
+                >
+                  <button
+                    type="button"
+                    className="inline-flex items-center gap-1.5 rounded-md border border-rose-300 bg-white px-3 py-1.5 text-xs font-semibold text-rose-700 transition-colors hover:bg-rose-100"
+                  >
+                    <Trash2 className="h-3.5 w-3.5" aria-hidden="true" />
+                    Remover cliente
+                  </button>
+                </ConfirmDialog>
+              </div>
+            </div>
+          </div>
+        </div>
       )}
 
       {/* ABA: Contatos */}

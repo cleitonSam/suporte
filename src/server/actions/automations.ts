@@ -144,6 +144,14 @@ export async function updateAutomationAction(formData: FormData) {
       return { error: { actions: ['JSON de ações inválido'] } };
     }
 
+    const existing = await db.automationRule.findFirst({
+      where: { id: ruleId, deletedAt: null },
+      select: { id: true },
+    });
+    if (!existing) {
+      return { error: { form: ['Regra não encontrada'] } };
+    }
+
     const rule = await db.automationRule.update({
       where: { id: ruleId },
       data: {
@@ -194,12 +202,15 @@ export async function deleteAutomationAction(formData: FormData): Promise<void> 
   }
 
   try {
-    const rule = await db.automationRule.findUnique({ where: { id: ruleId } });
+    const rule = await db.automationRule.findFirst({ where: { id: ruleId, deletedAt: null } });
     if (!rule) {
       redirect('/admin/automacoes?error=not_found');
     }
 
-    await db.automationRule.delete({ where: { id: ruleId } });
+    await db.automationRule.update({
+      where: { id: ruleId },
+      data: { deletedAt: new Date(), isActive: false },
+    });
 
     await audit({
       action: 'automation.delete',
@@ -241,7 +252,9 @@ export async function toggleAutomationAction(formData: FormData) {
       return { error: { form: ['ID da regra obrigatório'] } };
     }
 
-    const rule = await db.automationRule.findUnique({ where: { id: ruleId } });
+    const rule = await db.automationRule.findFirst({
+      where: { id: ruleId, deletedAt: null },
+    });
     if (!rule) {
       return { error: { form: ['Regra não encontrada'] } };
     }

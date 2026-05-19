@@ -23,7 +23,7 @@ export default async function CategoryArticlesPage({ params, searchParams }: Pag
   if (!category) notFound();
 
   const articles = await db.kbArticle.findMany({
-    where: { categoryId: category.id },
+    where: { categoryId: category.id, deletedAt: null },
     orderBy: [{ isPublished: 'desc' }, { createdAt: 'desc' }],
   });
 

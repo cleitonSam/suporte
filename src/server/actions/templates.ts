@@ -63,6 +63,12 @@ export async function updateTemplateAction(formData: FormData) {
   });
   if (!parsed.success) redirect(`/admin/templates/${id}?error=validation`);
 
+  const existing = await db.responseTemplate.findFirst({
+    where: { id, deletedAt: null },
+    select: { id: true },
+  });
+  if (!existing) redirect('/admin/templates?error=not_found');
+
   await db.responseTemplate.update({
     where: { id },
     data: {
@@ -88,7 +94,10 @@ export async function deleteTemplateAction(formData: FormData) {
   const id = formData.get('id') as string;
   if (!id) throw new Error('id ausente');
 
-  await db.responseTemplate.delete({ where: { id } });
+  await db.responseTemplate.update({
+    where: { id },
+    data: { deletedAt: new Date(), isActive: false },
+  });
   await audit({
     action: 'template.delete',
     actorId: user.id,
@@ -97,5 +106,5 @@ export async function deleteTemplateAction(formData: FormData) {
   });
 
   revalidatePath('/admin/templates');
-  redirect('/admin/templates?removed=1');
+  redirect('/admin/templates?ok=template.removido');
 }

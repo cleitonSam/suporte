@@ -8,6 +8,14 @@ export async function POST(
   try {
     const { articleId } = await params;
 
+    const existing = await db.kbArticle.findFirst({
+      where: { id: articleId, deletedAt: null },
+      select: { id: true },
+    });
+    if (!existing) {
+      return NextResponse.json({ error: 'Article not found' }, { status: 404 });
+    }
+
     // Increment the view count
     const article = await db.kbArticle.update({
       where: { id: articleId },

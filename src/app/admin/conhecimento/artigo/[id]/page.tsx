@@ -14,8 +14,8 @@ export default async function EditArticlePage({ params, searchParams }: PageProp
   const session = await auth();
   if (!session?.user || session.user.userType !== 'AGENT') return null;
 
-  const article = await db.kbArticle.findUnique({
-    where: { id: params.id },
+  const article = await db.kbArticle.findFirst({
+    where: { id: params.id, deletedAt: null },
     include: { category: true },
   });
 

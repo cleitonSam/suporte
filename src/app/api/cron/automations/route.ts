@@ -17,7 +17,7 @@ async function handle(req: Request) {
   try {
     // Buscar todas as regras ativas com trigger "cron.hourly"
     const rules = await db.automationRule.findMany({
-      where: { trigger: 'cron.hourly', isActive: true },
+      where: { trigger: 'cron.hourly', isActive: true, deletedAt: null },
       orderBy: { sortOrder: 'asc' },
     });
 

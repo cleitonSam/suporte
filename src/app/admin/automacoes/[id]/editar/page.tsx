@@ -14,8 +14,8 @@ export default async function EditarAutomacaoPage({
     redirect('/');
   }
 
-  const rule = await db.automationRule.findUnique({
-    where: { id: params.id },
+  const rule = await db.automationRule.findFirst({
+    where: { id: params.id, deletedAt: null },
   });
 
   if (!rule) {

@@ -249,8 +249,8 @@ export async function updateKbArticleAction(formData: FormData) {
     throw new Error('ID, categoria, título e corpo são obrigatórios');
   }
 
-  const article = await db.kbArticle.findUnique({
-    where: { id },
+  const article = await db.kbArticle.findFirst({
+    where: { id, deletedAt: null },
     include: { category: true },
   });
   if (!article) throw new Error('Artigo não encontrado');
@@ -311,14 +311,17 @@ export async function deleteKbArticleAction(formData: FormData) {
   const id = formData.get('id') as string;
   if (!id) throw new Error('ID é obrigatório');
 
-  const article = await db.kbArticle.findUnique({
-    where: { id },
+  const article = await db.kbArticle.findFirst({
+    where: { id, deletedAt: null },
     include: { category: true },
   });
   if (!article) throw new Error('Artigo não encontrado');
 
   try {
-    await db.kbArticle.delete({ where: { id } });
+    await db.kbArticle.update({
+      where: { id },
+      data: { deletedAt: new Date(), isPublished: false },
+    });
 
     await audit({
       action: 'kb.article_delete',
@@ -349,7 +352,7 @@ export async function voteArticleAction(formData: FormData) {
     throw new Error('ID e voto inválidos');
   }
 
-  const article = await db.kbArticle.findUnique({ where: { id } });
+  const article = await db.kbArticle.findFirst({ where: { id, deletedAt: null } });
   if (!article) throw new Error('Artigo não encontrado');
 
   try {
@@ -373,7 +376,9 @@ export async function voteArticleAction(formData: FormData) {
 export async function incrementViewAction(articleId: string) {
   if (!articleId) throw new Error('ID do artigo é obrigatório');
 
-  const article = await db.kbArticle.findUnique({ where: { id: articleId } });
+  const article = await db.kbArticle.findFirst({
+    where: { id: articleId, deletedAt: null },
+  });
   if (!article) throw new Error('Artigo não encontrado');
 
   try {

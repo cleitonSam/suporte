@@ -20,8 +20,8 @@ export default async function ArticlePage({ params }: PageProps) {
   const session = await auth();
   if (!session?.user) return null;
 
-  const article = await db.kbArticle.findUnique({
-    where: { slug: articleSlug },
+  const article = await db.kbArticle.findFirst({
+    where: { slug: articleSlug, deletedAt: null, isPublished: true },
     include: {
       category: {
         select: {

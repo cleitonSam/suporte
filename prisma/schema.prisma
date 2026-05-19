@@ -199,12 +199,14 @@ model ResponseTemplate {
   authorId  String?
   author    User?    @relation("TemplateAuthor", fields: [authorId], references: [id], onDelete: SetNull)
 
-  isActive  Boolean  @default(true)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  isActive  Boolean   @default(true)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
 
   @@index([authorId])
   @@index([isActive])
+  @@index([deletedAt])
 }
 
 // ==============================================================
@@ -540,11 +542,13 @@ model KbArticle {
   helpfulYes  Int      @default(0)
   helpfulNo   Int      @default(0)
 
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
 
   @@index([categoryId, isPublished])
   @@index([isPublished, viewCount])
+  @@index([deletedAt])
 }
 
 // ==============================================================
@@ -570,10 +574,12 @@ model AutomationRule {
   runCount    Int      @default(0)
   lastRunAt   DateTime?
 
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime?
 
   @@index([trigger, isActive])
+  @@index([deletedAt])
 }
 
 // (Modelos duplicados removidos — CsatSurvey, KbCategory e KbArticle

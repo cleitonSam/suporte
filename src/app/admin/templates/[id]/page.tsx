@@ -13,7 +13,9 @@ export default async function EditTemplatePage({ params, searchParams }: PagePro
   const session = await auth();
   if (!session?.user || session.user.userType !== 'AGENT') return null;
 
-  const template = await db.responseTemplate.findUnique({ where: { id: params.id } });
+  const template = await db.responseTemplate.findFirst({
+    where: { id: params.id, deletedAt: null },
+  });
   if (!template) notFound();
 
   return (
