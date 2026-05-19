@@ -30,6 +30,9 @@ const MESSAGES: Record<string, { type: ToastType; msg: string }> = {
   'equipamento.atualizado': { type: 'success', msg: 'Equipamento atualizado.' },
   'equipamento.removido':   { type: 'info',    msg: 'Equipamento removido.' },
 
+  // Bulk operations
+  'bulk.aplicado':        { type: 'success', msg: 'Ação aplicada nos chamados selecionados.' },
+
   // Chamados / templates / automação / KB
   'template.removido':    { type: 'info',    msg: 'Template removido.' },
   'automacao.removida':   { type: 'info',    msg: 'Regra de automação removida.' },

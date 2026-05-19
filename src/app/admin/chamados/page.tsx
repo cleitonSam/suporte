@@ -10,10 +10,14 @@ import {
 import { db } from '@/lib/db';
 import { auth } from '@/lib/auth';
 import { listTickets } from '@/server/services/ticket-service';
+import { bulkUpdateTicketsAction } from '@/server/actions/ticket-admin';
 import { SlaBadge } from '@/components/sla-badge';
 import { TicketStatusDot, PriorityDot } from '@/components/ui/status-dot';
+import { BulkActionsBar, SelectAllCheckbox } from '@/components/bulk-actions-bar';
 import { formatRelative } from '@/lib/utils';
 import type { TicketPriority, TicketStatus } from '@prisma/client';
+
+const BULK_FORM_ID = 'tickets-bulk-form';
 
 const PRIORITY_ACCENT: Record<TicketPriority, string> = {
   LOW: 'bg-slate-300 dark:bg-slate-600',
@@ -66,7 +70,7 @@ export default async function ChamadosListPage({ searchParams }: PageProps) {
 
   const status = searchParams.status ? [searchParams.status as TicketStatus] : undefined;
 
-  const [clients, queues, result, statusCounts, breachedCount, warningCount, unassignedCount, mineCount] =
+  const [clients, queues, agents, result, statusCounts, breachedCount, warningCount, unassignedCount, mineCount] =
     await Promise.all([
       db.client.findMany({
         where: { deletedAt: null, status: 'ACTIVE' },
@@ -74,6 +78,11 @@ export default async function ChamadosListPage({ searchParams }: PageProps) {
         orderBy: { name: 'asc' },
       }),
       db.queue.findMany({ where: { isActive: true }, select: { id: true, name: true } }),
+      db.user.findMany({
+        where: { userType: 'AGENT', isActive: true, deletedAt: null },
+        select: { id: true, name: true },
+        orderBy: { name: 'asc' },
+      }),
       listTickets({
         search: searchParams.q,
         clientId: searchParams.clientId,
@@ -418,13 +427,22 @@ export default async function ChamadosListPage({ searchParams }: PageProps) {
             ))}
           </ul>
 
-          {/* Tabela no desktop */}
-          <div className="hidden overflow-hidden rounded-lg border border-slate-200 bg-white shadow-elevate dark:border-slate-700 dark:bg-slate-800 md:block">
+          {/* Tabela no desktop — wrapped em form pra bulk actions */}
+          <form
+            id={BULK_FORM_ID}
+            action={bulkUpdateTicketsAction}
+            className="hidden overflow-hidden rounded-lg border border-slate-200 bg-white shadow-elevate dark:border-slate-700 dark:bg-slate-800 md:block"
+          >
+            <input type="hidden" name="op" defaultValue="" />
+            <input type="hidden" name="value" defaultValue="" />
             <div className="overflow-x-auto">
               <table className="min-w-full divide-y divide-slate-200 text-sm dark:divide-slate-700">
                 <thead className="bg-slate-50/60 dark:bg-slate-800/60">
                   <tr>
                     <th scope="col" className="w-1 p-0" aria-hidden="true" />
+                    <th scope="col" className="px-3 py-3 text-left">
+                      <SelectAllCheckbox formId={BULK_FORM_ID} />
+                    </th>
                     <th scope="col" className="px-4 py-3 text-left micro-label">Chamado</th>
                     <th scope="col" className="px-4 py-3 text-left micro-label">Cliente</th>
                     <th scope="col" className="px-4 py-3 text-left micro-label">Fila</th>
@@ -446,6 +464,15 @@ export default async function ChamadosListPage({ searchParams }: PageProps) {
                         <span
                           aria-hidden="true"
                           className={`block h-full w-1 ${PRIORITY_ACCENT[t.priority]}`}
+                        />
+                      </td>
+                      <td className="px-3 py-3">
+                        <input
+                          type="checkbox"
+                          name="ticketIds"
+                          value={t.id}
+                          aria-label={`Selecionar ${t.ticketNumber}`}
+                          className="h-4 w-4 cursor-pointer rounded border-slate-300 text-fluxo-500 focus:ring-fluxo-500"
                         />
                       </td>
                       <td className="px-4 py-3">
@@ -493,7 +520,10 @@ export default async function ChamadosListPage({ searchParams }: PageProps) {
                 </tbody>
               </table>
             </div>
-          </div>
+          </form>
+
+          {/* Bulk actions bar (cliente) */}
+          <BulkActionsBar formId={BULK_FORM_ID} agents={agents} queues={queues} />
         </>
       )}
 

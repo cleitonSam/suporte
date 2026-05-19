@@ -497,3 +497,116 @@ export async function createTicketByAgentAction(formData: FormData) {
   revalidatePath('/admin');
   redirect(`/admin/chamados/${ticket.id}`);
 }
+
+/**
+ * Bulk update: aplica uma operação a vários tickets de uma vez.
+ * Operações suportadas:
+ *  - 'status' (value = TicketStatus)
+ *  - 'priority' (value = TicketPriority)
+ *  - 'assign' (value = userId ou '' pra desatribuir)
+ *  - 'queue' (value = queueId ou '' pra remover fila)
+ *
+ * Cada update vira um evento individual + audit log + revalidate.
+ */
+export async function bulkUpdateTicketsAction(formData: FormData): Promise<void> {
+  const session = await auth();
+  if (!session?.user) redirect('/login');
+  if (session.user.userType !== 'AGENT') redirect('/admin/chamados?error=forbidden');
+
+  const ticketIds = formData.getAll('ticketIds') as string[];
+  const op = formData.get('op') as string;
+  const value = formData.get('value') as string;
+
+  if (!Array.isArray(ticketIds) || ticketIds.length === 0) {
+    redirect('/admin/chamados?error=validation');
+  }
+  if (!op) redirect('/admin/chamados?error=validation');
+
+  const validIds = ticketIds.filter(Boolean);
+  if (validIds.length === 0) redirect('/admin/chamados?error=validation');
+
+  const userId = session.user.id;
+  const now = new Date();
+
+  if (op === 'status') {
+    const status = value as TicketStatus;
+    if (!['NEW','OPEN','IN_PROGRESS','WAITING_CLIENT','RESOLVED','CLOSED','REOPENED'].includes(status)) {
+      redirect('/admin/chamados?error=validation');
+    }
+    await db.$transaction([
+      db.ticket.updateMany({
+        where: { id: { in: validIds }, deletedAt: null },
+        data: {
+          status,
+          ...(status === 'RESOLVED' && { resolvedAt: now }),
+          ...(status === 'CLOSED' && { closedAt: now }),
+        },
+      }),
+      db.ticketEvent.createMany({
+        data: validIds.map((ticketId) => ({
+          ticketId,
+          authorId: userId,
+          type: 'STATUS_CHANGED' as const,
+          newValue: status,
+        })),
+      }),
+    ]);
+  } else if (op === 'priority') {
+    const priority = value as TicketPriority;
+    if (!['LOW','MEDIUM','HIGH','URGENT'].includes(priority)) {
+      redirect('/admin/chamados?error=validation');
+    }
+    await db.$transaction([
+      db.ticket.updateMany({
+        where: { id: { in: validIds }, deletedAt: null },
+        data: { priority },
+      }),
+      db.ticketEvent.createMany({
+        data: validIds.map((ticketId) => ({
+          ticketId,
+          authorId: userId,
+          type: 'PRIORITY_CHANGED' as const,
+          newValue: priority,
+        })),
+      }),
+    ]);
+  } else if (op === 'assign') {
+    const assignedToId = value || null;
+    await db.$transaction([
+      db.ticket.updateMany({
+        where: { id: { in: validIds }, deletedAt: null },
+        data: {
+          assignedToId,
+          assignedAt: assignedToId ? now : null,
+        },
+      }),
+      db.ticketEvent.createMany({
+        data: validIds.map((ticketId) => ({
+          ticketId,
+          authorId: userId,
+          type: 'ASSIGNED' as const,
+          newValue: assignedToId,
+        })),
+      }),
+    ]);
+  } else if (op === 'queue') {
+    const queueId = value || null;
+    await db.ticket.updateMany({
+      where: { id: { in: validIds }, deletedAt: null },
+      data: { queueId },
+    });
+  } else {
+    redirect('/admin/chamados?error=validation');
+  }
+
+  await audit({
+    action: 'ticket.update',
+    actorId: userId,
+    entity: 'Ticket',
+    metadata: { bulk: true, op, value, count: validIds.length, ticketIds: validIds.slice(0, 50) },
+  });
+
+  revalidatePath('/admin/chamados');
+  revalidatePath('/admin');
+  redirect(`/admin/chamados?ok=bulk.aplicado`);
+}
