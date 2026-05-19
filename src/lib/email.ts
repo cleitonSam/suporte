@@ -71,9 +71,10 @@ function layout(content: string) {
 // Envio genérico (para uso por módulos como CSAT)
 // ─────────────────────────────────────────────
 export async function sendEmail(params: {
-  to: string;
+  to: string | string[];
   subject: string;
   html: string;
+  attachments?: Array<{ filename: string; content: Buffer; contentType?: string }>;
 }): Promise<boolean> {
   try {
     const info = await getTransporter().sendMail({
@@ -81,11 +82,67 @@ export async function sendEmail(params: {
       to: params.to,
       subject: params.subject,
       html: params.html,
+      attachments: params.attachments,
     });
     return !(info.rejected && info.rejected.length > 0);
   } catch {
     return false;
   }
+}
+
+// ─────────────────────────────────────────────
+// Relatório mensal de atendimento (com PDF anexo)
+// ─────────────────────────────────────────────
+export async function sendMonthlyReportEmail(params: {
+  to: string[];
+  clientName: string;
+  periodLabel: string; // "Maio/2026"
+  totals: { opened: number; resolved: number };
+  slaPercent: number;
+  csatAvg: number | null;
+  pdfBuffer: Buffer;
+}) {
+  const csatLine =
+    params.csatAvg !== null
+      ? `<p>Satisfação média no mês: <strong>${params.csatAvg.toFixed(1)}/5</strong>.</p>`
+      : '';
+  const html = layout(`
+    <div class="header">
+      <span class="brand">Fluxo Suporte</span>
+      <h1>Relatório de ${params.periodLabel}</h1>
+      <p>${params.clientName}</p>
+    </div>
+    <div class="body">
+      <p>Olá!</p>
+      <p>
+        Segue em anexo o relatório de atendimento de <strong>${params.periodLabel}</strong>.
+        Resumo:
+      </p>
+      <div class="box">
+        <p>📥 <strong>${params.totals.opened}</strong> chamados abertos no período</p>
+        <p>✅ <strong>${params.totals.resolved}</strong> resolvidos</p>
+        <p>⏱️ <strong>${params.slaPercent}%</strong> dos chamados resolvidos dentro do SLA</p>
+        ${csatLine ? `<p>⭐ ${csatLine.replace(/<\/?p>/g, '')}</p>` : ''}
+      </div>
+      <p>O PDF anexo traz a lista completa dos chamados, prioridades e tempos.</p>
+      <p style="margin-top:24px;color:#64748b;font-size:12px">
+        Qualquer dúvida sobre o relatório, é só responder este email.
+      </p>
+    </div>
+  `);
+
+  return sendEmail({
+    to: params.to,
+    subject: `Relatório mensal — ${params.clientName} — ${params.periodLabel}`,
+    html,
+    attachments: [
+      {
+        filename: `relatorio-${params.periodLabel.replace('/', '-').toLowerCase()}.pdf`,
+        content: params.pdfBuffer,
+        contentType: 'application/pdf',
+      },
+    ],
+  });
 }
 
 // ─────────────────────────────────────────────

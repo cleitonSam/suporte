@@ -90,9 +90,37 @@ model Client {
   users         User[]
   tickets       Ticket[]
   equipment     Equipment[]
+  monthlyReports MonthlyReport[]
 
   @@index([status])
   @@index([deletedAt])
+}
+
+// ==============================================================
+// RELATÓRIO MENSAL ENVIADO POR EMAIL
+// ==============================================================
+
+model MonthlyReport {
+  id          String   @id @default(cuid())
+
+  clientId    String
+  client      Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
+
+  year        Int      // ano do período (ex: 2026)
+  month       Int      // mês do período (1-12)
+
+  sentAt      DateTime @default(now())
+  sentTo      String[] // emails dos destinatários no momento do envio
+  status      String   @default("sent") // sent | failed | manual_test
+
+  metrics     Json     // snapshot agregado: { totalTickets, slaOk, slaBreached, avgResolutionMinutes, csatAvg, ... }
+
+  triggeredBy String?  // userId do agente que disparou (null = cron)
+
+  createdAt   DateTime @default(now())
+
+  @@unique([clientId, year, month])
+  @@index([sentAt])
 }
 
 // ==============================================================

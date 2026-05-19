@@ -40,6 +40,10 @@ const MESSAGES: Record<string, { type: ToastType; msg: string }> = {
   // Macros
   'macro.aplicada':       { type: 'success', msg: 'Macro aplicada no chamado.' },
 
+  // Relatórios mensais
+  'relatorio.enviado':    { type: 'success', msg: 'Relatório enviado por email aos contatos do cliente.' },
+  'sem_contatos':         { type: 'error',   msg: 'Cliente não tem contatos cadastrados com email.' },
+
   // Chamados / templates / automação / KB
   'template.removido':    { type: 'info',    msg: 'Template removido.' },
   'automacao.removida':   { type: 'info',    msg: 'Regra de automação removida.' },

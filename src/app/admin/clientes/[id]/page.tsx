@@ -18,6 +18,7 @@ import { SubmitButton } from '@/components/submit-button';
 import { EquipmentStatusDot } from '@/components/ui/status-dot';
 import { InboundAddressCard } from '@/components/inbound-address-card';
 import { buildInboundAddress } from '@/lib/inbound-token';
+import { MonthlyReportCard } from '@/components/monthly-report-card';
 
 export default async function ClienteDetalhePage({
   params,
@@ -51,10 +52,17 @@ export default async function ClienteDetalhePage({
         include: { category: { select: { name: true } } },
         orderBy: { name: 'asc' },
       },
+      monthlyReports: {
+        orderBy: { sentAt: 'desc' },
+        take: 6,
+        select: { id: true, year: true, month: true, sentAt: true, sentTo: true, status: true },
+      },
     },
   });
 
   if (!client) notFound();
+
+  const contactsWithEmail = client.users.filter((u) => u.email && u.isActive).length;
 
   const tabs = [
     { key: 'dados', label: 'Dados' },
@@ -268,6 +276,15 @@ export default async function ClienteDetalhePage({
       {/* ABA: Dados — Endereço inbound de email */}
       {aba === 'dados' && client.inboundToken && (
         <InboundAddressCard address={buildInboundAddress(client.inboundToken)} />
+      )}
+
+      {/* ABA: Dados — Relatório mensal */}
+      {aba === 'dados' && (
+        <MonthlyReportCard
+          clientId={client.id}
+          contactCount={contactsWithEmail}
+          recentReports={client.monthlyReports}
+        />
       )}
 
       {/* ABA: Dados — Zona de risco (ADMIN apenas) */}

@@ -51,6 +51,7 @@ export type AuditAction =
   | 'equipment.update'
   | 'equipment.status_change'
   | 'equipment.delete'
+  | 'monthly_report.sent'
   | 'rate_limit.hit';
 
 export interface AuditParams {
