@@ -2,6 +2,7 @@ import { Mail, User as UserIcon, KeyRound } from 'lucide-react';
 import { auth } from '@/lib/auth';
 import { changePasswordAction } from '@/server/actions/users';
 import { SubmitButton } from '@/components/submit-button';
+import { PushToggle } from '@/components/push-toggle';
 
 const ERROR_MESSAGES: Record<string, string> = {
   validation: 'Preencha todos os campos. A nova senha deve ter no mínimo 8 caracteres.',
@@ -57,6 +58,9 @@ export default async function PortalPerfilPage({
           </div>
         </dl>
       </section>
+
+      {/* Push notifications */}
+      <PushToggle />
 
       <section
         aria-labelledby="password-heading"

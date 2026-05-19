@@ -1,8 +1,9 @@
-// Notificações in-app. Gravam no banco; o header consulta periodicamente ou
-// re-renderiza em revalidatePath.
+// Notificações in-app + Web Push.
+// notify() grava no banco E envia push (se user tiver subscription).
 
 import { db } from './db';
 import { logger } from './logger';
+import { sendPushToUser } from './push';
 import type { NotificationType } from '@prisma/client';
 
 export interface CreateNotificationParams {
@@ -11,6 +12,8 @@ export interface CreateNotificationParams {
   title: string;
   body?: string;
   linkUrl?: string;
+  /** Quando true, NÃO envia push (apenas in-app). */
+  inAppOnly?: boolean;
 }
 
 export async function notify(params: CreateNotificationParams) {
@@ -25,7 +28,19 @@ export async function notify(params: CreateNotificationParams) {
       },
     });
   } catch (err) {
-    logger.error({ err, params }, '[notifications] falha ao criar notifica\u00e7\u00e3o');
+    logger.error({ err, params }, '[notifications] falha ao criar notificacao');
+  }
+
+  // Push em paralelo (best-effort, não bloqueia)
+  if (!params.inAppOnly) {
+    sendPushToUser(params.userId, {
+      title: params.title,
+      body: params.body,
+      url: params.linkUrl,
+      tag: `${params.type}:${params.userId}`,
+    }).catch((err) => {
+      logger.warn({ err, userId: params.userId }, '[notifications] falha push');
+    });
   }
 }
 

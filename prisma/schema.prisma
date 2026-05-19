@@ -131,10 +131,36 @@ model User {
   // Sistema
   notifications       Notification[]
   passwordTokens      PasswordResetToken[]
+  pushSubscriptions   PushSubscription[]
   auditEvents         AuditLog[]       @relation("AuditActor")
 
   @@index([userType, isActive])
   @@index([clientId])
+}
+
+// ==============================================================
+// PUSH NOTIFICATIONS (Web Push API)
+// ==============================================================
+
+model PushSubscription {
+  id         String    @id @default(cuid())
+
+  userId     String
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Endpoint do navegador (unique - cada device/navegador tem um)
+  endpoint   String    @unique @db.Text
+  // Chaves do navegador pra criptografar payload
+  p256dh     String    @db.Text
+  auth       String    @db.Text
+
+  // Metadata pra ajudar a debugar / mostrar pro usuario
+  userAgent  String?   @db.Text
+
+  createdAt  DateTime  @default(now())
+  lastUsedAt DateTime?
+
+  @@index([userId])
 }
 
 // ==============================================================

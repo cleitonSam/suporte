@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import { Poppins, Montserrat, JetBrains_Mono } from 'next/font/google';
 import { ToastProvider } from '@/components/toast';
+import { PwaRegister } from '@/components/pwa-register';
 import './globals.css';
 
 const poppins = Poppins({
@@ -31,6 +32,19 @@ export const metadata: Metadata = {
   },
   description: 'Sistema de chamados da Fluxo Digital Tech',
   applicationName: 'Fluxo Suporte',
+  manifest: '/manifest.webmanifest',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'Fluxo',
+  },
+  icons: {
+    icon: [
+      { url: '/icons/icon-192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/icons/icon-512.png', sizes: '512x512', type: 'image/png' },
+    ],
+    apple: { url: '/icons/icon-192.png', sizes: '192x192' },
+  },
   robots: { index: false, follow: false },
   openGraph: {
     title: 'Fluxo Suporte',
@@ -59,7 +73,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             __html: `(function(){try{var t=localStorage.getItem('theme');if(t==='light'){document.documentElement.classList.remove('dark')}else{document.documentElement.classList.add('dark')}}catch(e){}})()`,
           }}
         />
-        <ToastProvider>{children}</ToastProvider>
+        <ToastProvider>
+          {children}
+          <PwaRegister />
+        </ToastProvider>
       </body>
     </html>
   );
