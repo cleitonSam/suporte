@@ -5,19 +5,14 @@ import {
   Ticket as TicketIcon,
   Search,
   UserCircle,
-  Filter,
+  Inbox,
 } from 'lucide-react';
 import { db } from '@/lib/db';
 import { auth } from '@/lib/auth';
 import { listTickets } from '@/server/services/ticket-service';
 import { SlaBadge } from '@/components/sla-badge';
-import {
-  TICKET_STATUS_COLOR,
-  TICKET_STATUS_LABEL,
-  PRIORITY_COLOR,
-  PRIORITY_LABEL,
-  formatRelative,
-} from '@/lib/utils';
+import { TicketStatusDot, PriorityDot } from '@/components/ui/status-dot';
+import { formatRelative } from '@/lib/utils';
 import type { TicketPriority, TicketStatus } from '@prisma/client';
 
 const PRIORITY_ACCENT: Record<TicketPriority, string> = {
@@ -60,7 +55,6 @@ export default async function ChamadosListPage({ searchParams }: PageProps) {
 
   const quickFilter = searchParams.quick;
   let assignedToId: string | undefined;
-  let statusBucket: TicketStatus[] | undefined;
   let onlyOpen = false;
 
   if (quickFilter === 'mine') {
@@ -70,9 +64,7 @@ export default async function ChamadosListPage({ searchParams }: PageProps) {
     onlyOpen = true;
   }
 
-  const status =
-    statusBucket ??
-    (searchParams.status ? [searchParams.status as TicketStatus] : undefined);
+  const status = searchParams.status ? [searchParams.status as TicketStatus] : undefined;
 
   const [clients, queues, result, statusCounts, breachedCount, warningCount, unassignedCount, mineCount] =
     await Promise.all([
@@ -145,31 +137,14 @@ export default async function ChamadosListPage({ searchParams }: PageProps) {
   const openTotal =
     statusMap.NEW + statusMap.OPEN + statusMap.IN_PROGRESS + statusMap.WAITING_CLIENT + statusMap.REOPENED;
 
-  const statusChips: Array<{ key: TicketStatus | ''; label: string; count: number; tone: string }> = [
-    { key: '',              label: 'Todos',          count: result.total, tone: '' },
-    { key: 'NEW',           label: 'Novos',          count: statusMap.NEW, tone: 'bg-fluxo-100 text-fluxo-700 border-fluxo-200' },
-    { key: 'OPEN',          label: 'Abertos',        count: statusMap.OPEN, tone: 'bg-sky-100 text-sky-800 border-sky-200' },
-    { key: 'IN_PROGRESS',   label: 'Em andamento',   count: statusMap.IN_PROGRESS, tone: 'bg-amber-100 text-amber-800 border-amber-200' },
-    { key: 'WAITING_CLIENT',label: 'Ag. cliente',    count: statusMap.WAITING_CLIENT, tone: 'bg-purple-100 text-purple-800 border-purple-200' },
-    { key: 'RESOLVED',      label: 'Resolvidos',     count: statusMap.RESOLVED, tone: 'bg-emerald-100 text-emerald-800 border-emerald-200' },
-    { key: 'CLOSED',        label: 'Fechados',       count: statusMap.CLOSED, tone: 'bg-zinc-100 text-zinc-700 border-zinc-200' },
-  ];
-
-  const quickFilters: Array<{ key: string; label: string; count: number; icon: React.ReactNode; tone: string }> = [
-    {
-      key: 'mine',
-      label: 'Atribuídos a mim',
-      count: mineCount,
-      icon: <UserCircle className="h-3.5 w-3.5" aria-hidden="true" />,
-      tone: 'bg-fluxo-500 text-white border-fluxo-500 shadow-fluxo',
-    },
-    {
-      key: 'unassigned',
-      label: 'Sem atendente',
-      count: unassignedCount,
-      icon: <Filter className="h-3.5 w-3.5" aria-hidden="true" />,
-      tone: 'bg-slate-700 text-white border-slate-700',
-    },
+  const segments: Array<{ key: TicketStatus | ''; label: string; count: number }> = [
+    { key: '',              label: 'Todos',       count: result.total },
+    { key: 'NEW',           label: 'Novos',       count: statusMap.NEW },
+    { key: 'OPEN',          label: 'Abertos',     count: statusMap.OPEN },
+    { key: 'IN_PROGRESS',   label: 'Andamento',   count: statusMap.IN_PROGRESS },
+    { key: 'WAITING_CLIENT',label: 'Aguardando',  count: statusMap.WAITING_CLIENT },
+    { key: 'RESOLVED',      label: 'Resolvidos',  count: statusMap.RESOLVED },
+    { key: 'CLOSED',        label: 'Fechados',    count: statusMap.CLOSED },
   ];
 
   const hasFilters = Boolean(
@@ -186,13 +161,11 @@ export default async function ChamadosListPage({ searchParams }: PageProps) {
       {/* Header */}
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-fluxo-600 dark:text-cyan-400">
-            Fila de atendimento
-          </p>
+          <p className="micro-label-accent">Fila de atendimento</p>
           <h1 className="font-display text-3xl font-bold text-slate-900 dark:text-white">Chamados</h1>
           <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">
-            {result.total} resultado{result.total === 1 ? '' : 's'} ·{' '}
-            <strong className="text-slate-900 dark:text-white">{openTotal}</strong> ativo
+            <span className="font-mono-tech">{result.total}</span> resultado{result.total === 1 ? '' : 's'} ·{' '}
+            <strong className="font-mono-tech text-slate-900 dark:text-white">{openTotal}</strong> ativo
             {openTotal === 1 ? '' : 's'} no total
           </p>
         </div>
@@ -207,21 +180,21 @@ export default async function ChamadosListPage({ searchParams }: PageProps) {
 
       {/* Alerta SLA */}
       {(breachedCount > 0 || warningCount > 0) && (
-        <div className="flex flex-wrap items-center gap-3 rounded-xl border border-rose-200 bg-rose-50/60 p-4 dark:border-rose-900/60 dark:bg-rose-950/30">
-          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-rose-500/20 text-rose-700 ring-1 ring-inset ring-rose-500/30">
+        <div className="flex flex-wrap items-center gap-3 rounded-lg border border-rose-200 bg-rose-50/60 p-4 dark:border-rose-900/60 dark:bg-rose-950/30">
+          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-rose-500/20 text-rose-700 ring-1 ring-inset ring-rose-500/30">
             <AlertOctagon className="h-4 w-4" aria-hidden="true" />
           </span>
           <div className="flex-1 text-sm text-rose-800 dark:text-rose-200">
             {breachedCount > 0 && (
               <>
-                <strong>{breachedCount}</strong> chamado{breachedCount === 1 ? '' : 's'} com SLA{' '}
+                <strong className="font-mono-tech">{breachedCount}</strong> chamado{breachedCount === 1 ? '' : 's'} com SLA{' '}
                 <strong>estourado</strong>
               </>
             )}
             {breachedCount > 0 && warningCount > 0 && ' · '}
             {warningCount > 0 && (
               <>
-                <strong>{warningCount}</strong> vence{warningCount === 1 ? '' : 'm'} em menos de 1h
+                <strong className="font-mono-tech">{warningCount}</strong> vence{warningCount === 1 ? '' : 'm'} em menos de 1h
               </>
             )}
           </div>
@@ -237,74 +210,78 @@ export default async function ChamadosListPage({ searchParams }: PageProps) {
         </div>
       )}
 
-      {/* Quick filters */}
-      <div className="flex flex-wrap items-center gap-2">
-        {quickFilters.map((f) => {
-          const active = searchParams.quick === f.key;
-          return (
-            <Link
-              key={f.key}
-              href={`/admin/chamados${buildQs(searchParams, { quick: active ? null : f.key, page: null })}`}
-              className={
-                active
-                  ? `inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1 text-sm font-semibold ${f.tone}`
-                  : 'inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3.5 py-1 text-sm font-medium text-slate-700 transition-colors hover:border-fluxo-300 hover:text-fluxo-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300'
-              }
-            >
-              {f.icon}
-              {f.label}
-              <span
-                className={
-                  active
-                    ? 'inline-flex h-5 min-w-[1.25rem] items-center justify-center rounded-full bg-white/20 px-1.5 text-[10px] font-bold tabular-nums'
-                    : 'inline-flex h-5 min-w-[1.25rem] items-center justify-center rounded-full bg-slate-100 px-1.5 text-[10px] font-bold tabular-nums text-slate-600 dark:bg-slate-700 dark:text-slate-300'
-                }
-              >
-                {f.count}
-              </span>
-            </Link>
-          );
-        })}
-      </div>
+      {/* Toolbar: quick filters + segmented status + search inline */}
+      <div className="space-y-3">
+        {/* Quick filters compactos */}
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="micro-label hidden sm:inline-flex pr-1">Visão</span>
+          <QuickFilter
+            href={`/admin/chamados${buildQs(searchParams, {
+              quick: searchParams.quick === 'mine' ? null : 'mine',
+              page: null,
+            })}`}
+            active={searchParams.quick === 'mine'}
+            count={mineCount}
+            tone="fluxo"
+            icon={<UserCircle className="h-3.5 w-3.5" aria-hidden="true" />}
+          >
+            Atribuídos a mim
+          </QuickFilter>
+          <QuickFilter
+            href={`/admin/chamados${buildQs(searchParams, {
+              quick: searchParams.quick === 'unassigned' ? null : 'unassigned',
+              page: null,
+            })}`}
+            active={searchParams.quick === 'unassigned'}
+            count={unassignedCount}
+            tone="slate"
+            icon={<Inbox className="h-3.5 w-3.5" aria-hidden="true" />}
+          >
+            Sem atendente
+          </QuickFilter>
+        </div>
 
-      {/* Status chips */}
-      <div className="flex flex-wrap items-center gap-2">
-        {statusChips.map((c) => {
-          const active = (searchParams.status ?? '') === c.key;
-          return (
-            <Link
-              key={c.key || 'all'}
-              href={`/admin/chamados${buildQs(searchParams, { status: c.key || null, page: null })}`}
-              className={
-                active
-                  ? 'inline-flex items-center gap-2 rounded-full bg-fluxo-500 px-3.5 py-1 text-sm font-semibold text-white shadow-fluxo'
-                  : 'inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3.5 py-1 text-sm font-medium text-slate-700 transition-colors hover:border-fluxo-300 hover:text-fluxo-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300'
-              }
-            >
-              {c.label}
-              <span
-                className={
-                  active
-                    ? 'inline-flex h-5 min-w-[1.25rem] items-center justify-center rounded-full bg-white/20 px-1.5 text-[10px] font-bold tabular-nums'
-                    : 'inline-flex h-5 min-w-[1.25rem] items-center justify-center rounded-full bg-slate-100 px-1.5 text-[10px] font-bold tabular-nums text-slate-600 dark:bg-slate-700 dark:text-slate-300'
-                }
-              >
-                {c.count}
-              </span>
-            </Link>
-          );
-        })}
+        {/* Segmented control de status — single row, scroll horizontal */}
+        <div className="-mx-1 overflow-x-auto px-1">
+          <div className="inline-flex min-w-full items-center gap-0.5 rounded-lg border border-slate-200 bg-white p-1 shadow-elevate dark:border-slate-700 dark:bg-slate-800 sm:min-w-0">
+            {segments.map((s) => {
+              const isActive = (searchParams.status ?? '') === s.key;
+              return (
+                <Link
+                  key={s.key || 'all'}
+                  href={`/admin/chamados${buildQs(searchParams, { status: s.key || null, page: null })}`}
+                  className={
+                    isActive
+                      ? 'inline-flex items-center gap-1.5 whitespace-nowrap rounded-md bg-fluxo-500 px-3 py-1.5 text-xs font-semibold text-white shadow-fluxo'
+                      : 'inline-flex items-center gap-1.5 whitespace-nowrap rounded-md px-3 py-1.5 text-xs font-medium text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-700/60 dark:hover:text-white'
+                  }
+                >
+                  {s.label}
+                  <span
+                    className={
+                      isActive
+                        ? 'font-mono-tech text-[10px] font-bold text-white/80'
+                        : 'font-mono-tech text-[10px] font-semibold text-slate-400 dark:text-slate-500'
+                    }
+                  >
+                    {s.count}
+                  </span>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
       </div>
 
       {/* Filtros avançados */}
       <form
         method="GET"
-        className="grid grid-cols-1 gap-3 rounded-xl border border-slate-200 bg-white p-4 shadow-sm sm:grid-cols-2 lg:grid-cols-4 dark:border-slate-700 dark:bg-slate-800"
+        className="grid grid-cols-1 gap-3 rounded-lg border border-slate-200 bg-white p-4 shadow-elevate sm:grid-cols-2 lg:grid-cols-4 dark:border-slate-700 dark:bg-slate-800"
       >
         {searchParams.status && <input type="hidden" name="status" value={searchParams.status} />}
         {searchParams.quick && <input type="hidden" name="quick" value={searchParams.quick} />}
         <div className="lg:col-span-2">
-          <label htmlFor="tk-q" className="block text-xs font-medium text-slate-600 dark:text-slate-400">
+          <label htmlFor="tk-q" className="micro-label">
             Buscar
           </label>
           <div className="relative mt-1">
@@ -323,7 +300,7 @@ export default async function ChamadosListPage({ searchParams }: PageProps) {
           </div>
         </div>
         <div>
-          <label htmlFor="tk-client" className="block text-xs font-medium text-slate-600 dark:text-slate-400">
+          <label htmlFor="tk-client" className="micro-label">
             Cliente
           </label>
           <select
@@ -339,7 +316,7 @@ export default async function ChamadosListPage({ searchParams }: PageProps) {
           </select>
         </div>
         <div>
-          <label htmlFor="tk-queue" className="block text-xs font-medium text-slate-600 dark:text-slate-400">
+          <label htmlFor="tk-queue" className="micro-label">
             Fila
           </label>
           <select
@@ -355,7 +332,7 @@ export default async function ChamadosListPage({ searchParams }: PageProps) {
           </select>
         </div>
         <div>
-          <label htmlFor="tk-sla" className="block text-xs font-medium text-slate-600 dark:text-slate-400">
+          <label htmlFor="tk-sla" className="micro-label">
             SLA
           </label>
           <select
@@ -373,7 +350,7 @@ export default async function ChamadosListPage({ searchParams }: PageProps) {
           {hasFilters && (
             <Link
               href="/admin/chamados"
-              className="rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-600 hover:bg-slate-50"
+              className="rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-600 hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-200"
             >
               Limpar tudo
             </Link>
@@ -389,7 +366,7 @@ export default async function ChamadosListPage({ searchParams }: PageProps) {
 
       {/* Lista */}
       {result.items.length === 0 ? (
-        <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-12 text-center shadow-sm dark:border-slate-600 dark:bg-slate-800">
+        <div className="rounded-lg border border-dashed border-slate-300 bg-white p-12 text-center shadow-elevate dark:border-slate-600 dark:bg-slate-800">
           <TicketIcon className="mx-auto h-8 w-8 text-slate-300" aria-hidden="true" />
           <p className="mt-3 text-sm text-slate-500">
             Nenhum chamado encontrado com esses filtros.
@@ -411,7 +388,7 @@ export default async function ChamadosListPage({ searchParams }: PageProps) {
               <li key={t.id}>
                 <Link
                   href={`/admin/chamados/${t.id}`}
-                  className="relative block overflow-hidden rounded-xl border border-slate-200 bg-white p-4 pl-5 shadow-sm transition hover:shadow-md dark:border-slate-700 dark:bg-slate-800"
+                  className="relative block overflow-hidden rounded-lg border border-slate-200 bg-white p-4 pl-5 shadow-elevate transition hover:shadow-elevate-lg dark:border-slate-700 dark:bg-slate-800"
                 >
                   <span
                     aria-hidden="true"
@@ -419,7 +396,7 @@ export default async function ChamadosListPage({ searchParams }: PageProps) {
                   />
                   <div className="flex items-start justify-between gap-2">
                     <div className="min-w-0">
-                      <p className="font-mono text-[10px] text-slate-500">{t.ticketNumber}</p>
+                      <p className="font-mono-tech text-[10px] text-slate-500">{t.ticketNumber}</p>
                       <p className="mt-0.5 line-clamp-2 font-medium text-slate-900 dark:text-slate-100">
                         {t.title}
                       </p>
@@ -429,14 +406,12 @@ export default async function ChamadosListPage({ searchParams }: PageProps) {
                     </div>
                     <SlaBadge ticket={t} />
                   </div>
-                  <div className="mt-3 flex flex-wrap items-center gap-1.5 text-[10px]">
-                    <span className={`rounded-full px-2 py-0.5 font-semibold ${TICKET_STATUS_COLOR[t.status]}`}>
-                      {TICKET_STATUS_LABEL[t.status]}
+                  <div className="mt-3 flex flex-wrap items-center gap-3 text-xs">
+                    <TicketStatusDot status={t.status} />
+                    <PriorityDot priority={t.priority} />
+                    <span className="ml-auto font-mono-tech text-[10px] text-slate-500">
+                      {formatRelative(t.createdAt)}
                     </span>
-                    <span className={`rounded-full px-2 py-0.5 font-medium ${PRIORITY_COLOR[t.priority]}`}>
-                      {PRIORITY_LABEL[t.priority]}
-                    </span>
-                    <span className="ml-auto text-slate-500">{formatRelative(t.createdAt)}</span>
                   </div>
                 </Link>
               </li>
@@ -444,20 +419,20 @@ export default async function ChamadosListPage({ searchParams }: PageProps) {
           </ul>
 
           {/* Tabela no desktop */}
-          <div className="hidden overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-800 md:block">
+          <div className="hidden overflow-hidden rounded-lg border border-slate-200 bg-white shadow-elevate dark:border-slate-700 dark:bg-slate-800 md:block">
             <div className="overflow-x-auto">
               <table className="min-w-full divide-y divide-slate-200 text-sm dark:divide-slate-700">
                 <thead className="bg-slate-50/60 dark:bg-slate-800/60">
                   <tr>
                     <th scope="col" className="w-1 p-0" aria-hidden="true" />
-                    <th scope="col" className="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wider text-slate-500">Chamado</th>
-                    <th scope="col" className="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wider text-slate-500">Cliente</th>
-                    <th scope="col" className="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wider text-slate-500">Fila</th>
-                    <th scope="col" className="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wider text-slate-500">Status</th>
-                    <th scope="col" className="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wider text-slate-500">Prioridade</th>
-                    <th scope="col" className="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wider text-slate-500">SLA</th>
-                    <th scope="col" className="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wider text-slate-500">Atendente</th>
-                    <th scope="col" className="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wider text-slate-500">Aberto</th>
+                    <th scope="col" className="px-4 py-3 text-left micro-label">Chamado</th>
+                    <th scope="col" className="px-4 py-3 text-left micro-label">Cliente</th>
+                    <th scope="col" className="px-4 py-3 text-left micro-label">Fila</th>
+                    <th scope="col" className="px-4 py-3 text-left micro-label">Status</th>
+                    <th scope="col" className="px-4 py-3 text-left micro-label">Prioridade</th>
+                    <th scope="col" className="px-4 py-3 text-left micro-label">SLA</th>
+                    <th scope="col" className="px-4 py-3 text-left micro-label">Atendente</th>
+                    <th scope="col" className="px-4 py-3 text-left micro-label">Aberto</th>
                     <th scope="col" className="px-4 py-3" aria-hidden="true" />
                   </tr>
                 </thead>
@@ -475,7 +450,7 @@ export default async function ChamadosListPage({ searchParams }: PageProps) {
                       </td>
                       <td className="px-4 py-3">
                         <div className="flex flex-col gap-0.5">
-                          <span className="font-mono text-[10px] text-slate-500 dark:text-slate-400">
+                          <span className="font-mono-tech text-[10px] text-slate-500 dark:text-slate-400">
                             {t.ticketNumber}
                           </span>
                           <Link
@@ -489,14 +464,10 @@ export default async function ChamadosListPage({ searchParams }: PageProps) {
                       <td className="px-4 py-3 text-slate-700 dark:text-slate-300">{t.client.name}</td>
                       <td className="px-4 py-3 text-slate-600 dark:text-slate-400">{t.queue?.name ?? '—'}</td>
                       <td className="px-4 py-3">
-                        <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-semibold ${TICKET_STATUS_COLOR[t.status]}`}>
-                          {TICKET_STATUS_LABEL[t.status]}
-                        </span>
+                        <TicketStatusDot status={t.status} />
                       </td>
                       <td className="px-4 py-3">
-                        <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-medium ${PRIORITY_COLOR[t.priority]}`}>
-                          {PRIORITY_LABEL[t.priority]}
-                        </span>
+                        <PriorityDot priority={t.priority} />
                       </td>
                       <td className="px-4 py-3">
                         <SlaBadge ticket={t} />
@@ -504,7 +475,7 @@ export default async function ChamadosListPage({ searchParams }: PageProps) {
                       <td className="px-4 py-3 text-slate-700 dark:text-slate-300">
                         {t.assignedTo?.name ?? <span className="text-slate-400">—</span>}
                       </td>
-                      <td className="whitespace-nowrap px-4 py-3 text-xs text-slate-500">
+                      <td className="whitespace-nowrap px-4 py-3 font-mono-tech text-[11px] text-slate-500">
                         {formatRelative(t.createdAt)}
                       </td>
                       <td className="px-4 py-3 text-right">
@@ -529,9 +500,8 @@ export default async function ChamadosListPage({ searchParams }: PageProps) {
       {/* Paginação */}
       {result.total > result.pageSize && (
         <div className="flex items-center justify-between text-sm">
-          <span className="text-slate-500 dark:text-slate-400">
-            Mostrando {(page - 1) * result.pageSize + 1}–
-            {Math.min(page * result.pageSize, result.total)} de {result.total}
+          <span className="font-mono-tech text-slate-500 dark:text-slate-400">
+            {(page - 1) * result.pageSize + 1}–{Math.min(page * result.pageSize, result.total)} / {result.total}
           </span>
           <div className="flex gap-2">
             {page > 1 && (
@@ -542,7 +512,7 @@ export default async function ChamadosListPage({ searchParams }: PageProps) {
                 ← Anterior
               </Link>
             )}
-            {page * result.pageSize < result.total && (
+            {page < Math.ceil(result.total / result.pageSize) && (
               <Link
                 href={`/admin/chamados${buildQs(searchParams, { page: String(page + 1) })}`}
                 className="rounded-md border border-slate-300 bg-white px-3 py-1.5 font-medium text-slate-700 hover:bg-slate-50"
@@ -554,5 +524,49 @@ export default async function ChamadosListPage({ searchParams }: PageProps) {
         </div>
       )}
     </div>
+  );
+}
+
+function QuickFilter({
+  href,
+  active,
+  count,
+  tone,
+  icon,
+  children,
+}: {
+  href: string;
+  active: boolean;
+  count: number;
+  tone: 'fluxo' | 'slate';
+  icon: React.ReactNode;
+  children: React.ReactNode;
+}) {
+  const activeClass =
+    tone === 'fluxo'
+      ? 'bg-fluxo-500 text-white border-fluxo-500 shadow-fluxo'
+      : 'bg-slate-800 text-white border-slate-800 dark:bg-slate-200 dark:text-slate-900 dark:border-slate-200';
+
+  return (
+    <Link
+      href={href}
+      className={
+        active
+          ? `inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-semibold ${activeClass}`
+          : 'inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-medium text-slate-700 transition-colors hover:border-fluxo-300 hover:text-fluxo-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300'
+      }
+    >
+      {icon}
+      {children}
+      <span
+        className={
+          active
+            ? 'font-mono-tech text-[10px] font-bold text-white/80'
+            : 'font-mono-tech text-[10px] font-semibold text-slate-400 dark:text-slate-500'
+        }
+      >
+        {count}
+      </span>
+    </Link>
   );
 }
