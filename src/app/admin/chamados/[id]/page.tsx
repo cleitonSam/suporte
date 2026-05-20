@@ -37,6 +37,7 @@ import { MessageBubble } from '@/components/message-bubble';
 import { ActivityIcon } from '@/components/dashboard/activity-icon';
 import { TicketStatusDot, PriorityDot } from '@/components/ui/status-dot';
 import { MacroDropdown } from '@/components/macro-dropdown';
+import { RustDeskConnectButton } from '@/components/rustdesk-connect-button';
 import {
   TICKET_STATUS_LABEL,
   TICKET_EVENT_LABEL,
@@ -522,14 +523,12 @@ export default async function ChamadoAdminPage({
                 <DetailRow icon={<Monitor className="h-3.5 w-3.5" aria-hidden="true" />} label="Equipamento">
                   <p className="text-slate-900 dark:text-slate-100">{ticket.equipment.name}</p>
                   {ticket.equipment.rustdeskId && (
-                    <a
-                      href={`rustdesk://connection/new/${ticket.equipment.rustdeskId}`}
-                      className="mt-2 inline-flex items-center gap-1.5 rounded-md bg-fluxo-500 px-3 py-1.5 text-xs font-semibold text-white shadow-fluxo transition hover:bg-fluxo-600"
-                      title={`RustDesk ID: ${ticket.equipment.rustdeskId}`}
-                    >
-                      <Monitor className="h-3.5 w-3.5" aria-hidden="true" />
-                      Acesso remoto
-                    </a>
+                    <div className="mt-2">
+                      <RustDeskConnectButton
+                        rustdeskId={ticket.equipment.rustdeskId}
+                        equipmentName={ticket.equipment.name}
+                      />
+                    </div>
                   )}
                 </DetailRow>
               )}

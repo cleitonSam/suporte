@@ -14,6 +14,7 @@ import {
   BookOpen,
   Zap,
   BarChart3,
+  Monitor,
 } from 'lucide-react';
 import { NotificationsBell } from '@/components/notifications-bell';
 import { CommandPalette } from '@/components/command-palette';
@@ -35,6 +36,7 @@ const nav = [
   { href: '/admin/automacoes', label: 'Automações', icon: Zap },
   { href: '/admin/templates', label: 'Templates', icon: FileText },
   { href: '/admin/relatorios', label: 'Relatórios', icon: BarChart3 },
+  { href: '/admin/ferramentas/rustdesk', label: 'Acesso remoto', icon: Monitor },
   { href: '/admin/configuracoes', label: 'Configurações', icon: Settings },
 ];
 

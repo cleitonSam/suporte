@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { auth, signOut } from '@/lib/auth';
-import { LogOut, Plus, UserCircle } from 'lucide-react';
+import { LogOut, Plus, UserCircle, Monitor } from 'lucide-react';
 import { NotificationsBell } from '@/components/notifications-bell';
 import { ToastFromQuery } from '@/components/toast-from-query';
 import { LogoFluxo } from '@/components/logo-fluxo';
@@ -34,6 +34,15 @@ export default async function PortalLayout({ children }: { children: React.React
               className="hidden rounded-md px-3 py-1.5 font-medium text-slate-700 transition-colors hover:bg-fluxo-50 hover:text-fluxo-700 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white sm:inline-block"
             >
               Meus chamados
+            </Link>
+            <Link
+              href="/baixar/rustdesk"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden items-center gap-1 rounded-md px-3 py-1.5 font-medium text-slate-700 transition-colors hover:bg-fluxo-50 hover:text-fluxo-700 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white md:inline-flex"
+              title="Baixar RustDesk pra receber suporte remoto"
+            >
+              <Monitor className="h-3.5 w-3.5" /> Acesso remoto
             </Link>
             <Link
               href="/portal/novo"
